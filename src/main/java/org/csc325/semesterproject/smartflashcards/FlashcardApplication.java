@@ -10,7 +10,8 @@ import java.io.IOException;
 public class FlashcardApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen" +
+                ".fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 500);
         stage.setTitle("Smart Flashcards");
         stage.setScene(scene);
