@@ -10,13 +10,18 @@ import javafx.stage.Stage;
 public class landing_page_controller {
 
     @FXML
-    private void handleLoginButton(ActionEvent event) {
-        switchScene(event, "login_screen.fxml");
+    private void handleCreate(ActionEvent event) {
+        switchScene(event, "create_screen.fxml");
     }
 
     @FXML
-    private void handleRegisterButton(ActionEvent event) {
-        switchScene(event, "registration_screen.fxml");
+    private void handleStudy(ActionEvent event) {
+        switchScene(event, "study_screen.fxml");
+    }
+
+    @FXML
+    private void handlePlay(ActionEvent event) {
+        switchScene(event, "play_screen.fxml");
     }
 
     private void switchScene(ActionEvent event, String fxmlFile) {
@@ -25,11 +30,10 @@ public class landing_page_controller {
             Parent root = loader.load();
 
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 800, 600));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
-
