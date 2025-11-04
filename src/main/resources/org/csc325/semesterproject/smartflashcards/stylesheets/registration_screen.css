@@ -1,0 +1,47 @@
+.root {
+    -fx-background-color: #E0E3E3;
+}
+
+.regular_label {
+    -fx-text-fill: #1C1B1B;
+}
+
+.registration_container {
+    -fx-background-color: #f8fcfd;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-border-color: #1B1B1B;
+}
+
+.input_field {
+    -fx-background-color: -fx-text-box-border, #ECEEF1;
+    -fx-background-insets: 0, 0 0 2 0;
+    -fx-background-radius: 0;
+}
+
+.input_field:focused {
+    -fx-background-color: #1B1B1B, #ECEEF1;
+}
+
+.nav_text {
+    -fx-text-fill: #1C1B1B;
+    -fx-padding: 0;
+}
+
+.nav_text:hover {
+    -fx-text-fill: #4D4A49;
+}
+
+.error_label {
+    -fx-text-fill: #BA1A1A;
+}
+
+.primary_button {
+    -fx-background-color: #1B1B1B;
+    -fx-text-fill: white;
+}
+
+.primary_button:hover {
+    -fx-background-color: #4D4A49;
+    -fx-text-fill: white;
+}
