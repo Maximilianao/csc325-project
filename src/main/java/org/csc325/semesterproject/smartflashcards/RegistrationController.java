@@ -58,6 +58,8 @@ public class RegistrationController {
         rootVbox.setOnMousePressed(_ -> rootVbox.requestFocus());
     }
 
+    boolean alreadyRegistered = false;
+
     @FXML
     public boolean signUp() {
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
@@ -81,6 +83,7 @@ public class RegistrationController {
         } catch (FirebaseAuthException ex) {
             // Logger.getLogger(FirestoreContext.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error creating a new user in the firebase");
+            passwordErrorLabel.setText("Account Already Exists");
             return false;
         }
 
