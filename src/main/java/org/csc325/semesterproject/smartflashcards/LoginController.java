@@ -1,5 +1,7 @@
 package org.csc325.semesterproject.smartflashcards;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +27,15 @@ public class LoginController {
     private PasswordField passwordInputField;
 
     @FXML
+    protected void initialize(){
+        Platform.runLater(()-> rootVbox.requestFocus());
+
+        rootVbox.setOnMousePressed(_ -> rootVbox.requestFocus());
+
+        userInputField.textProperty().addListener(userInputListener);
+    }
+
+    @FXML
     public void viewRegistrationScreen() {
         try {
             FXMLLoader registration = new FXMLLoader(getClass().getResource("registration_screen.fxml"));
@@ -32,8 +43,19 @@ public class LoginController {
 
             Scene currentScene = rootVbox.getScene();
             currentScene.setRoot(root);
+
+            usernameErrorLabel.textProperty().removeListener(userInputListener);
         } catch (Exception e) {
             System.out.println("Error loading registration screen.");
         }
     }
+
+    private final ChangeListener<String> userInputListener = (_, _, newValue) -> {
+        if (!newValue.isEmpty()){
+            usernameErrorLabel.setText("");
+        }
+        else {
+            usernameErrorLabel.setText("Username cannot be empty");
+        }
+    };
 }
