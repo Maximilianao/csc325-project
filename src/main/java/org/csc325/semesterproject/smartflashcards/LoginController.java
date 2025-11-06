@@ -88,7 +88,11 @@ public class LoginController {
                     }
                     if(passwordMatch == true && userMatch == true){
                         try {
-                            FlashcardApplication.setRoot("registration_screen");
+                            FXMLLoader registration = new FXMLLoader(getClass().getResource("registration_screen.fxml"));
+                            Parent root = registration.load();
+
+                            Scene currentScene = rootVbox.getScene();
+                            currentScene.setRoot(root);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
