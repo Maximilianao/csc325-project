@@ -33,6 +33,7 @@ public class LoginController {
         rootVbox.setOnMousePressed(_ -> rootVbox.requestFocus());
 
         userInputField.textProperty().addListener(userInputListener);
+        passwordInputField.textProperty().addListener(passwordInputListener);
     }
 
     @FXML
@@ -44,7 +45,8 @@ public class LoginController {
             Scene currentScene = rootVbox.getScene();
             currentScene.setRoot(root);
 
-            usernameErrorLabel.textProperty().removeListener(userInputListener);
+            userInputField.textProperty().removeListener(userInputListener);
+            passwordInputField.textProperty().removeListener(userInputListener);
         } catch (Exception e) {
             System.out.println("Error loading registration screen.");
         }
@@ -56,6 +58,15 @@ public class LoginController {
         }
         else {
             usernameErrorLabel.setText("Username cannot be empty");
+        }
+    };
+
+    private final ChangeListener<String> passwordInputListener = (_, _, newValue) -> {
+        if (!newValue.isEmpty()){
+            passwordErrorLabel.setText("");
+        }
+        else {
+            passwordErrorLabel.setText("Password cannot be empty");
         }
     };
 }
