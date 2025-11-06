@@ -88,7 +88,7 @@ public class LoginController {
                     }
                     if(passwordMatch == true && userMatch == true){
                         try {
-                            FlashcardApplication.setRoot("primary");
+                            FlashcardApplication.setRoot("registration_screen");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
