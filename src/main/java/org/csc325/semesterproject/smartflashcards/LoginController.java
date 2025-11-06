@@ -106,4 +106,9 @@ public class LoginController {
             ex.printStackTrace();
         }
     }
+
+    @FXML
+    public void loginButton(){
+       signIn();
+    }
 }
