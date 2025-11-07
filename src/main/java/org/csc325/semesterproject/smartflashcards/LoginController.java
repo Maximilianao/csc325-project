@@ -93,6 +93,7 @@ public class LoginController {
 
                             Scene currentScene = rootVbox.getScene();
                             currentScene.setRoot(root);
+                            break;
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
