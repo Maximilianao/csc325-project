@@ -16,7 +16,7 @@ import com.google.cloud.firestore.*;
 
 public class FlashcardApplication extends Application {
 
-    public static Scene scene;
+
 
     public static Firestore fstore;
     public static FirebaseAuth fauth;
@@ -34,4 +34,7 @@ public class FlashcardApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
 }

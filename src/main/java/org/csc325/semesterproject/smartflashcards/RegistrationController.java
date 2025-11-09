@@ -62,6 +62,34 @@ public class RegistrationController {
 
     @FXML
     public boolean signUp() {
+        // Validation check for Empty text fields:  email, username, and password
+        if (emailInputField.getText() == null || emailInputField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Registration Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Email cannot be empty. Please try again.");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (userInputField.getText() == null || userInputField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Registration Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Username cannot be empty. Please try again.");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (passwordInputField.getText() == null || passwordInputField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Registration Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Password cannot be empty. Please try again.");
+            alert.showAndWait();
+            return false;
+        }
+
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
                 .setEmail(emailInputField.getText())
                 .setEmailVerified(false)
@@ -90,7 +118,6 @@ public class RegistrationController {
     }
 
     public void addData() {
-
         DocumentReference docRef = FlashcardApplication.fstore.collection("Passwords").document(userInputField.getText());
 
         Map<String, Object> data = new HashMap<>();
