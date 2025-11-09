@@ -47,6 +47,7 @@ public class LoginController {
 
     @FXML
     public void viewRegistrationScreen() {
+
         try {
             FXMLLoader registration = new FXMLLoader(getClass().getResource("registration_screen.fxml"));
             Parent root = registration.load();
@@ -60,6 +61,25 @@ public class LoginController {
 
 
     public void signIn() {
+        //Validation : check for Empty username and password text field
+        if (userInputField.getText() == null || userInputField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Username cannot be empty. Please try again.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (passwordInputField.getText() == null || passwordInputField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Password cannot be empty. Please try again.");
+            alert.showAndWait();
+            return;
+        }
+
         ApiFuture<QuerySnapshot> future =  FlashcardApplication.fstore.collection("Passwords").get();
         List<QueryDocumentSnapshot> documents;
         boolean passwordMatch = false;
@@ -98,6 +118,14 @@ public class LoginController {
                             throw new RuntimeException(e);
                         }
                     }
+                }
+                // show alert if no match found
+                if (!(passwordMatch && userMatch)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Login Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Invalid username or password. Please try again.");
+                    alert.showAndWait();
                 }
             }
             else
