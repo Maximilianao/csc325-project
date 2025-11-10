@@ -8,6 +8,7 @@ module org.csc325.semesterproject.smartflashcards {
     requires google.cloud.core;
     requires com.google.api.apicommon;
     requires javafx.graphics;
+    requires javafx.base;
 
     opens org.csc325.semesterproject.smartflashcards to javafx.fxml;
     exports org.csc325.semesterproject.smartflashcards;
