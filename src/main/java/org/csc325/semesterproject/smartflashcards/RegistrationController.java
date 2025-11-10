@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javafx.event.ActionEvent;
-
 import javafx.scene.control.Alert;
 
 
@@ -46,6 +44,10 @@ public class RegistrationController {
     @FXML
     private TextField emailInputField;
 
+    private boolean validEmail = false;
+    private boolean validUsername = false;
+    private boolean validPassword = false;
+
     @FXML
     protected void initialize(){
         Platform.runLater(()-> rootVbox.requestFocus());
@@ -62,7 +64,7 @@ public class RegistrationController {
     @FXML
     public boolean signUp() {
         // Validation check for Empty text fields:  email, username, and password
-        if (emailInputField.getText().isEmpty() || userInputField.getText().isEmpty() || passwordInputField.getText().isEmpty()) {
+        if (!validEmail || !validUsername || !validPassword) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Registration Error");
             alert.setHeaderText(null);
@@ -126,7 +128,7 @@ public class RegistrationController {
     }
 
     @FXML
-    void signUpButtonClicked(ActionEvent event) {
+    void signUpButtonClicked() {
         signUp();
     }
 
@@ -138,30 +140,41 @@ public class RegistrationController {
 
         if (!newValue.isEmpty() && emailFormat) {
             emailErrorLabel.setText("");
+            validEmail = true;
         }
         else if (!emailFormat) {
             emailErrorLabel.setText("Enter a valid email address");
+            validEmail = false;
         }
         else {
             emailErrorLabel.setText("Email cannot be empty");
+            validEmail = false;
         }
     };
 
     private final ChangeListener<String> userInputListener = (_, _, newValue) -> {
         if (!newValue.isEmpty()){
             usernameErrorLabel.setText("");
+            validUsername = true;
         }
         else {
             usernameErrorLabel.setText("Username cannot be empty");
+            validUsername = false;
         }
     };
 
     private final ChangeListener<String> passwordInputListener = (_, _, newValue) -> {
-        if (!newValue.isEmpty()){
+        if (newValue.length() >= 6) {
             passwordErrorLabel.setText("");
+            validPassword = true;
+        }
+        else if (!newValue.isEmpty()) {
+            passwordErrorLabel.setText("Password cannot be less than 6 characters");
+            validPassword = false;
         }
         else {
             passwordErrorLabel.setText("Password cannot be empty");
+            validPassword = false;
         }
     };
 }
