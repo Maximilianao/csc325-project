@@ -5,9 +5,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class landing_page_controller {
+
+    @FXML
+    private Label welcomeLabel;
+
+    @FXML
+    public void initialize() {
+        // Retrieve current username from FlashcardApplication
+        String currentUser = FlashcardApplication.currentUser;
+        if (currentUser != null && !currentUser.isEmpty()) {
+            welcomeLabel.setText("Welcome, " + currentUser + "!");
+        } else {
+            welcomeLabel.setText("Welcome!");
+        }
+    }
 
     @FXML
     private void handleCreate(ActionEvent event) {

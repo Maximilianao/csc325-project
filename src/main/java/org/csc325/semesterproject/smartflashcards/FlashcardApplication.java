@@ -20,6 +20,10 @@ public class FlashcardApplication extends Application {
 
     public static Firestore fstore;
     public static FirebaseAuth fauth;
+
+    public static String currentUser;
+
+
     private final FirestoreContext contxtFirebase = new FirestoreContext();
 
     @Override

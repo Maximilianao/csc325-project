@@ -1,0 +1,108 @@
+/* Background */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9eef0);
+}
+
+/* Titles */
+.title_label {
+    -fx-text-fill: #1B1B1B;
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.subtitle_label {
+    -fx-text-fill: #4D4A49;
+    -fx-font-size: 14px;
+}
+
+/* Regular label */
+.regular_label {
+    -fx-text-fill: #1C1B1B;
+    -fx-font-size: 13px;
+}
+
+/* Stat boxes */
+.stat_box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d6d8;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-min-width: 140px;
+    -fx-pref-width: 200px;
+    -fx-min-height: 100px;
+}
+
+.stat_number {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1B1B1B;
+}
+
+/* Action boxes */
+.action_box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d6d8;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 22;
+    -fx-alignment: center;
+    -fx-min-width: 160px;
+    -fx-pref-width: 240px;
+    -fx-min-height: 140px;
+}
+
+/* Buttons inside action boxes */
+.primary_button {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 22;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2);
+}
+
+/* Button colors */
+.create_button {
+    -fx-background-color: #1B1B1B;
+    -fx-text-fill: white;
+}
+
+.study_button {
+    -fx-background-color: #7ED957;
+    -fx-text-fill: white;
+}
+
+.play_button {
+    -fx-background-color: #9B51E0;
+    -fx-text-fill: white;
+}
+
+/* Hover effects */
+.primary_button:hover {
+    -fx-opacity: 0.95;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Responsive tweaks */
+@media screen and (min-width: 1600px) {
+    .title_label { -fx-font-size: 48px; }
+    .stat_number { -fx-font-size: 34px; }
+    .primary_button { -fx-font-size: 22px; -fx-padding: 16 26; }
+}
+
+@media screen and (max-width: 800px) {
+    .title_label { -fx-font-size: 22px; }
+    .stat_number { -fx-font-size: 18px; }
+    .action_box { -fx-pref-width: 140px; -fx-padding: 14; }
+    .primary_button { -fx-font-size: 14px; -fx-padding: 10 16; }
+}
+/* Welcome label */
+.welcome_label {
+    -fx-font-size: 22px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 0 0;
+}
