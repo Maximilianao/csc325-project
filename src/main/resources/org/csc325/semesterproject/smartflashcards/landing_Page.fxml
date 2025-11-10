@@ -19,8 +19,14 @@
         <RowConstraints vgrow="ALWAYS" percentHeight="100"/>
     </rowConstraints>
 
-    <VBox alignment="CENTER" spacing="40" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
-          maxWidth="1000" maxHeight="700" prefWidth="800" prefHeight="600" styleClass="main_container">
+    <VBox alignment="CENTER" spacing="40"
+          GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+          maxWidth="1000" maxHeight="700"
+          prefWidth="800" prefHeight="600"
+          styleClass="main_container">
+
+        <!-- Welcome label (dynamic from controller) -->
+        <Label fx:id="welcomeLabel" text="Welcome!" styleClass="welcome_label"/>
 
         <!-- Title -->
         <VBox alignment="CENTER" spacing="8">
