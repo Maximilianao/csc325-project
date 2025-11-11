@@ -2,6 +2,7 @@ package org.csc325.semesterproject.smartflashcards;
 
 import com.google.firebase.auth.UserRecord;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,24 +14,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuthException;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.scene.control.Alert;
 
-import javafx.scene.control.TextArea;
 
 
 public class RegistrationController {
@@ -51,17 +44,35 @@ public class RegistrationController {
     @FXML
     private TextField emailInputField;
 
+    private boolean validEmail = false;
+    private boolean validUsername = false;
+    private boolean validPassword = false;
+
     @FXML
     protected void initialize(){
         Platform.runLater(()-> rootVbox.requestFocus());
 
         rootVbox.setOnMousePressed(_ -> rootVbox.requestFocus());
+
+        emailInputField.textProperty().addListener(emailInputListener);
+        userInputField.textProperty().addListener(userInputListener);
+        passwordInputField.textProperty().addListener(passwordInputListener);
     }
 
     boolean alreadyRegistered = false;
 
     @FXML
     public boolean signUp() {
+        // Validation check for Empty text fields:  email, username, and password
+        if (!validEmail || !validUsername || !validPassword) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Registration Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Email, username, and password cannot be empty. Please try again.");
+            alert.showAndWait();
+            return false;
+        }
+
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
                 .setEmail(emailInputField.getText())
                 .setEmailVerified(false)
@@ -90,7 +101,6 @@ public class RegistrationController {
     }
 
     public void addData() {
-
         DocumentReference docRef = FlashcardApplication.fstore.collection("Passwords").document(userInputField.getText());
 
         Map<String, Object> data = new HashMap<>();
@@ -108,13 +118,63 @@ public class RegistrationController {
 
             Scene currentScene = rootVbox.getScene();
             currentScene.setRoot(root);
+
+            emailInputField.textProperty().removeListener(emailInputListener);
+            userInputField.textProperty().removeListener(userInputListener);
+            passwordInputField.textProperty().removeListener(passwordInputListener);
         } catch (Exception e) {
             System.out.println("Error loading login screen.");
         }
     }
 
     @FXML
-    void signUpButtonClicked(ActionEvent event) {
+    void signUpButtonClicked() {
         signUp();
     }
+
+    private final ChangeListener<String> emailInputListener = (_, _, newValue) -> {
+        String pattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(emailInputField.getText());
+        boolean emailFormat = m.matches();
+
+        if (!newValue.isEmpty() && emailFormat) {
+            emailErrorLabel.setText("");
+            validEmail = true;
+        }
+        else if (!emailFormat) {
+            emailErrorLabel.setText("Enter a valid email address");
+            validEmail = false;
+        }
+        else {
+            emailErrorLabel.setText("Email cannot be empty");
+            validEmail = false;
+        }
+    };
+
+    private final ChangeListener<String> userInputListener = (_, _, newValue) -> {
+        if (!newValue.isEmpty()){
+            usernameErrorLabel.setText("");
+            validUsername = true;
+        }
+        else {
+            usernameErrorLabel.setText("Username cannot be empty");
+            validUsername = false;
+        }
+    };
+
+    private final ChangeListener<String> passwordInputListener = (_, _, newValue) -> {
+        if (newValue.length() >= 6) {
+            passwordErrorLabel.setText("");
+            validPassword = true;
+        }
+        else if (!newValue.isEmpty()) {
+            passwordErrorLabel.setText("Password cannot be less than 6 characters");
+            validPassword = false;
+        }
+        else {
+            passwordErrorLabel.setText("Password cannot be empty");
+            validPassword = false;
+        }
+    };
 }
