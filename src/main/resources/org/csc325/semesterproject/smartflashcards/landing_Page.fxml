@@ -5,69 +5,94 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="org.csc325.semesterproject.smartflashcards.landing_page_controller"
-          stylesheets="@stylesheets/landing_page.css"
-          styleClass="root"
-          alignment="CENTER">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.csc325.semesterproject.smartflashcards.landing_page_controller"
+           stylesheets="@stylesheets/landing_page.css"
+           styleClass="root">
 
-    <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints vgrow="ALWAYS" percentHeight="100"/>
-    </rowConstraints>
+    <!-- GridPane for main content -->
+    <GridPane alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="100"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="ALWAYS" percentHeight="100"/>
+        </rowConstraints>
 
-    <VBox alignment="CENTER" spacing="40"
-          GridPane.halignment="CENTER" GridPane.valignment="CENTER"
-          maxWidth="1000" maxHeight="700"
-          prefWidth="800" prefHeight="600"
-          styleClass="main_container">
+        <VBox alignment="CENTER" spacing="40"
+              GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+              maxWidth="1000" maxHeight="700"
+              prefWidth="800" prefHeight="600"
+              styleClass="main_container">
 
-        <!-- Welcome label (dynamic from controller) -->
-        <Label fx:id="welcomeLabel" text="Welcome!" styleClass="welcome_label"/>
+            <!-- Welcome label -->
+            <Label fx:id="welcomeLabel" text="Welcome!" styleClass="welcome_label"/>
 
-        <!-- Title -->
-        <VBox alignment="CENTER" spacing="8">
-            <Label text="Flash Card Study App" styleClass="title_label"/>
-            <Label text="Create, Manage, and Study your flashcards" styleClass="subtitle_label"/>
+            <!-- Title -->
+            <VBox alignment="CENTER" spacing="8">
+                <Label text="Flash Card Study App" styleClass="title_label"/>
+                <Label text="Create, Manage, and Study your flashcards" styleClass="subtitle_label"/>
+            </VBox>
+
+            <!-- Stats -->
+            <HBox alignment="CENTER" spacing="60">
+                <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
+                    <Label text="-----" styleClass="stat_number"/>
+                    <Label text="Total Sets" styleClass="regular_label"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
+                    <Label text="-----" styleClass="stat_number"/>
+                    <Label text="Last Set Used" styleClass="regular_label"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
+                    <Label text="-----" styleClass="stat_number"/>
+                    <Label text="Accuracy" styleClass="regular_label"/>
+                </VBox>
+            </HBox>
+
+            <!-- Action Boxes -->
+            <HBox alignment="CENTER" spacing="60">
+                <VBox alignment="CENTER" spacing="8"
+                      styleClass="clickable_box"
+                      onMouseClicked="#handleCreate">
+                    <Label text="Create" styleClass="primary_label"/>
+                    <Label text="Add new flashcards to your collection"
+                           styleClass="regular_label"/>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="8"
+                      styleClass="clickable_box"
+                      onMouseClicked="#handleStudy">
+                    <Label text="Study" styleClass="primary_label"/>
+                    <Label text="Review your cards and test yourself"
+                           styleClass="regular_label"/>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="8"
+                      styleClass="clickable_box"
+                      onMouseClicked="#handlePlay">
+                    <Label text="Play" styleClass="primary_label"/>
+                    <Label text="Play games to help memorize your cards"
+                           styleClass="regular_label"/>
+                </VBox>
+            </HBox>
+
+            <padding>
+                <Insets top="40" right="40" bottom="40" left="40"/>
+            </padding>
         </VBox>
+    </GridPane>
 
-        <!-- Stats row -->
-        <HBox alignment="CENTER" spacing="60">
-            <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                <Label text="27" styleClass="stat_number"/>
-                <Label text="Total Cards" styleClass="regular_label"/>
-            </VBox>
-            <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                <Label text="14" styleClass="stat_number"/>
-                <Label text="Cards Studied" styleClass="regular_label"/>
-            </VBox>
-            <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                <Label text="---" styleClass="stat_number"/>
-                <Label text="Accuracy" styleClass="regular_label"/>
-            </VBox>
-        </HBox>
+    <!-- Fixed top-right logout button -->
+    <Button fx:id="logoutButton"
+            text="Log out"
+            onAction="#handleLogout"
+            styleClass="logout-button"
+            StackPane.alignment="TOP_RIGHT">
+        <StackPane.margin>
+            <Insets top="10" right="10"/>
+        </StackPane.margin>
+    </Button>
 
-        <!-- Buttons row -->
-        <HBox alignment="CENTER" spacing="60">
-            <VBox alignment="CENTER" spacing="8" styleClass="action_box">
-                <Button text="Create" onAction="#handleCreate" styleClass="primary_button create_button"/>
-                <Label text="Add new flashcards to your collection" styleClass="regular_label"/>
-            </VBox>
-            <VBox alignment="CENTER" spacing="8" styleClass="action_box">
-                <Button text="Study" onAction="#handleStudy" styleClass="primary_button study_button"/>
-                <Label text="Review your cards and test yourself" styleClass="regular_label"/>
-            </VBox>
-            <VBox alignment="CENTER" spacing="8" styleClass="action_box">
-                <Button text="Play" onAction="#handlePlay" styleClass="primary_button play_button"/>
-                <Label text="Play games to help memorize your cards" styleClass="regular_label"/>
-            </VBox>
-        </HBox>
-
-        <padding>
-            <Insets top="40" right="40" bottom="40" left="40"/>
-        </padding>
-    </VBox>
-</GridPane>
+</StackPane>

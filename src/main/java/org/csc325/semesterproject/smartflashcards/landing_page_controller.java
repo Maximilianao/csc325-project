@@ -25,21 +25,39 @@ public class landing_page_controller {
     }
 
     @FXML
-    private void handleCreate(ActionEvent event) {
+    private void handleCreate(javafx.scene.input.MouseEvent event) {
         switchScene(event, "create_screen.fxml");
     }
 
     @FXML
-    private void handleStudy(ActionEvent event) {
+    private void handleStudy(javafx.scene.input.MouseEvent event) {
         switchScene(event, "study_screen.fxml");
     }
 
     @FXML
-    private void handlePlay(ActionEvent event) {
+    private void handlePlay(javafx.scene.input.MouseEvent event) {
         switchScene(event, "play_screen.fxml");
     }
 
-    private void switchScene(ActionEvent event, String fxmlFile) {
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        // Clear current user
+        FlashcardApplication.currentUser = null;
+
+        // Switch to login scene
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void switchScene(javafx.scene.input.MouseEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
