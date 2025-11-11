@@ -26,7 +26,7 @@ public class landing_page_controller {
 
     @FXML
     private void handleCreate(ActionEvent event) {
-        switchScene(event, "create_screen.fxml");
+        switchScene(event, "createFlashcard.fxml");
     }
 
     @FXML
