@@ -100,7 +100,7 @@ public class LoginController {
                     }
                     if(passwordMatch == true && userMatch == true){
                         try {
-
+                            FlashcardApplication.currentUser = userInputField.getText();
                             FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
                             Parent root = registration.load();
 
