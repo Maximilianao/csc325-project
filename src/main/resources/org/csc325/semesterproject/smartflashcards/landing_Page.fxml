@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 
@@ -37,14 +38,17 @@
 
             <!-- Stats -->
             <HBox alignment="CENTER" spacing="60">
+
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
                     <Label text="-----" styleClass="stat_number"/>
                     <Label text="Total Sets" styleClass="regular_label"/>
                 </VBox>
+
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                    <Label text="-----" styleClass="stat_number"/>
-                    <Label text="Last Set Used" styleClass="regular_label"/>
+                    <Label text="Current Set" styleClass="regular_label"/>
+                    <ComboBox fx:id="setDropdown" prefWidth="160" onAction="#handleSetChange"/>
                 </VBox>
+
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
                     <Label text="-----" styleClass="stat_number"/>
                     <Label text="Accuracy" styleClass="regular_label"/>
@@ -56,8 +60,8 @@
                 <VBox alignment="CENTER" spacing="8"
                       styleClass="clickable_box"
                       onMouseClicked="#handleCreate">
-                    <Label text="Create" styleClass="primary_label"/>
-                    <Label text="Add new flashcards to your collection"
+                    <Label text="Manage" styleClass="primary_label"/>
+                    <Label text="Create and Edit Flashcards and Sets"
                            styleClass="regular_label"/>
                 </VBox>
 

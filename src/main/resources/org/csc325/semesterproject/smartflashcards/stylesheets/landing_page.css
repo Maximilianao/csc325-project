@@ -92,3 +92,34 @@
     -fx-background-color: #f14b4b;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
 }
+
+/* Dropdown (ComboBox) inside stat boxes */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d6d8;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1C1B1B;
+    -fx-padding: 6 10;
+    -fx-pref-width: 160px;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover {
+    -fx-background-color: #fdfdfd;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #1C1B1B;
+    -fx-font-size: 14px;
+}
+
+/* Popup dropdown list styling */
+.combo-box-popup .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d6d8;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
