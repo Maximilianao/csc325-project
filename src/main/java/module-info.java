@@ -9,6 +9,7 @@ module org.csc325.semesterproject.smartflashcards {
     requires com.google.api.apicommon;
     requires javafx.graphics;
     requires javafx.base;
+    requires org.controlsfx.controls;
 
     opens org.csc325.semesterproject.smartflashcards to javafx.fxml;
     exports org.csc325.semesterproject.smartflashcards;

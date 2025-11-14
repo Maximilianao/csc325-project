@@ -61,23 +61,6 @@ public class createFlashcardController {
 
 
 
-    public void createNewSet() {
-        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
-        //DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document("test");
-
-        Map<String, Boolean> data = new HashMap<>();
-        data.put("exists", true);
-
-        //asynchronously write data
-        ApiFuture<WriteResult> result = docRef.set(data);
-    }
-    @FXML
-    void createSetButtonPressed(){
-        createNewSet();
-    }
-
-
-
     @FXML
     private void landingPage(MouseEvent event) {
         switchScene(event, "landing_Page.fxml");

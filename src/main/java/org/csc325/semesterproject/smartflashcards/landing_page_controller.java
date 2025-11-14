@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -33,6 +35,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
+
 public class landing_page_controller {
 
     @FXML
@@ -48,6 +58,16 @@ public class landing_page_controller {
             "History Dates"
     );*/
 
+    static private VBox content = new VBox();
+    static private HBox newHBox = new HBox();
+    static private Button createButton = new Button("Create");
+    static private Button closeButton = new Button("Close");
+
+    static private TextField setField = new TextField();
+
+    static private PopOver popover = new PopOver(content);
+    static private boolean createdPopOver = false;
+
 
 
     private ObservableList<String> setSets(){
@@ -56,6 +76,7 @@ public class landing_page_controller {
         for (CollectionReference collection : collections) {
             sets.add(collection.getId());
         }
+        sets.add("-Create New Set-");
         return sets;
     }
 
@@ -73,6 +94,36 @@ public class landing_page_controller {
         // Populate temporary sets
         setDropdown.setItems(setSets());
         setDropdown.getSelectionModel().selectFirst(); // default selection
+
+        if(createdPopOver == false) {
+            newHBox.setSpacing(60);
+            newHBox.getChildren().addAll(
+                    createButton,
+                    closeButton
+            );
+
+            content.setSpacing(10);
+
+            content.setPadding(new Insets(10));
+
+            content.getChildren().addAll(
+                    new Label("New Set"),
+                    setField,
+                    newHBox
+            );
+            createdPopOver = true;
+        }
+        createButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                String x = setField.getText();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
+                popover.hide();
+                setDropdown.setValue(x);
+            }
+        });
+
     }
 
     @FXML
@@ -80,6 +131,11 @@ public class landing_page_controller {
         String selectedSet = setDropdown.getValue();
         System.out.println("Current set changed to: " + selectedSet);
         FlashcardApplication.currentSet = selectedSet;
+
+        if(setDropdown.getValue().equals("-Create New Set-")){
+            popover.show(setDropdown);
+            System.out.println("popup shown");
+        }
     }
 
     @FXML
@@ -125,4 +181,16 @@ public class landing_page_controller {
             e.printStackTrace();
         }
     }
+
+    static private void createNewSet() {
+        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
+        //DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document("test");
+
+        Map<String, Boolean> data = new HashMap<>();
+        data.put("exists", true);
+
+        //asynchronously write data
+        ApiFuture<WriteResult> result = docRef.set(data);
+    }
+
 }
