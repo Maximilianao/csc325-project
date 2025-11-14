@@ -5,9 +5,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.createFlashcardController">
    <children>
-      <TextField fx:id="wordField" layoutX="144.0" layoutY="127.0" promptText="Word" />
-      <TextField fx:id="defField" layoutX="144.0" layoutY="200.0" promptText="Definition" />
-      <TextField fx:id="setField" layoutX="144.0" layoutY="51.0" promptText="Flashcard Set" />
-      <Button fx:id="createFlashcardButton" onAction="#createFlashcardButtonPressed" layoutX="144.0" layoutY="285.0" mnemonicParsing="false" text="Create Flashcard" />
+      <TextField fx:id="wordField" layoutX="370.0" layoutY="129.0" promptText="Word" />
+      <TextField fx:id="defField" layoutX="370.0" layoutY="200.0" promptText="Definition" />
+      <TextField fx:id="setField" layoutX="83.0" layoutY="188.0" promptText="Flashcard Set" />
+      <Button fx:id="createFlashcardButton" layoutX="393.0" layoutY="277.0" mnemonicParsing="false" onAction="#createFlashcardButtonPressed" text="Create Flashcard" />
+      <Button fx:id="createSetButton" layoutX="109.0" layoutY="277.0" mnemonicParsing="false" onAction="#createSetButtonPressed" text="Create New Set" />
+      <Button layoutX="57.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#landingPage" text="Go Back" />
    </children>
 </AnchorPane>

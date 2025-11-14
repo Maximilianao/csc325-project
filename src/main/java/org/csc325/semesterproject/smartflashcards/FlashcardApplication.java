@@ -22,6 +22,7 @@ public class FlashcardApplication extends Application {
     public static FirebaseAuth fauth;
 
     public static String currentUser;
+    public static String currentSet;
 
 
     private final FirestoreContext contxtFirebase = new FirestoreContext();
