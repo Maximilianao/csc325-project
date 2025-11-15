@@ -1,11 +1,11 @@
 /* Background */
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9eef0);
+    -fx-background-color: #E0E3E3;
 }
 
 /* Welcome label */
 .welcome_label {
-    -fx-font-size: 22px;
+    -fx-font-size: 20px;
     -fx-text-fill: #333333;
     -fx-font-weight: bold;
     -fx-padding: 10 0 0 0;
@@ -14,7 +14,7 @@
 /* Titles */
 .title_label {
     -fx-text-fill: #1B1B1B;
-    -fx-font-size: 36px;
+    -fx-font-size: 35px;
     -fx-font-weight: bold;
 }
 
@@ -33,8 +33,8 @@
 
 /* Stat boxes */
 .stat_box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d6d8;
+    -fx-background-color: #FCFEFF;
+    -fx-border-color: #1B1B1B;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
     -fx-padding: 20;
@@ -46,15 +46,12 @@
 
 /* Clickable action boxes */
 .clickable_box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d6d8;
+    -fx-background-color: #FCFEFF;
+    -fx-border-color: #1B1B1B;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
-    -fx-padding: 20;
+    -fx-padding: 15;
     -fx-alignment: center;
-    -fx-min-width: 140px;
-    -fx-pref-width: 200px;
-    -fx-min-height: 100px;
 
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2);
@@ -95,8 +92,8 @@
 
 /* Dropdown (ComboBox) inside stat boxes */
 .combo-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d0d6d8;
+    -fx-background-color: #FCFEFF;
+    -fx-border-color: #1B1B1B;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-font-size: 14px;
@@ -107,7 +104,7 @@
 }
 
 .combo-box:hover {
-    -fx-background-color: #fdfdfd;
+    -fx-background-color: #ffffff;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
