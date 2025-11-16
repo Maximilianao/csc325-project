@@ -124,6 +124,12 @@ public class landing_page_controller {
             }
         });
 
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                popover.hide();
+            }
+        });
+
     }
 
     @FXML
