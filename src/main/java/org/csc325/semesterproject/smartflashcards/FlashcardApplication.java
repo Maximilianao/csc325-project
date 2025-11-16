@@ -33,7 +33,9 @@ public class FlashcardApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen" +
                 ".fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         stage.setTitle("Smart Flashcards");
         stage.setScene(scene);
         stage.show();
