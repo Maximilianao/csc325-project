@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
@@ -50,13 +49,15 @@ public class landing_page_controller {
 
     @FXML
     private ComboBox<String> setDropdown;
-    //temporary list of flashcards
-    /*private ObservableList<String> sets = FXCollections.observableArrayList(
-            "Biology 101",
-            "Spanish Vocabulary",
-            "Java Basics",
-            "History Dates"
-    );*/
+    // temporary list of flashcards
+    /*
+     * private ObservableList<String> sets = FXCollections.observableArrayList(
+     * "Biology 101",
+     * "Spanish Vocabulary",
+     * "Java Basics",
+     * "History Dates"
+     * );
+     */
 
     static private VBox content = new VBox();
     static private HBox newHBox = new HBox();
@@ -68,18 +69,17 @@ public class landing_page_controller {
     static private PopOver popover = new PopOver(content);
     static private boolean createdPopOver = false;
 
-
-
-    private ObservableList<String> setSets(){
+    private ObservableList<String> setSets() {
         ObservableList<String> sets = FXCollections.observableArrayList();
-        Iterable<CollectionReference> collections = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).listCollections();
+        Iterable<CollectionReference> collections = FlashcardApplication.fstore.collection("Users")
+                .document(FlashcardApplication.currentUser).listCollections();
+        sets.add("-No Set Selected-");
         for (CollectionReference collection : collections) {
             sets.add(collection.getId());
         }
         sets.add("-Create New Set-");
         return sets;
     }
-
 
     @FXML
     public void initialize() {
@@ -95,12 +95,11 @@ public class landing_page_controller {
         setDropdown.setItems(setSets());
         setDropdown.getSelectionModel().selectFirst(); // default selection
 
-        if(createdPopOver == false) {
+        if (createdPopOver == false) {
             newHBox.setSpacing(60);
             newHBox.getChildren().addAll(
                     createButton,
-                    closeButton
-            );
+                    closeButton);
 
             content.setSpacing(10);
 
@@ -109,12 +108,12 @@ public class landing_page_controller {
             content.getChildren().addAll(
                     new Label("New Set"),
                     setField,
-                    newHBox
-            );
+                    newHBox);
             createdPopOver = true;
         }
         createButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 String x = setField.getText();
                 createNewSet();
                 setDropdown.setItems(setSets());
@@ -125,7 +124,8 @@ public class landing_page_controller {
         });
 
         closeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 popover.hide();
             }
         });
@@ -138,7 +138,7 @@ public class landing_page_controller {
         System.out.println("Current set changed to: " + selectedSet);
         FlashcardApplication.currentSet = selectedSet;
 
-        if(setDropdown.getValue().equals("-Create New Set-")){
+        if (setDropdown.getValue().equals("-Create New Set-")) {
             popover.show(setDropdown);
             System.out.println("popup shown");
         }
@@ -189,13 +189,16 @@ public class landing_page_controller {
     }
 
     static private void createNewSet() {
-        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
-        //DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document("test");
+        DocumentReference docRef = FlashcardApplication.fstore.collection("Users")
+                .document(FlashcardApplication.currentUser).collection(setField.getText())
+                .document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
+        // DocumentReference docRef =
+        // FlashcardApplication.fstore.collection("Users").document("test");
 
         Map<String, Boolean> data = new HashMap<>();
         data.put("exists", true);
 
-        //asynchronously write data
+        // asynchronously write data
         ApiFuture<WriteResult> result = docRef.set(data);
     }
 
