@@ -1,3 +1,4 @@
+// FlashcardApplication.java
 package org.csc325.semesterproject.smartflashcards;
 
 import javafx.application.Application;
@@ -8,21 +9,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import com.google.cloud.firestore.Firestore;
-
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.google.firebase.auth.*;
-import com.google.cloud.firestore.*;
-
 public class FlashcardApplication extends Application {
-
-
 
     public static Firestore fstore;
     public static FirebaseAuth fauth;
 
     public static String currentUser;
-
+    public static String currentSet;
 
     private final FirestoreContext contxtFirebase = new FirestoreContext();
 
@@ -31,8 +26,7 @@ public class FlashcardApplication extends Application {
         fstore = contxtFirebase.firebase();
         fauth = FirebaseAuth.getInstance();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen" +
-                ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setMinHeight(600);
         stage.setMinWidth(800);
@@ -41,6 +35,8 @@ public class FlashcardApplication extends Application {
         stage.show();
     }
 
-
-
+    public static void main(String[] args) {
+        launch();
+    }
 }
+
