@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -108,6 +109,7 @@ public class landing_page_controller {
         createButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                setDropdown.setItems(setSets());
                 String x = setField.getText();
                 createNewSet();
                 setDropdown.setItems(setSets());
@@ -136,11 +138,20 @@ public class landing_page_controller {
             popover.show(setDropdown);
             System.out.println("popup shown");
         }
+
     }
 
     @FXML
     private void removeSet(ActionEvent event) {
-
+        CollectionReference future =  FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(FlashcardApplication.currentSet);
+        Iterable<DocumentReference> documents = future.listDocuments();
+        if(!FlashcardApplication.currentSet.equals("-Create New Set-") && !FlashcardApplication.currentSet.equals("-No Set Selected-")) {
+            for (DocumentReference document : documents) {
+                document.delete();
+            }
+        }
+        setDropdown.setItems(setSets());
+        setDropdown.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -166,7 +177,7 @@ public class landing_page_controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
             Parent root = loader.load();
 
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();
         } catch (Exception e) {
@@ -179,7 +190,7 @@ public class landing_page_controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
 
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();
         } catch (Exception e) {
@@ -188,9 +199,7 @@ public class landing_page_controller {
     }
 
     static private void createNewSet() {
-        DocumentReference docRef = FlashcardApplication.fstore.collection("Users")
-                .document(FlashcardApplication.currentUser).collection(setField.getText())
-                .document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
+        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
         // DocumentReference docRef =
         // FlashcardApplication.fstore.collection("Users").document("test");
 
