@@ -49,15 +49,9 @@ public class landing_page_controller {
 
     @FXML
     private ComboBox<String> setDropdown;
-    // temporary list of flashcards
-    /*
-     * private ObservableList<String> sets = FXCollections.observableArrayList(
-     * "Biology 101",
-     * "Spanish Vocabulary",
-     * "Java Basics",
-     * "History Dates"
-     * );
-     */
+
+    @FXML
+    private Button removeButton;
 
     static private VBox content = new VBox();
     static private HBox newHBox = new HBox();
@@ -142,6 +136,11 @@ public class landing_page_controller {
             popover.show(setDropdown);
             System.out.println("popup shown");
         }
+    }
+
+    @FXML
+    private void removeSet(ActionEvent event) {
+
     }
 
     @FXML
