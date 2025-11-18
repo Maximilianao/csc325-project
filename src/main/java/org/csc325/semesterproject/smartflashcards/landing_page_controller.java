@@ -114,6 +114,9 @@ public class landing_page_controller {
                 createNewSet();
                 setDropdown.setItems(setSets());
                 setDropdown.getSelectionModel().selectFirst();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
                 popover.hide();
                 setDropdown.setValue(x);
             }
