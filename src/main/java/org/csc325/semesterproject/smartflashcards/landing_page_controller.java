@@ -174,6 +174,11 @@ public class landing_page_controller {
         if (selectedSet != null && !selectedSet.isEmpty()) {
             FlashcardApplication.currentSet = selectedSet;
         }
+
+        if (setDropdown.getValue().equals("-Create New Set-")) {
+            popover.show(setDropdown);
+            System.out.println("popup shown");
+        }
     }
 
     @FXML
