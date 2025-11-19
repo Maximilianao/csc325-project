@@ -239,7 +239,7 @@ public class landing_page_controller {
         }
     }
 
-    private void createNewSet() {
+    /*private void createNewSet() {
         String newSetName = "NewSet_" + System.currentTimeMillis(); // placeholder if needed
         if (!setField.getText().isEmpty()) {
             newSetName = setField.getText();
@@ -260,5 +260,15 @@ public class landing_page_controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }*/
+    static private void createNewSet() {
+        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
+
+        Map<String, Boolean> data = new HashMap<>();
+        data.put("exists", true);
+
+        // asynchronously write data
+        ApiFuture<WriteResult> result = docRef.set(data);
     }
+
 }
