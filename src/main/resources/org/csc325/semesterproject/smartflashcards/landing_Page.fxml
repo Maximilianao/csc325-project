@@ -53,7 +53,7 @@
                                     <children>
                                         <Label styleClass="regular_label" text="Current Set" />
                                         <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="160" />
-                              <Button fx:id="removeSetButton" mnemonicParsing="false" text="Remove Current Set" />
+                              <Button fx:id="removeButton" mnemonicParsing="false" text="Remove Current Set" />
                                     </children>
                                 </VBox>
 
