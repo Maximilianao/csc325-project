@@ -1,0 +1,36 @@
+/* Background */
+.root {
+    -fx-background-color: #E0E3E3;
+}
+
+/* Logout button */
+.logout-button {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2);
+}
+
+/* Regular label */
+.regular_label {
+    -fx-text-fill: #1C1B1B;
+    -fx-font-size: 16px;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* Labels inside boxes */
+.primary_label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.input_field {
+    -fx-background-color: -fx-text-box-border, #ECEEF1;
+    -fx-background-insets: 0, 0 0 2 0;
+    -fx-background-radius: 0;
+}
