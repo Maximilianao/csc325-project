@@ -34,3 +34,28 @@
     -fx-background-insets: 0, 0 0 2 0;
     -fx-background-radius: 0;
 }
+
+.primary_button {
+    -fx-background-color: #1B1B1B;
+    -fx-text-fill: white;
+}
+
+/* Dropdown (ComboBox) inside stat boxes */
+.combo-box {
+    -fx-background-color: #FCFEFF;
+    -fx-border-color: #1B1B1B;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1C1B1B;
+    -fx-padding: 6 10;
+    -fx-pref-width: 160px;
+    -fx-cursor: hand;
+}
+
+.text_container {
+    -fx-background-color: #FCFEFF;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-border-color: #1B1B1B;
+}
