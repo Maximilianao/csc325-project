@@ -5,13 +5,17 @@ import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
@@ -31,10 +35,32 @@ public class landing_page_controller {
     @FXML
     private Label totalSetsLabel; // For "Total Sets" stat box
 
-    // Temporary input for new sets
-    private TextField setField = new TextField();
-
     @FXML
+    private Button removeButton;
+
+    static private VBox content = new VBox();
+    static private HBox newHBox = new HBox();
+    static private Button createButton = new Button("Create");
+    static private Button closeButton = new Button("Close");
+
+    static private TextField setField = new TextField();
+
+    static private PopOver popover = new PopOver(content);
+    static private boolean createdPopOver = false;
+
+    private ObservableList<String> setSets() {
+        ObservableList<String> sets = FXCollections.observableArrayList();
+        Iterable<CollectionReference> collections = FlashcardApplication.fstore.collection("Users")
+                .document(FlashcardApplication.currentUser).listCollections();
+        sets.add("-No Set Selected-");
+        for (CollectionReference collection : collections) {
+            sets.add(collection.getId());
+        }
+        sets.add("-Create New Set-");
+        return sets;
+    }
+
+    /*@FXML
     public void initialize() {
         // Display current user
         String currentUser = FlashcardApplication.currentUser;
@@ -67,6 +93,63 @@ public class landing_page_controller {
                 setDropdown.setPromptText("Select List");
             }
         }
+    }*/
+
+    @FXML
+    public void initialize() {
+        // Display current user
+        String currentUser = FlashcardApplication.currentUser;
+        if (currentUser != null && !currentUser.isEmpty()) {
+            welcomeLabel.setText("Welcome, " + currentUser + "!");
+        } else {
+            welcomeLabel.setText("Welcome!");
+        }
+
+        // Populate temporary sets
+        setDropdown.setItems(setSets());
+        setDropdown.getSelectionModel().selectFirst(); // default selection
+
+        if (createdPopOver == false) {
+            newHBox.setSpacing(60);
+            newHBox.getChildren().addAll(
+                    createButton,
+                    closeButton);
+
+            content.setSpacing(10);
+
+            content.setPadding(new Insets(10));
+
+            content.getChildren().addAll(
+                    new Label("New Set"),
+                    setField,
+                    newHBox);
+            createdPopOver = true;
+        }
+        createButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                setDropdown.setItems(setSets());
+                String x = setField.getText();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
+                popover.hide();
+                setDropdown.setValue(x);
+            }
+        });
+
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+
+                popover.hide();
+                setDropdown.getSelectionModel().selectFirst();
+            }
+        });
+
     }
 
     private ObservableList<String> fetchUserSets() {
@@ -90,6 +173,11 @@ public class landing_page_controller {
         String selectedSet = setDropdown.getValue();
         if (selectedSet != null && !selectedSet.isEmpty()) {
             FlashcardApplication.currentSet = selectedSet;
+        }
+
+        if (setDropdown.getValue().equals("-Create New Set-")) {
+            popover.show(setDropdown);
+            System.out.println("popup shown");
         }
     }
 
@@ -151,7 +239,7 @@ public class landing_page_controller {
         }
     }
 
-    private void createNewSet() {
+    /*private void createNewSet() {
         String newSetName = "NewSet_" + System.currentTimeMillis(); // placeholder if needed
         if (!setField.getText().isEmpty()) {
             newSetName = setField.getText();
@@ -172,5 +260,28 @@ public class landing_page_controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }*/
+    static private void createNewSet() {
+        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
+
+        Map<String, Boolean> data = new HashMap<>();
+        data.put("exists", true);
+
+        // asynchronously write data
+        ApiFuture<WriteResult> result = docRef.set(data);
     }
+
+    @FXML
+    private void removeSet(ActionEvent event) {
+        CollectionReference future =  FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(FlashcardApplication.currentSet);
+        Iterable<DocumentReference> documents = future.listDocuments();
+        if(!FlashcardApplication.currentSet.equals("-Create New Set-") && !FlashcardApplication.currentSet.equals("-No Set Selected-")) {
+            for (DocumentReference document : documents) {
+                document.delete();
+            }
+        }
+        setDropdown.setItems(setSets());
+        setDropdown.getSelectionModel().selectFirst();
+    }
+
 }
