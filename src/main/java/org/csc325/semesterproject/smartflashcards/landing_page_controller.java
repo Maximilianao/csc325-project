@@ -48,7 +48,19 @@ public class landing_page_controller {
     static private PopOver popover = new PopOver(content);
     static private boolean createdPopOver = false;
 
-    @FXML
+    private ObservableList<String> setSets() {
+        ObservableList<String> sets = FXCollections.observableArrayList();
+        Iterable<CollectionReference> collections = FlashcardApplication.fstore.collection("Users")
+                .document(FlashcardApplication.currentUser).listCollections();
+        sets.add("-No Set Selected-");
+        for (CollectionReference collection : collections) {
+            sets.add(collection.getId());
+        }
+        sets.add("-Create New Set-");
+        return sets;
+    }
+
+    /*@FXML
     public void initialize() {
         // Display current user
         String currentUser = FlashcardApplication.currentUser;
@@ -81,7 +93,7 @@ public class landing_page_controller {
                 setDropdown.setPromptText("Select List");
             }
         }
-    }
+    }*/
 
     @FXML
     public void initialize() {
