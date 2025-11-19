@@ -271,4 +271,17 @@ public class landing_page_controller {
         ApiFuture<WriteResult> result = docRef.set(data);
     }
 
+    @FXML
+    private void removeSet(ActionEvent event) {
+        CollectionReference future =  FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(FlashcardApplication.currentSet);
+        Iterable<DocumentReference> documents = future.listDocuments();
+        if(!FlashcardApplication.currentSet.equals("-Create New Set-") && !FlashcardApplication.currentSet.equals("-No Set Selected-")) {
+            for (DocumentReference document : documents) {
+                document.delete();
+            }
+        }
+        setDropdown.setItems(setSets());
+        setDropdown.getSelectionModel().selectFirst();
+    }
+
 }
