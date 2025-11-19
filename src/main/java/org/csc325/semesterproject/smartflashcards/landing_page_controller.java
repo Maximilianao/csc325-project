@@ -5,8 +5,10 @@ import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -67,6 +69,63 @@ public class landing_page_controller {
                 setDropdown.setPromptText("Select List");
             }
         }
+    }
+
+    @FXML
+    public void initialize() {
+        // Display current user
+        String currentUser = FlashcardApplication.currentUser;
+        if (currentUser != null && !currentUser.isEmpty()) {
+            welcomeLabel.setText("Welcome, " + currentUser + "!");
+        } else {
+            welcomeLabel.setText("Welcome!");
+        }
+
+        // Populate temporary sets
+        setDropdown.setItems(setSets());
+        setDropdown.getSelectionModel().selectFirst(); // default selection
+
+        if (createdPopOver == false) {
+            newHBox.setSpacing(60);
+            newHBox.getChildren().addAll(
+                    createButton,
+                    closeButton);
+
+            content.setSpacing(10);
+
+            content.setPadding(new Insets(10));
+
+            content.getChildren().addAll(
+                    new Label("New Set"),
+                    setField,
+                    newHBox);
+            createdPopOver = true;
+        }
+        createButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                setDropdown.setItems(setSets());
+                String x = setField.getText();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
+                createNewSet();
+                setDropdown.setItems(setSets());
+                setDropdown.getSelectionModel().selectFirst();
+                popover.hide();
+                setDropdown.setValue(x);
+            }
+        });
+
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+
+                popover.hide();
+                setDropdown.getSelectionModel().selectFirst();
+            }
+        });
+
     }
 
     private ObservableList<String> fetchUserSets() {
