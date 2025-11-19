@@ -1,6 +1,5 @@
 package org.csc325.semesterproject.smartflashcards;
 
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,14 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
@@ -33,154 +29,133 @@ public class landing_page_controller {
     private ComboBox<String> setDropdown;
 
     @FXML
-    private Label totalSetsLabel; // For "Total Sets" stat box
+    private Label totalSetsLabel;
 
     @FXML
     private Button removeButton;
 
+    // Popup components
     static private VBox content = new VBox();
-    static private HBox newHBox = new HBox();
+    static private HBox buttonsHBox = new HBox();
     static private Button createButton = new Button("Create");
     static private Button closeButton = new Button("Close");
-
     static private TextField setField = new TextField();
-
     static private PopOver popover = new PopOver(content);
-    static private boolean createdPopOver = false;
+    static private boolean popoverBuilt = false;
 
-    private ObservableList<String> setSets() {
-        ObservableList<String> sets = FXCollections.observableArrayList();
-        Iterable<CollectionReference> collections = FlashcardApplication.fstore.collection("Users")
-                .document(FlashcardApplication.currentUser).listCollections();
-        sets.add("-No Set Selected-");
-        for (CollectionReference collection : collections) {
-            sets.add(collection.getId());
-        }
-        sets.add("-Create New Set-");
-        return sets;
-    }
-
-    /*@FXML
-    public void initialize() {
-        // Display current user
-        String currentUser = FlashcardApplication.currentUser;
-        if (currentUser != null && !currentUser.isEmpty()) {
-            welcomeLabel.setText("Welcome, " + currentUser + "!");
-        } else {
-            welcomeLabel.setText("Welcome!");
-        }
-
-        ObservableList<String> sets = fetchUserSets();
-
-        // Update total sets label
-        totalSetsLabel.setText(String.valueOf(sets.size()));
-
-        if (sets.isEmpty()) {
-            // No sets: prompt user to create and switch to Create tab
-            setDropdown.setPromptText("Create List");
-            switchSceneToCreate();
-        } else {
-            // At least one set exists: show sets and prompt
-            setDropdown.setItems(sets);
-
-            if (FlashcardApplication.currentSet != null && !FlashcardApplication.currentSet.isEmpty()
-                    && sets.contains(FlashcardApplication.currentSet)) {
-                // Show previously selected set
-                setDropdown.setValue(FlashcardApplication.currentSet);
-            } else {
-                // No set selected yet
-                setDropdown.setValue(null);
-                setDropdown.setPromptText("Select List");
-            }
-        }
-    }*/
 
     @FXML
     public void initialize() {
-        // Display current user
+
         String currentUser = FlashcardApplication.currentUser;
-        if (currentUser != null && !currentUser.isEmpty()) {
-            welcomeLabel.setText("Welcome, " + currentUser + "!");
-        } else {
-            welcomeLabel.setText("Welcome!");
-        }
+        welcomeLabel.setText("Welcome, " + (currentUser != null ? currentUser : "") + "!");
 
-        // Populate temporary sets
-        setDropdown.setItems(setSets());
-        setDropdown.getSelectionModel().selectFirst(); // default selection
+        refreshSetDropdown();
 
-        if (createdPopOver == false) {
-            newHBox.setSpacing(60);
-            newHBox.getChildren().addAll(
-                    createButton,
-                    closeButton);
+        // Build popup only once
+        if (!popoverBuilt) {
+            buttonsHBox.setSpacing(40);
+            buttonsHBox.getChildren().addAll(createButton, closeButton);
 
             content.setSpacing(10);
-
             content.setPadding(new Insets(10));
-
             content.getChildren().addAll(
-                    new Label("New Set"),
+                    new Label("New Set Name:"),
                     setField,
-                    newHBox);
-            createdPopOver = true;
+                    buttonsHBox
+            );
+
+            popoverBuilt = true;
         }
-        createButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                setDropdown.setItems(setSets());
-                String x = setField.getText();
-                createNewSet();
-                setDropdown.setItems(setSets());
-                setDropdown.getSelectionModel().selectFirst();
-                createNewSet();
-                setDropdown.setItems(setSets());
-                setDropdown.getSelectionModel().selectFirst();
-                popover.hide();
-                setDropdown.setValue(x);
-            }
+
+        // Create Set Button Action
+        createButton.setOnAction(e -> {
+
+            String name = setField.getText().trim();
+            if (name.isEmpty()) return;
+
+            createNewSetFirestore(name);
+
+            popover.hide();
+            setField.clear();
+
+            refreshSetDropdown();
+            setDropdown.setValue(name);   // auto-select new set
+            FlashcardApplication.currentSet = name;
         });
 
-        closeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-
-                popover.hide();
-                setDropdown.getSelectionModel().selectFirst();
-            }
-        });
-
+        closeButton.setOnAction(e -> popover.hide());
     }
 
-    private ObservableList<String> fetchUserSets() {
+
+    /** Refresh the dropdown list */
+    private void refreshSetDropdown() {
         ObservableList<String> sets = FXCollections.observableArrayList();
+
+        sets.add("-No Set Selected-");
+
         try {
             Iterable<CollectionReference> collections = FlashcardApplication.fstore
                     .collection("Users")
                     .document(FlashcardApplication.currentUser)
                     .listCollections();
-            for (CollectionReference collection : collections) {
-                sets.add(collection.getId());
+
+            for (CollectionReference c : collections) {
+                sets.add(c.getId());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sets;
+
+        sets.add("-Create New Set-");
+
+        setDropdown.setItems(sets);
+        setDropdown.getSelectionModel().selectFirst();
+
+        // update total sets count (exclude first/last entries)
+        totalSetsLabel.setText(String.valueOf(sets.size() - 2));
     }
+
+
+    /** Matching the create page: create a real set + _meta doc */
+    private void createNewSetFirestore(String setName) {
+
+        try {
+            DocumentReference meta = FlashcardApplication.fstore
+                    .collection("Users")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(setName)
+                    .document("_meta");
+
+            Map<String, Object> info = new HashMap<>();
+            info.put("exists", true);
+            info.put("createdAt", System.currentTimeMillis());
+
+            meta.set(info); // creates set and its metadata
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     private void handleSetChange(ActionEvent event) {
-        String selectedSet = setDropdown.getValue();
-        if (selectedSet != null && !selectedSet.isEmpty()) {
-            FlashcardApplication.currentSet = selectedSet;
+        String selected = setDropdown.getValue();
+
+        if (selected == null) return;
+
+        if (selected.equals("-Create New Set-")) {
+            popover.show(setDropdown);
+            return;
         }
 
-        if (setDropdown.getValue().equals("-Create New Set-")) {
-            popover.show(setDropdown);
-            System.out.println("popup shown");
+        if (!selected.equals("-No Set Selected-")) {
+            FlashcardApplication.currentSet = selected;
         }
     }
 
+
+    /** Scene Switching */
     @FXML
     private void handleCreate(MouseEvent event) {
         switchScene(event, "createFlashcard.fxml");
@@ -196,14 +171,13 @@ public class landing_page_controller {
         switchScene(event, "play_screen.fxml");
     }
 
+
     @FXML
     private void handleLogout(ActionEvent event) {
         FlashcardApplication.currentUser = null;
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
             Parent root = loader.load();
-
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();
@@ -212,11 +186,11 @@ public class landing_page_controller {
         }
     }
 
-    private void switchScene(MouseEvent event, String fxmlFile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
 
+    private void switchScene(MouseEvent event, String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent root = loader.load();
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();
@@ -225,63 +199,33 @@ public class landing_page_controller {
         }
     }
 
-    // Directly switch to Create Flashcard tab if no sets exist
-    private void switchSceneToCreate() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("createFlashcard.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = (Stage) setDropdown.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*private void createNewSet() {
-        String newSetName = "NewSet_" + System.currentTimeMillis(); // placeholder if needed
-        if (!setField.getText().isEmpty()) {
-            newSetName = setField.getText();
-        }
-
-        DocumentReference docRef = FlashcardApplication.fstore
-                .collection("Users")
-                .document(FlashcardApplication.currentUser)
-                .collection(newSetName)
-                .document("exists_placeholder_doc");
-
-        Map<String, Boolean> data = new HashMap<>();
-        data.put("exists", true);
-
-        try {
-            ApiFuture<WriteResult> result = docRef.set(data);
-            result.get(); // wait for write to complete
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-    static private void createNewSet() {
-        DocumentReference docRef = FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(setField.getText()).document("exists23798tfhg7989w2889vb97498hfgw97fhn29wf8hed8h9w2h899309003948h9tg");
-
-        Map<String, Boolean> data = new HashMap<>();
-        data.put("exists", true);
-
-        // asynchronously write data
-        ApiFuture<WriteResult> result = docRef.set(data);
-    }
-
+    /** Delete a set and its flashcards */
     @FXML
     private void removeSet(ActionEvent event) {
-        CollectionReference future =  FlashcardApplication.fstore.collection("Users").document(FlashcardApplication.currentUser).collection(FlashcardApplication.currentSet);
-        Iterable<DocumentReference> documents = future.listDocuments();
-        if(!FlashcardApplication.currentSet.equals("-Create New Set-") && !FlashcardApplication.currentSet.equals("-No Set Selected-")) {
-            for (DocumentReference document : documents) {
-                document.delete();
-            }
-        }
-        setDropdown.setItems(setSets());
-        setDropdown.getSelectionModel().selectFirst();
-    }
 
+        String selected = setDropdown.getValue();
+
+        if (selected == null ||
+                selected.equals("-No Set Selected-") ||
+                selected.equals("-Create New Set-"))
+            return;
+
+        try {
+            CollectionReference setRef = FlashcardApplication.fstore
+                    .collection("Users")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(selected);
+
+            for (DocumentReference doc : setRef.listDocuments()) {
+                doc.delete();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FlashcardApplication.currentSet = null;
+        refreshSetDropdown();
+    }
 }
