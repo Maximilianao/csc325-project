@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
@@ -33,8 +35,18 @@ public class landing_page_controller {
     @FXML
     private Label totalSetsLabel; // For "Total Sets" stat box
 
-    // Temporary input for new sets
-    private TextField setField = new TextField();
+    @FXML
+    private Button removeButton;
+
+    static private VBox content = new VBox();
+    static private HBox newHBox = new HBox();
+    static private Button createButton = new Button("Create");
+    static private Button closeButton = new Button("Close");
+
+    static private TextField setField = new TextField();
+
+    static private PopOver popover = new PopOver(content);
+    static private boolean createdPopOver = false;
 
     @FXML
     public void initialize() {
