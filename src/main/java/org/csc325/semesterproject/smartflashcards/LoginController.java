@@ -1,5 +1,7 @@
 package org.csc325.semesterproject.smartflashcards;
 
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import javafx.scene.control.Alert;
 
@@ -72,51 +75,35 @@ public class LoginController {
             return;
         }
 
-        ApiFuture<QuerySnapshot> future =  FlashcardApplication.fstore.collection("Passwords").get();
-        List<QueryDocumentSnapshot> documents;
-        boolean passwordMatch = false;
-        boolean userMatch = false;
+        //Retrieves only one document where the username is the document name
+        DocumentReference userDocRef = FlashcardApplication.fstore.collection("Passwords").document(userInputField.getText());
+
+        ApiFuture<DocumentSnapshot> future =  userDocRef.get();
+        DocumentSnapshot userDoc;
+
         try
         {
-            documents = future.get().getDocuments();
-            if(documents.size()>0)
-            {
-                System.out.println("Getting (reading) data from firabase database....");
+            userDoc = future.get();
 
-                for (QueryDocumentSnapshot document : documents) {
-                    if (document.getData().get("Password").equals(passwordInputField.getText())) {
-                        System.out.println(document.getData().get("Password"));
-                        passwordMatch = true;
-                    }
-                    else{
-                        System.out.println("password wrong");
-                    }
-                    if(document.getId().equals(userInputField.getText())){
-                        System.out.println(document.getId());
-                        userMatch = true;
-                    }
-                    else{
-                        System.out.println("username wrong");
-                    }
-                    if(passwordMatch == true && userMatch == true){
-                        try {
-                            FlashcardApplication.currentUser = userInputField.getText();
-                            FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
-                            Parent root = registration.load();
+            //If username exists in Passwords collection, then it is valid and proceeds to validate password
+            if (userDoc.exists()) {
+                //If password in document matches the one in the password text field, then it proceeds to landing page
+                if (Objects.requireNonNull(userDoc.getData()).get("Password").equals(passwordInputField.getText())) {
+                    try {
+                        FlashcardApplication.currentUser = userInputField.getText();
+                        FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
+                        Parent root = registration.load();
 
-                            Scene currentScene = rootVbox.getScene();
-                            currentScene.setRoot(root);
+                        Scene currentScene = rootVbox.getScene();
+                        currentScene.setRoot(root);
 
-                            userInputField.textProperty().removeListener(userInputListener);
-                            passwordInputField.textProperty().removeListener(passwordInputListener);
-                            break;
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        userInputField.textProperty().removeListener(userInputListener);
+                        passwordInputField.textProperty().removeListener(passwordInputListener);
+                    } catch (IOException e) {
+                        System.out.println("Error loading landing page screen.");;
                     }
                 }
-                // show alert if no match found
-                if (!(passwordMatch && userMatch)) {
+                else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Login Failed");
                     alert.setHeaderText(null);
@@ -124,11 +111,14 @@ public class LoginController {
                     alert.showAndWait();
                 }
             }
-            else
-            {
-                System.out.println("No data");
+            else {
+                System.out.println("Username wrong or doesn't exist");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid username or password. Please try again.");
+                alert.showAndWait();
             }
-
         }
         catch (InterruptedException | ExecutionException ex)
         {
