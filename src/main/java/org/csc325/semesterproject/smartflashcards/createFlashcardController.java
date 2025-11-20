@@ -1,6 +1,8 @@
 package org.csc325.semesterproject.smartflashcards;
 
 import com.google.cloud.firestore.*;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -24,11 +28,33 @@ public class createFlashcardController {
     @FXML
     private TextField defField;
 
+    // Table + columns
+    @FXML
+    private TableView<Map<String, String>> flashcardTable;
+    @FXML
+    private TableColumn<Map<String, String>, String> wordColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> defColumn;
+
+    // Optional action buttons under table (wired via FXML)
+    @FXML
+    private Button editSelectedButton;
+    @FXML
+    private Button deleteSelectedButton;
+
     @FXML
     public void initialize() {
-        refreshSets();
+        // Populate sets on the UI thread to be safe
+        Platform.runLater(() -> {
+            refreshSets();
+            setupFlashcardTable();
+            refreshFlashcards();
+        });
     }
 
+    /**
+     * Refresh list of sets (collection names) for current user.
+     */
     private void refreshSets() {
         ObservableList<String> sets = FXCollections.observableArrayList();
         try {
@@ -47,16 +73,28 @@ public class createFlashcardController {
             sets.add("Create Set");
         }
 
-        setDropdown.setItems(sets);
+        // Update ComboBox on FX thread
+        Platform.runLater(() -> {
+            String prev = setDropdown.getValue();
+            setDropdown.setItems(sets);
 
-        if (!sets.isEmpty() && !sets.get(0).equals("Create Set")) {
-            setDropdown.getSelectionModel().selectFirst();
-            FlashcardApplication.currentSet = setDropdown.getValue();
-            currentSetLabel.setText("Current Set: " + FlashcardApplication.currentSet);
-        } else {
-            FlashcardApplication.currentSet = null;
-            currentSetLabel.setText("No set selected");
-        }
+            // try to keep previous selection if it still exists
+            if (prev != null && sets.contains(prev)) {
+                setDropdown.setValue(prev);
+                FlashcardApplication.currentSet = prev;
+                currentSetLabel.setText("Current Set: " + prev);
+            } else if (!sets.isEmpty() && !sets.get(0).equals("Create Set")) {
+                setDropdown.getSelectionModel().selectFirst();
+                FlashcardApplication.currentSet = setDropdown.getValue();
+                currentSetLabel.setText("Current Set: " + FlashcardApplication.currentSet);
+            } else {
+                FlashcardApplication.currentSet = null;
+                currentSetLabel.setText("No set selected");
+            }
+
+            // also refresh cards for new selection
+            refreshFlashcards();
+        });
     }
 
     @FXML
@@ -65,9 +103,19 @@ public class createFlashcardController {
         if (selected != null && !selected.isEmpty()) {
             FlashcardApplication.currentSet = selected;
             currentSetLabel.setText("Current Set: " + selected);
+        } else {
+            FlashcardApplication.currentSet = null;
+            currentSetLabel.setText("No set selected");
         }
+        refreshFlashcards();
     }
 
+    /**
+     * Create a new set by creating a single metadata document inside the collection:
+     * collection -> document "_meta" { type: "metadata", createdAt: ... }
+     *
+     * This ensures Firestore creates the collection while avoiding a fake/visible flashcard row.
+     */
     @FXML
     private void handleAddSet() {
         TextInputDialog dialog = new TextInputDialog();
@@ -76,24 +124,32 @@ public class createFlashcardController {
         dialog.setContentText("Set name:");
 
         dialog.showAndWait().ifPresent(name -> {
-            if (!name.isEmpty()) {
-                try {
-                    DocumentReference docRef = FlashcardApplication.fstore
-                            .collection("Users")
-                            .document(FlashcardApplication.currentUser)
-                            .collection(name)
-                            .document("exists_placeholder");
-                    Map<String, Boolean> data = new HashMap<>();
-                    data.put("exists", true);
-                    docRef.set(data);
-                    refreshSets();
-                    setDropdown.getSelectionModel().select(name);
-                    FlashcardApplication.currentSet = name;
-                    currentSetLabel.setText("Current Set: " + name);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (name == null || name.trim().isEmpty()) return;
+            name = name.trim();
+            try {
+                DocumentReference metaRef = FlashcardApplication.fstore
+                        .collection("Users")
+                        .document(FlashcardApplication.currentUser)
+                        .collection(name)
+                        .document("_meta");
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("type", "metadata");
+                data.put("createdAt", System.currentTimeMillis());
+                metaRef.set(data);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            final String selectedName = name;
+            // Update UI after creating
+            refreshSets();
+            Platform.runLater(() -> {
+                setDropdown.setValue(selectedName);
+                FlashcardApplication.currentSet = selectedName;
+                currentSetLabel.setText("Current Set: " + selectedName);
+                refreshFlashcards();
+            });
         });
     }
 
@@ -119,10 +175,11 @@ public class createFlashcardController {
                         doc.delete();
                     }
 
-                    refreshSets();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                refreshSets();
             }
         });
     }
@@ -131,19 +188,27 @@ public class createFlashcardController {
     private void createFlashcardButtonPressed() {
         if (FlashcardApplication.currentSet == null) return;
 
+        String word = wordField.getText();
+        String definition = defField.getText();
+        if (word == null || word.trim().isEmpty()) return;
+
+        word = word.trim();
+
         try {
             DocumentReference docRef = FlashcardApplication.fstore
                     .collection("Users")
                     .document(FlashcardApplication.currentUser)
                     .collection(FlashcardApplication.currentSet)
-                    .document(wordField.getText());
+                    .document(word);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("Definition", defField.getText());
+            data.put("Definition", definition == null ? "" : definition);
             docRef.set(data);
 
             wordField.clear();
             defField.clear();
+
+            refreshFlashcards();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -175,5 +240,183 @@ public class createFlashcardController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /* -----------------------
+       Table setup + operations
+       ----------------------- */
+
+    private void setupFlashcardTable() {
+        // Make sure the columns show the Word and Definition
+        wordColumn.setCellValueFactory(cell -> {
+            Map<String, String> row = cell.getValue();
+            return new SimpleStringProperty(row.getOrDefault("Word", ""));
+        });
+
+        defColumn.setCellValueFactory(cell -> {
+            Map<String, String> row = cell.getValue();
+            return new SimpleStringProperty(row.getOrDefault("Definition", ""));
+        });
+
+        // Double-click to edit and context menu
+        flashcardTable.setRowFactory(tv -> {
+            TableRow<Map<String, String>> row = new TableRow<>();
+            final ContextMenu rowMenu = new ContextMenu();
+            MenuItem editItem = new MenuItem("Edit");
+            MenuItem deleteItem = new MenuItem("Delete");
+            rowMenu.getItems().addAll(editItem, deleteItem);
+
+            editItem.setOnAction(e -> {
+                Map<String, String> item = row.getItem();
+                if (item != null) openEditDialog(item.get("Word"), item.get("Definition"));
+            });
+
+            deleteItem.setOnAction(e -> {
+                Map<String, String> item = row.getItem();
+                if (item != null) confirmAndDeleteFlashcard(item.get("Word"));
+            });
+
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                        Map<String, String> clicked = row.getItem();
+                        openEditDialog(clicked.get("Word"), clicked.get("Definition"));
+                    } else if (event.getButton() == MouseButton.SECONDARY) {
+                        rowMenu.show(row, event.getScreenX(), event.getScreenY());
+                    }
+                }
+            });
+
+            // hide context menu for empty rows
+            row.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    row.setContextMenu(null);
+                } else {
+                    row.setContextMenu(rowMenu);
+                }
+            });
+
+            return row;
+        });
+
+        // Buttons functionality (if user selects the row and clicks button)
+        if (editSelectedButton != null) {
+            editSelectedButton.setOnAction(e -> {
+                Map<String, String> selected = flashcardTable.getSelectionModel().getSelectedItem();
+                if (selected != null) openEditDialog(selected.get("Word"), selected.get("Definition"));
+            });
+        }
+
+        if (deleteSelectedButton != null) {
+            deleteSelectedButton.setOnAction(e -> {
+                Map<String, String> selected = flashcardTable.getSelectionModel().getSelectedItem();
+                if (selected != null) confirmAndDeleteFlashcard(selected.get("Word"));
+            });
+        }
+    }
+
+    /**
+     * Refresh flashcards in current set.
+     * Skips system docs:
+     *  - documents with id starting with "exists"
+     *  - documents named "_meta"
+     *  - documents with a field type == "metadata"
+     */
+    private void refreshFlashcards() {
+        if (FlashcardApplication.currentSet == null) {
+            if (flashcardTable != null) {
+                Platform.runLater(() -> flashcardTable.getItems().clear());
+            }
+            return;
+        }
+
+        ObservableList<Map<String, String>> data = FXCollections.observableArrayList();
+
+        try {
+            Iterable<DocumentReference> docs = FlashcardApplication.fstore
+                    .collection("Users")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(FlashcardApplication.currentSet)
+                    .listDocuments();
+
+            for (DocumentReference doc : docs) {
+                // Skip placeholder/system docs
+                String docId = doc.getId();
+                if (docId == null) continue;
+                if (docId.startsWith("exists") || "_meta".equals(docId)) continue;
+
+                // fetch document snapshot to check for metadata type flag
+                DocumentSnapshot snap = doc.get().get();
+                if (snap.exists()) {
+                    // skip any doc explicitly labelled metadata
+                    Object t = snap.get("type");
+                    if (t != null && "metadata".equals(t.toString())) continue;
+
+                    Map<String, String> fc = new HashMap<>();
+                    fc.put("Word", docId);
+                    String def = snap.contains("Definition") ? snap.getString("Definition") : "";
+                    fc.put("Definition", def != null ? def : "");
+                    data.add(fc);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Platform.runLater(() -> flashcardTable.setItems(data));
+    }
+
+    /* -----------------------
+       Edit / Delete helpers
+       ----------------------- */
+
+    private void openEditDialog(String word, String currentDefinition) {
+        if (word == null) return;
+
+        // Use TextInputDialog to match existing app dialog style
+        TextInputDialog editDialog = new TextInputDialog(currentDefinition);
+        editDialog.setTitle("Edit Flashcard");
+        editDialog.setHeaderText("Editing: " + word);
+        editDialog.setContentText("Update definition:");
+
+        editDialog.showAndWait().ifPresent(newDef -> {
+            try {
+                FlashcardApplication.fstore
+                        .collection("Users")
+                        .document(FlashcardApplication.currentUser)
+                        .collection(FlashcardApplication.currentSet)
+                        .document(word)
+                        .update("Definition", newDef);
+
+                refreshFlashcards();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void confirmAndDeleteFlashcard(String word) {
+        if (word == null) return;
+
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteAlert.setTitle("Delete Flashcard");
+        deleteAlert.setHeaderText(null);
+        deleteAlert.setContentText("Are you sure you want to delete the flashcard \"" + word + "\"?");
+        deleteAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    FlashcardApplication.fstore
+                            .collection("Users")
+                            .document(FlashcardApplication.currentUser)
+                            .collection(FlashcardApplication.currentSet)
+                            .document(word)
+                            .delete();
+
+                    refreshFlashcards();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
