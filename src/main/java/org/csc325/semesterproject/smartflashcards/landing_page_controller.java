@@ -1,4 +1,5 @@
 package org.csc325.semesterproject.smartflashcards;
+import javafx.scene.Node;
 
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
@@ -162,8 +163,26 @@ public class landing_page_controller {
     }
 
     @FXML
-    private void handleStudy(MouseEvent event) {
-        switchScene(event, "study_screen.fxml");
+   //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
+   private void handleStudy(MouseEvent event) { //This is the new version of the study window nonresizable
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("study_screen.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Set fixed window size  for the study screen
+            Scene scene = new Scene(root, 921, 685); // Window size to study screen only
+            stage.setScene(scene);
+
+            stage.setResizable(false);   //  only applied to this study  screen
+            stage.centerOnScreen();
+
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -193,6 +212,7 @@ public class landing_page_controller {
             Parent root = loader.load();
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
+            stage.setResizable(true);// Restore resizable for ALL screens except study
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
