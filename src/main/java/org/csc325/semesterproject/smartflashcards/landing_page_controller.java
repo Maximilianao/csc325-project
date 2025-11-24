@@ -22,18 +22,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class landing_page_controller {
-
     @FXML
     private Label welcomeLabel;
-
     @FXML
     private ComboBox<String> setDropdown;
-
     @FXML
     private Label totalSetsLabel;
-
     @FXML
     private Button removeButton;
+    @FXML
+    private VBox rootVbox;
+    @FXML
+    private Button logoutButton;
 
     // Popup components
     static private VBox content = new VBox();
@@ -195,11 +195,11 @@ public class landing_page_controller {
     private void handleLogout(ActionEvent event) {
         FlashcardApplication.currentUser = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
+            FXMLLoader registration = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = registration.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
