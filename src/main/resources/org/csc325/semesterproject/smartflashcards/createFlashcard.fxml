@@ -4,17 +4,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/createFlashcard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.createFlashcardController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+    minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="root"
+    stylesheets="@stylesheets/createFlashcard.css" xmlns="http://javafx.com/javafx/17.0.12"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="org.csc325.semesterproject.smartflashcards.createFlashcardController">
 
     <children>
-        <VBox alignment="CENTER" maxHeight="700" maxWidth="700.0" prefHeight="400.0" prefWidth="400.0" styleClass="text_container" VBox.vgrow="ALWAYS">
+        <VBox alignment="CENTER" maxHeight="700" maxWidth="700.0" prefHeight="400.0"
+            prefWidth="400.0" styleClass="text_container" VBox.vgrow="ALWAYS">
             <children>
                 <!-- Top bar -->
                 <HBox alignment="CENTER_RIGHT" spacing="10.0">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="Log out" />
+                    <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button"
+                        text="Log out" />
                 </HBox>
 
                 <!-- Current Set + Set Controls -->
@@ -23,9 +29,11 @@
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                     <Label styleClass="regular_label" text="Current Set:" />
-                    <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="200" styleClass="combo-box" />
+                    <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="200"
+                        styleClass="combo-box" />
                     <Button onAction="#handleAddSet" styleClass="primary_button" text="Add Set" />
-                    <Button onAction="#handleDeleteSet" styleClass="primary_button" text="Delete Set" />
+                    <Button onAction="#handleDeleteSet" styleClass="primary_button"
+                        text="Delete Set" />
                 </HBox>
 
                 <!-- Flashcard Form -->
@@ -34,9 +42,12 @@
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                     <Label fx:id="currentSetLabel" styleClass="primary_label" text="No set selected" />
-                    <TextField fx:id="wordField" prefWidth="300" promptText="Word" styleClass="input_field" />
-                    <TextField fx:id="defField" prefWidth="300" promptText="Definition" styleClass="input_field" />
-                    <Button fx:id="createFlashcardButton" onAction="#createFlashcardButtonPressed" styleClass="primary_button" text="Create Flashcard" />
+                    <TextField fx:id="wordField" prefWidth="300" promptText="Word"
+                        styleClass="input_field" />
+                    <TextField fx:id="defField" prefWidth="300" promptText="Definition"
+                        styleClass="input_field" />
+                    <Button fx:id="createFlashcardButton" onAction="#createFlashcardButtonPressed"
+                        styleClass="primary_button" text="Create Flashcard" />
                 </VBox>
 
                 <!-- Flashcards Table -->
@@ -47,9 +58,11 @@
 
                     <Label styleClass="primary_label" text="Flashcards in This Set" />
 
-                    <TableView fx:id="flashcardTable" prefHeight="220" prefWidth="700">
+                    <TableView fx:id="flashcardTable" prefHeight="220" prefWidth="700"
+                        styleClass="table-view">
                         <columns>
-                            <TableColumn fx:id="wordColumn" prefWidth="220" text="Word" />
+                            <TableColumn fx:id="wordColumn" prefWidth="220" text="Word"
+                                styleClass="table-view" />
                             <TableColumn fx:id="defColumn" prefWidth="480" text="Definition" />
                         </columns>
                     </TableView>
@@ -58,11 +71,14 @@
                         <padding>
                             <Insets bottom="5" left="5" right="5" top="5" />
                         </padding>
-                        <Button fx:id="editSelectedButton" styleClass="primary_button" text="Edit Selected" />
-                        <Button fx:id="deleteSelectedButton" styleClass="primary_button" text="Delete Selected" />
+                        <Button fx:id="editSelectedButton" styleClass="primary_button"
+                            text="Edit Selected" />
+                        <Button fx:id="deleteSelectedButton" styleClass="primary_button"
+                            text="Delete Selected" />
                     </HBox>
 
-                    <Label styleClass="note_label" text="(Double-click a flashcard to edit; or right-click for options.)" />
+                    <Label styleClass="note_label"
+                        text="(Double-click a flashcard to edit; or right-click for options.)" />
                 </VBox>
 
                 <!-- Back Button -->
@@ -70,7 +86,8 @@
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-                    <Button onAction="#backToLanding" styleClass="primary_button" text="Back to Main Page" />
+                    <Button onAction="#backToLanding" styleClass="primary_button"
+                        text="Back to Main Page" />
                 </HBox>
             </children>
         </VBox>

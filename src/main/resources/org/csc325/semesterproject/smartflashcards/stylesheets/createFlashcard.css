@@ -60,10 +60,17 @@
     -fx-pref-width: 160px;
     -fx-cursor: hand;
 }
-
 .text_container {
     -fx-background-color: #FCFEFF;
     -fx-border-radius: 16px;
     -fx-background-radius: 16px;
     -fx-border-color: #1B1B1B;
+}
+
+.table-view {
+    -fx-background-color: #E0E3E3;
+    -fx-border-color: red;
+    -fx-border-radius: 12;
+    -fx-border-color: 2px;
+    -fx-background-radius: 12;
 }
