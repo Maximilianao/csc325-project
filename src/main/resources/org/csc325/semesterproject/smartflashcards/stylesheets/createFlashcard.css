@@ -36,8 +36,16 @@
 }
 
 .primary_button {
-    -fx-background-color: #1B1B1B;
-    -fx-text-fill: white;
+    -fx-background-color: #E0E3E3;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-border-color: black;
+    -fx-border-radius: 12;
+    -fx-border-width: 2px;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 2);
 }
 
 /* Dropdown (ComboBox) inside stat boxes */
