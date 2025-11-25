@@ -4,12 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="600.0" prefWidth="800.0"
-      styleClass="root" stylesheets="@stylesheets/landing_page.css"
+      styleClass="root" stylesheets="@stylesheets/createFlashcard.css"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.csc325.semesterproject.smartflashcards.createFlashcardController">
 
+    <children>
+        <VBox alignment="TOP_CENTER" maxHeight="500.0" maxWidth="700.0" prefHeight="400.0" prefWidth="400.0" styleClass="text_container" VBox.vgrow="ALWAYS">
     <children>
         <!-- Top bar -->
         <HBox alignment="CENTER_RIGHT" spacing="10.0">
@@ -25,9 +27,9 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
             <Label text="Current Set:" styleClass="regular_label"/>
-            <ComboBox fx:id="setDropdown" prefWidth="200" onAction="#handleSetChange"/>
-            <Button text="Add Set" onAction="#handleAddSet"/>
-            <Button text="Delete Set" onAction="#handleDeleteSet"/>
+            <ComboBox fx:id="setDropdown" prefWidth="200" onAction="#handleSetChange" styleClass="combo-box"/>
+            <Button text="Add Set" onAction="#handleAddSet" styleClass="primary_button"/>
+            <Button text="Delete Set" onAction="#handleDeleteSet" styleClass="primary_button"/>
         </HBox>
 
         <!-- Flashcard Form -->
@@ -36,9 +38,9 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
             <Label fx:id="currentSetLabel" text="No set selected" styleClass="primary_label"/>
-            <TextField fx:id="wordField" promptText="Word" prefWidth="300"/>
-            <TextField fx:id="defField" promptText="Definition" prefWidth="300"/>
-            <Button fx:id="createFlashcardButton" text="Create Flashcard" onAction="#createFlashcardButtonPressed"/>
+            <TextField fx:id="wordField" promptText="Word" prefWidth="300" styleClass="input_field"/>
+            <TextField fx:id="defField" promptText="Definition" prefWidth="300" styleClass="input_field"/>
+            <Button fx:id="createFlashcardButton" text="Create Flashcard" onAction="#createFlashcardButtonPressed" styleClass="primary_button"/>
         </VBox>
 
         <!-- Flashcards Table -->
@@ -60,8 +62,8 @@
                 <padding>
                     <Insets top="5" right="5" bottom="5" left="5"/>
                 </padding>
-                <Button fx:id="editSelectedButton" text="Edit Selected"/>
-                <Button fx:id="deleteSelectedButton" text="Delete Selected"/>
+                <Button fx:id="editSelectedButton" text="Edit Selected" styleClass="primary_button"/>
+                <Button fx:id="deleteSelectedButton" text="Delete Selected" styleClass="primary_button"/>
             </HBox>
 
             <Label text="(Double-click a flashcard to edit; or right-click for options.)" styleClass="note_label"/>
@@ -72,7 +74,8 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <Button text="Back to Landing" onAction="#backToLanding"/>
+            <Button text="Back to Landing" onAction="#backToLanding" styleClass="primary_button"/>
         </HBox>
+    </children></VBox>
     </children>
 </VBox>
