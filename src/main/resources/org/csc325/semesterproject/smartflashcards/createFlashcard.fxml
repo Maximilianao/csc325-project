@@ -61,9 +61,10 @@
                     <TableView fx:id="flashcardTable" prefHeight="220" prefWidth="700"
                         styleClass="table-view">
                         <columns>
-                            <TableColumn fx:id="wordColumn" prefWidth="220" text="Word"
-                                styleClass="table-view" />
-                            <TableColumn fx:id="defColumn" prefWidth="480" text="Definition" />
+                            <TableColumn fx:id="wordColumn" prefWidth="318" text="Word"
+                                styleClass="table-row-cell" />
+                            <TableColumn fx:id="defColumn" prefWidth="318"
+                                text="Definition" />
                         </columns>
                     </TableView>
 
