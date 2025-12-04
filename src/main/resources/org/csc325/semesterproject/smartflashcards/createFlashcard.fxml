@@ -11,7 +11,7 @@
     fx:controller="org.csc325.semesterproject.smartflashcards.createFlashcardController">
 
     <children>
-        <VBox alignment="CENTER" maxHeight="700" maxWidth="700.0" prefHeight="400.0"
+        <VBox alignment="CENTER" maxHeight="800" maxWidth="700.0" prefHeight="400.0"
             prefWidth="400.0" styleClass="text_container" VBox.vgrow="ALWAYS">
             <children>
                 <!-- Top bar -->
@@ -51,7 +51,7 @@
                 </VBox>
 
                 <!-- Flashcards Table -->
-                <VBox alignment="CENTER" spacing="10">
+                <VBox alignment="CENTER" prefHeight="700" spacing="10">
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
@@ -61,10 +61,8 @@
                     <TableView fx:id="flashcardTable" prefHeight="220" prefWidth="700"
                         styleClass="table-view">
                         <columns>
-                            <TableColumn fx:id="wordColumn" prefWidth="318" text="Word"
-                                styleClass="table-row-cell" />
-                            <TableColumn fx:id="defColumn" prefWidth="318"
-                                text="Definition" />
+                            <TableColumn fx:id="wordColumn" prefWidth="318" text="Word" />
+                            <TableColumn fx:id="defColumn" prefWidth="318" text="Definition" />
                         </columns>
                     </TableView>
 
