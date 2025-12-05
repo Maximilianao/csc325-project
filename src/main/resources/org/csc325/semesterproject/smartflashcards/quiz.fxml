@@ -50,6 +50,7 @@
                   </VBox>
                </children>
             </HBox>
+            <Button mnemonicParsing="false" text="Next Question" />
          </children>
       </VBox>
    </children>
