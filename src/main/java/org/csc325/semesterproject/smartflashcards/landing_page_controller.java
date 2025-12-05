@@ -187,7 +187,10 @@ public class landing_page_controller {
 
     @FXML
     private void handlePlay(MouseEvent event) {
-        switchScene(event, "play_screen.fxml");
+
+        //switchScene(event, "play_screen.fxml"); //test play screen (temporalily commented out)
+
+        switchScene(event, "quiz.fxml"); //test for quiz page
     }
 
 
