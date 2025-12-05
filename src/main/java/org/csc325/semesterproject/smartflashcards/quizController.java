@@ -31,7 +31,7 @@ public class quizController {
     private String wrongAns1 = "";
     private String wrongAns2 = "";
     private String wrongAns3 = "";
-    private String location;
+    private String location = null;
 
 
     @FXML
@@ -46,7 +46,7 @@ public class quizController {
     @FXML
     private Button buttonD;
     @FXML
-    private TextArea questionBox;
+    private Label questionLabel;
 
     @FXML
     public void initialize() throws ExecutionException, InterruptedException {
@@ -72,6 +72,10 @@ public class quizController {
 
     @FXML
     private void createQuestion(){
+
+        if(location == null){
+            createQuestionButton.disableProperty().set(true);
+        }
         int rand = (int) (Math.random() * def.size());
         while (question.equals("")) {
             if (usedDef.isEmpty()) {
@@ -89,7 +93,7 @@ public class quizController {
                     }
                 }
             }
-            questionBox.setText(question);
+            questionLabel.setText(question);
         }
 
         while (wrongAns1.equals("")) {

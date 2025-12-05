@@ -7,12 +7,13 @@
    <children>
       <VBox alignment="center" layoutX="214.0" layoutY="29.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="createQuestionButton" mnemonicParsing="false" text="Create Question" onAction="#createQuestion" />
+            <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion" text="Create Question" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TextArea fx:id="questionBox" editable="FALSE" prefHeight="200.0" prefWidth="200.0" />
+                        <Label text="Question:" />
+                         <Label fx:id="questionLabel" text="" />
                      </children>
                   </VBox>
                </children>
@@ -22,11 +23,13 @@
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button fx:id="buttonA" mnemonicParsing="false" text="A" />
+                        <Label text="A" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button fx:id="buttonB" mnemonicParsing="false" text="B" />
+                        <Label text="B" />
                      </children>
                   </VBox>
                </children>
@@ -36,11 +39,13 @@
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button fx:id="buttonC" mnemonicParsing="false" text="C" />
+                        <Label text="C" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button fx:id="buttonD" mnemonicParsing="false" text="D" />
+                        <Label text="D" />
                      </children>
                   </VBox>
                </children>
