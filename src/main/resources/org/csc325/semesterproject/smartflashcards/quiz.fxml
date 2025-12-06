@@ -10,7 +10,7 @@
             <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion" text="Create Question" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0">
                      <children>
                         <Label text="Question:" />
                          <Label fx:id="questionLabel" text="" />
@@ -50,7 +50,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" text="Next Question" />
+            <Button fx:id="nextButton" onAction="#next" mnemonicParsing="false" text="Next Question" />
          </children>
       </VBox>
    </children>

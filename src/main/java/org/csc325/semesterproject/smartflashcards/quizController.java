@@ -23,9 +23,10 @@ public class quizController {
 
     private ArrayList<String> def = new ArrayList<String>();
     private ArrayList<String> words = new ArrayList<String>();
-    private ArrayList<String> usedDef = new ArrayList<String>();
-    private ArrayList<String> usedWords = new ArrayList<String>();
+    private static ArrayList<String> usedDef = new ArrayList<String>();
+    private static ArrayList<String> usedWords = new ArrayList<String>();
 
+    private int questionIndex = 0;
     private String question = "";
     private String correctAns = "";
     private String wrongAns1 = "";
@@ -45,6 +46,8 @@ public class quizController {
     private Button buttonC;
     @FXML
     private Button buttonD;
+    @FXML
+    private Button nextButton;
     @FXML
     private Label questionLabel;
 
@@ -73,34 +76,37 @@ public class quizController {
     @FXML
     private void createQuestion(){
 
-        if(location == null){
-            createQuestionButton.disableProperty().set(true);
-        }
-        int rand = (int) (Math.random() * def.size());
-        while (question.equals("")) {
+        /*int rand = (int) (Math.random() * def.size());
             if (usedDef.isEmpty()) {
                 question = def.get(rand);
                 usedDef.add(def.get(rand));
                 usedWords.add(words.get(rand));
                 correctAns = words.get(rand);
-            } else {
+            }
+            else {
                 for (String quest : usedDef) {
-                    if (!def.get(rand).equals(quest)) {
+                    rand = (int) (Math.random() * def.size());
+                    if (!(def.get(rand)).equals(quest)) {
                         question = def.get(rand);
-                        usedDef.add(def.get(rand));
-                        usedWords.add(words.get(rand));
                         correctAns = words.get(rand);
                     }
+                    else{
+                        question = "no more definitions";
+                    }
                 }
+                usedDef.add(def.get(rand));
+                usedWords.add(words.get(rand));
             }
-            questionLabel.setText(question);
-        }
+            questionLabel.setText(question);*/
+        if(questionIndex < def.size()) {
+            question = def.get(questionIndex);
+            correctAns = words.get(questionIndex);
 
         while (wrongAns1.equals("")) {
 
             int randomNum3 = (int) (Math.random() * words.size());
-            for (String usedWord : usedWords) {
-                if (!words.get(randomNum3).equals(usedWord) && !words.get(randomNum3).equals(wrongAns2)
+            for (String word : words) {
+                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns2)
                         && !words.get(randomNum3).equals(wrongAns3)) {
                     wrongAns1 = words.get(randomNum3);
                 }
@@ -110,8 +116,8 @@ public class quizController {
         while (wrongAns2.equals("")) {
 
             int randomNum3 = (int) (Math.random() * words.size());
-            for (String usedWord : usedWords) {
-                if (!words.get(randomNum3).equals(usedWord) && !words.get(randomNum3).equals(wrongAns1)
+            for (String word : words) {
+                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
                         && !words.get(randomNum3).equals(wrongAns3)) {
                     wrongAns2 = words.get(randomNum3);
                 }
@@ -121,15 +127,25 @@ public class quizController {
         while (wrongAns3.equals("")) {
 
             int randomNum3 = (int) (Math.random() * words.size());
-            for (String usedWord : usedWords) {
-                if (!words.get(randomNum3).equals(usedWord) && !words.get(randomNum3).equals(wrongAns1)
+            for (String word : words) {
+                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
                         && !words.get(randomNum3).equals(wrongAns2)) {
                     wrongAns3 = words.get(randomNum3);
                 }
             }
         }
 
+        }
+        else{
+            question = "no more definitions";
+        }
+        questionLabel.setText(question);
+
         populateButtons();
+
+        if(location != null){
+            createQuestionButton.disableProperty().set(true);
+        }
     }
 
     private void populateButtons(){
@@ -208,5 +224,22 @@ public class quizController {
         if (randomAns4 == 3) {
             buttonD.setText(wrongAns3);
         }
+    }
+
+    @FXML
+    private void next(){
+        buttonA.setText("A");
+        buttonB.setText("B");
+        buttonC.setText("C");
+        buttonD.setText("D");
+        questionLabel.setText("");
+        question = "";
+        correctAns = "";
+        wrongAns1 = "";
+        wrongAns2 = "";
+        wrongAns3 = "";
+        location = null;
+        createQuestionButton.disableProperty().set(false);
+        questionIndex++;
     }
 }
