@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,15 +51,21 @@ public class quizController {
     private Button nextButton;
     @FXML
     private Label questionLabel;
+    @FXML
+    private ComboBox<String> setDropdown;
+    @FXML
+    private Label correctOutputLabel;
 
     @FXML
     public void initialize() throws ExecutionException, InterruptedException {
-        Iterable<DocumentReference> defs = FlashcardApplication.fstore
+
+        refreshSetDropdown();
+
+        /*Iterable<DocumentReference> defs = FlashcardApplication.fstore
                 .collection("Users")
                 .document(FlashcardApplication.currentUser)
-                .collection("Math")
+                .collection(FlashcardApplication.currentSet)
                 .listDocuments();
-
         for (DocumentReference doc : defs) {
             ApiFuture<DocumentSnapshot> future = doc.get();
             String id = doc.getId();
@@ -67,37 +74,76 @@ public class quizController {
                 def.add(id);
                 words.add(inside.getString("Definition"));
             }
-        }
+        }*/
+        //loadQuestions();
 
         System.out.println(def);
         System.out.println(words);
     }
 
     @FXML
+    private void handleSetChange(ActionEvent event) {
+        String selected = setDropdown.getValue();
+
+        if (selected == null) return;
+
+        if (!selected.equals("-No Set Selected-")) {
+            FlashcardApplication.currentSet = selected;
+        }
+        System.out.println(selected);
+        loadQuestions();
+    }
+
+    private void loadQuestions(){
+
+        Iterable<DocumentReference> defs = FlashcardApplication.fstore
+                .collection("Users")
+                .document(FlashcardApplication.currentUser)
+                .collection(FlashcardApplication.currentSet)
+                .listDocuments();
+        for (DocumentReference doc : defs) {
+            ApiFuture<DocumentSnapshot> future = doc.get();
+            String id = doc.getId();
+            DocumentSnapshot inside = null;
+            try {
+                inside = future.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+            if(!id.equals("exists_placeholder") && !id.equals("_meta")) {
+                def.add(id);
+                words.add(inside.getString("Definition"));
+            }
+        }
+    }
+
+    private void refreshSetDropdown() {
+        ObservableList<String> sets = FXCollections.observableArrayList();
+
+        sets.add("-No Set Selected-");
+
+        try {
+            Iterable<CollectionReference> collections = FlashcardApplication.fstore
+                    .collection("Users")
+                    .document(FlashcardApplication.currentUser)
+                    .listCollections();
+
+            for (CollectionReference c : collections) {
+                sets.add(c.getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setDropdown.setItems(sets);
+        setDropdown.getSelectionModel().selectFirst();
+    }
+
+    @FXML
     private void createQuestion(){
 
-        /*int rand = (int) (Math.random() * def.size());
-            if (usedDef.isEmpty()) {
-                question = def.get(rand);
-                usedDef.add(def.get(rand));
-                usedWords.add(words.get(rand));
-                correctAns = words.get(rand);
-            }
-            else {
-                for (String quest : usedDef) {
-                    rand = (int) (Math.random() * def.size());
-                    if (!(def.get(rand)).equals(quest)) {
-                        question = def.get(rand);
-                        correctAns = words.get(rand);
-                    }
-                    else{
-                        question = "no more definitions";
-                    }
-                }
-                usedDef.add(def.get(rand));
-                usedWords.add(words.get(rand));
-            }
-            questionLabel.setText(question);*/
         if(questionIndex < def.size()) {
             question = def.get(questionIndex);
             correctAns = words.get(questionIndex);
@@ -145,7 +191,10 @@ public class quizController {
 
         if(location != null){
             createQuestionButton.disableProperty().set(true);
+            setDropdown.disableProperty().set(true);
         }
+        nextButton.disableProperty().set(true);
+
     }
 
     private void populateButtons(){
@@ -241,5 +290,55 @@ public class quizController {
         location = null;
         createQuestionButton.disableProperty().set(false);
         questionIndex++;
+        correctOutputLabel.setText("");
+        if(question.equals("no more definitions")){
+            buttonA.disableProperty().set(true);
+            buttonB.disableProperty().set(true);
+            buttonC.disableProperty().set(true);
+            buttonD.disableProperty().set(true);
+        }
+        createQuestion();
+    }
+
+    @FXML
+    private void aChecker(){
+        if(location.equals("buttonA")){
+            correctOutputLabel.setText("Correct!");
+        }
+        else{
+            correctOutputLabel.setText("The correct answer is: " + correctAns);
+        }
+        nextButton.disableProperty().set(false);
+    }
+    @FXML
+    private void bChecker(){
+        if(location.equals("buttonB")){
+            correctOutputLabel.setText("Correct!");
+        }
+        else{
+            correctOutputLabel.setText("The correct answer is: " + correctAns);
+        }
+        nextButton.disableProperty().set(false);
+    }
+    @FXML
+    private void cChecker(){
+        if(location.equals("buttonC")){
+            correctOutputLabel.setText("Correct!");
+
+        }
+        else{
+            correctOutputLabel.setText("The correct answer is: " + correctAns);
+        }
+        nextButton.disableProperty().set(false);
+    }
+    @FXML
+    private void dChecker(){
+        if(location.equals("buttonD")){
+            correctOutputLabel.setText("Correct!");
+        }
+        else{
+            correctOutputLabel.setText("The correct answer is: " + correctAns);
+        }
+        nextButton.disableProperty().set(false);
     }
 }
