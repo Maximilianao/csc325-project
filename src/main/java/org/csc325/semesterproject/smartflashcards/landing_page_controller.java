@@ -187,7 +187,17 @@ public class landing_page_controller {
 
     @FXML
     private void handlePlay(MouseEvent event) {
-        switchScene(event, "play_screen.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            // Get the current stage
+            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
