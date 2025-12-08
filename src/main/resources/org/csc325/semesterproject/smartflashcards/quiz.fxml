@@ -3,23 +3,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.quizController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12"
+   xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="org.csc325.semesterproject.smartflashcards.quizController">
    <children>
-      <VBox alignment="center" layoutX="214.0" layoutY="29.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="center" layoutX="214.0" layoutY="29.0" prefHeight="400.0" prefWidth="600.0"
+         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+         AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label text="Current Set: " />
-                  <ComboBox fx:id="setDropdown" prefWidth="150.0" onAction="#handleSetChange"/>
+                  <ComboBox fx:id="setDropdown" prefWidth="200.0" onAction="#handleSetChange" />
                </children>
             </HBox>
-            <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion" text="Create Question" />
+            <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion"
+               text="Start Quiz" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0">
                      <children>
                         <Label text="Question:" />
-                         <Label fx:id="questionLabel" text="" />
+                        <Label fx:id="questionLabel" text="" />
                         <Label fx:id="correctOutputLabel" text="" />
                      </children>
                   </VBox>
@@ -29,13 +34,15 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonA" mnemonicParsing="false" text="A" onAction="#aChecker"/>
+                        <Button fx:id="buttonA" mnemonicParsing="false" text="A"
+                           onAction="#aChecker" />
                         <Label text="A" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonB" mnemonicParsing="false" text="B" onAction="#bChecker"/>
+                        <Button fx:id="buttonB" mnemonicParsing="false" text="B"
+                           onAction="#bChecker" />
                         <Label text="B" />
                      </children>
                   </VBox>
@@ -45,13 +52,15 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonC" mnemonicParsing="false" text="C" onAction="#cChecker"/>
+                        <Button fx:id="buttonC" mnemonicParsing="false" text="C"
+                           onAction="#cChecker" />
                         <Label text="C" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonD" mnemonicParsing="false" text="D" onAction="#dChecker"/>
+                        <Button fx:id="buttonD" mnemonicParsing="false" text="D"
+                           onAction="#dChecker" />
                         <Label text="D" />
                      </children>
                   </VBox>

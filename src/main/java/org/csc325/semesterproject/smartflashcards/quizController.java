@@ -35,7 +35,6 @@ public class quizController {
     private String wrongAns3 = "";
     private String location = null;
 
-
     @FXML
     private Button createQuestionButton;
 
@@ -61,21 +60,23 @@ public class quizController {
 
         refreshSetDropdown();
 
-        /*Iterable<DocumentReference> defs = FlashcardApplication.fstore
-                .collection("Users")
-                .document(FlashcardApplication.currentUser)
-                .collection(FlashcardApplication.currentSet)
-                .listDocuments();
-        for (DocumentReference doc : defs) {
-            ApiFuture<DocumentSnapshot> future = doc.get();
-            String id = doc.getId();
-            DocumentSnapshot inside = future.get();
-            if(!id.equals("exists_placeholder") && !id.equals("_meta")) {
-                def.add(id);
-                words.add(inside.getString("Definition"));
-            }
-        }*/
-        //loadQuestions();
+        /*
+         * Iterable<DocumentReference> defs = FlashcardApplication.fstore
+         * .collection("Users")
+         * .document(FlashcardApplication.currentUser)
+         * .collection(FlashcardApplication.currentSet)
+         * .listDocuments();
+         * for (DocumentReference doc : defs) {
+         * ApiFuture<DocumentSnapshot> future = doc.get();
+         * String id = doc.getId();
+         * DocumentSnapshot inside = future.get();
+         * if(!id.equals("exists_placeholder") && !id.equals("_meta")) {
+         * def.add(id);
+         * words.add(inside.getString("Definition"));
+         * }
+         * }
+         */
+        // loadQuestions();
 
         System.out.println(def);
         System.out.println(words);
@@ -85,7 +86,8 @@ public class quizController {
     private void handleSetChange(ActionEvent event) {
         String selected = setDropdown.getValue();
 
-        if (selected == null) return;
+        if (selected == null)
+            return;
 
         if (!selected.equals("-No Set Selected-")) {
             FlashcardApplication.currentSet = selected;
@@ -94,7 +96,7 @@ public class quizController {
         loadQuestions();
     }
 
-    private void loadQuestions(){
+    private void loadQuestions() {
 
         Iterable<DocumentReference> defs = FlashcardApplication.fstore
                 .collection("Users")
@@ -112,7 +114,7 @@ public class quizController {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
-            if(!id.equals("exists_placeholder") && !id.equals("_meta")) {
+            if (!id.equals("exists_placeholder") && !id.equals("_meta")) {
                 def.add(id);
                 words.add(inside.getString("Definition"));
             }
@@ -142,54 +144,53 @@ public class quizController {
     }
 
     @FXML
-    private void createQuestion(){
+    private void createQuestion() {
 
-        if(questionIndex < def.size()) {
+        if (questionIndex < def.size()) {
             question = def.get(questionIndex);
             correctAns = words.get(questionIndex);
 
-        while (wrongAns1.equals("")) {
+            while (wrongAns1.equals("")) {
 
-            int randomNum3 = (int) (Math.random() * words.size());
-            for (String word : words) {
-                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns2)
-                        && !words.get(randomNum3).equals(wrongAns3)) {
-                    wrongAns1 = words.get(randomNum3);
+                int randomNum3 = (int) (Math.random() * words.size());
+                for (String word : words) {
+                    if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns2)
+                            && !words.get(randomNum3).equals(wrongAns3)) {
+                        wrongAns1 = words.get(randomNum3);
+                    }
                 }
             }
-        }
 
-        while (wrongAns2.equals("")) {
+            while (wrongAns2.equals("")) {
 
-            int randomNum3 = (int) (Math.random() * words.size());
-            for (String word : words) {
-                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
-                        && !words.get(randomNum3).equals(wrongAns3)) {
-                    wrongAns2 = words.get(randomNum3);
+                int randomNum3 = (int) (Math.random() * words.size());
+                for (String word : words) {
+                    if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
+                            && !words.get(randomNum3).equals(wrongAns3)) {
+                        wrongAns2 = words.get(randomNum3);
+                    }
                 }
             }
-        }
 
-        while (wrongAns3.equals("")) {
+            while (wrongAns3.equals("")) {
 
-            int randomNum3 = (int) (Math.random() * words.size());
-            for (String word : words) {
-                if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
-                        && !words.get(randomNum3).equals(wrongAns2)) {
-                    wrongAns3 = words.get(randomNum3);
+                int randomNum3 = (int) (Math.random() * words.size());
+                for (String word : words) {
+                    if (!words.get(randomNum3).equals(correctAns) && !words.get(randomNum3).equals(wrongAns1)
+                            && !words.get(randomNum3).equals(wrongAns2)) {
+                        wrongAns3 = words.get(randomNum3);
+                    }
                 }
             }
-        }
 
-        }
-        else{
+        } else {
             question = "no more definitions";
         }
         questionLabel.setText(question);
 
         populateButtons();
 
-        if(location != null){
+        if (location != null) {
             createQuestionButton.disableProperty().set(true);
             setDropdown.disableProperty().set(true);
         }
@@ -197,7 +198,7 @@ public class quizController {
 
     }
 
-    private void populateButtons(){
+    private void populateButtons() {
         int randomAns1 = (int) (Math.random() * 4);
         int randomAns2 = -1;
         int randomAns3 = -1;
@@ -218,7 +219,7 @@ public class quizController {
             buttonA.setText(wrongAns3);
         }
 
-        while(randomAns2 == randomAns1 || randomAns2 == -1){
+        while (randomAns2 == randomAns1 || randomAns2 == -1) {
             randomAns2 = (int) (Math.random() * 4);
             System.out.println("2 " + randomAns2);
         }
@@ -237,7 +238,7 @@ public class quizController {
             buttonB.setText(wrongAns3);
         }
 
-        while(randomAns3 == randomAns1 || randomAns3 == randomAns2 ||  randomAns3 == -1) {
+        while (randomAns3 == randomAns1 || randomAns3 == randomAns2 || randomAns3 == -1) {
             randomAns3 = (int) (Math.random() * 4);
             System.out.println("3 " + randomAns3);
         }
@@ -256,7 +257,7 @@ public class quizController {
             buttonC.setText(wrongAns3);
         }
 
-        while(randomAns4 == randomAns1 || randomAns4 == randomAns2 || randomAns4 == randomAns3 || randomAns4 == -1) {
+        while (randomAns4 == randomAns1 || randomAns4 == randomAns2 || randomAns4 == randomAns3 || randomAns4 == -1) {
             randomAns4 = (int) (Math.random() * 4);
             System.out.println("4 " + randomAns4);
         }
@@ -276,7 +277,7 @@ public class quizController {
     }
 
     @FXML
-    private void next(){
+    private void next() {
         buttonA.setText("A");
         buttonB.setText("B");
         buttonC.setText("C");
@@ -291,54 +292,74 @@ public class quizController {
         createQuestionButton.disableProperty().set(false);
         questionIndex++;
         correctOutputLabel.setText("");
-        if(question.equals("no more definitions")){
+        buttonA.disableProperty().set(false);
+        buttonB.disableProperty().set(false);
+        buttonC.disableProperty().set(false);
+        buttonD.disableProperty().set(false);
+        createQuestion();
+        if (questionLabel.getText().equals("no more definitions")) {
             buttonA.disableProperty().set(true);
             buttonB.disableProperty().set(true);
             buttonC.disableProperty().set(true);
             buttonD.disableProperty().set(true);
         }
-        createQuestion();
     }
 
     @FXML
-    private void aChecker(){
-        if(location.equals("buttonA")){
+    private void aChecker() {
+        if (location.equals("buttonA")) {
             correctOutputLabel.setText("Correct!");
-        }
-        else{
+        } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
+        buttonA.disableProperty().set(true);
+        buttonB.disableProperty().set(true);
+        buttonC.disableProperty().set(true);
+        buttonD.disableProperty().set(true);
+
         nextButton.disableProperty().set(false);
     }
+
     @FXML
-    private void bChecker(){
-        if(location.equals("buttonB")){
+    private void bChecker() {
+        if (location.equals("buttonB")) {
             correctOutputLabel.setText("Correct!");
-        }
-        else{
+        } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
+        buttonA.disableProperty().set(true);
+        buttonB.disableProperty().set(true);
+        buttonC.disableProperty().set(true);
+        buttonD.disableProperty().set(true);
         nextButton.disableProperty().set(false);
     }
+
     @FXML
-    private void cChecker(){
-        if(location.equals("buttonC")){
+    private void cChecker() {
+        if (location.equals("buttonC")) {
             correctOutputLabel.setText("Correct!");
 
-        }
-        else{
+        } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
+        buttonA.disableProperty().set(true);
+        buttonB.disableProperty().set(true);
+        buttonC.disableProperty().set(true);
+        buttonD.disableProperty().set(true);
         nextButton.disableProperty().set(false);
     }
+
     @FXML
-    private void dChecker(){
-        if(location.equals("buttonD")){
+    private void dChecker() {
+        if (location.equals("buttonD")) {
             correctOutputLabel.setText("Correct!");
-        }
-        else{
+        } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
+        buttonA.disableProperty().set(true);
+        buttonB.disableProperty().set(true);
+        buttonC.disableProperty().set(true);
+        buttonD.disableProperty().set(true);
         nextButton.disableProperty().set(false);
     }
 }
