@@ -24,6 +24,12 @@
     -fx-font-weight: bold;
 }
 
+.welcome_label {
+    -fx-font-size: 20px;
+    -fx-text-fill: #bdbbbb;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 5 0;
+}
 
 /*Top & Bottom Pane color*/
 .pane {

@@ -25,8 +25,10 @@
                      <children>
                         <Pane prefHeight="100.0" prefWidth="929.0" styleClass="pane" stylesheets="@stylesheets/study_screen.css">
                            <children>
-                              <Button fx:id="logoutButton" alignment="TOP_RIGHT" layoutX="800" layoutY="5" onAction="#handleLogout" stylesheets="@stylesheets/study_screen.css" text="Log out" />
-                              <Label layoutX="30" layoutY="20" text="Select Set" textFill="WHITE">
+                               <!-- Welcome label -->
+                               <Label fx:id="welcomeLabel" styleClass="welcome_label" text="Welcome!" layoutX="400" layoutY="40" />
+                               <Button fx:id="logoutButton" alignment="TOP_RIGHT" layoutX="800" layoutY="5" onAction="#handleLogout" stylesheets="@stylesheets/study_screen.css" text="Log out" />
+                               <Label layoutX="30" layoutY="20" text="Select Set" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="16.0" />
                                  </font>
@@ -84,7 +86,7 @@
                   <Separator layoutX="0" layoutY="3.0" prefHeight="5.0" prefWidth="928.0" />
                   <Label layoutX="20" layoutY="35" text="Progress" textFill="WHITE" />
                   <Label fx:id="progressLabel" layoutX="110" layoutY="35" text="0/0" textFill="WHITE" />
-                  <Button fx:id="landingPageButton" layoutX="736.0" layoutY="26.0" onAction="#backToLanding" styleClass="landing-btn" stylesheets="@stylesheets/study_screen.css" text="Back to landing Page?" />
+                  <Button fx:id="landingPageButton" layoutX="736.0" layoutY="26.0" onAction="#backToLanding" styleClass="landing-btn" stylesheets="@stylesheets/study_screen.css" text="Back to Main Page" />
                </children>
             </Pane>
          </bottom>
