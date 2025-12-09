@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.csc325.semesterproject.smartflashcards.memory_game_controller"
+      spacing="10"
+      alignment="TOP_CENTER"
+      styleClass="root"
+      stylesheets="@stylesheets/landing_page.css">
+
+    <!-- Top controls: Back, Set Selection, Restart -->
+    <HBox alignment="CENTER" spacing="12">
+        <Button fx:id="backButton" onAction="#handleBack" text="Back to Main Page" styleClass="logout-button"/>
+        <ComboBox fx:id="setDropdown" styleClass="combo-box" prefWidth="200"/>
+        <Button fx:id="restartButton" onAction="#restartGame" text="Restart" styleClass="primary_button"/>
+    </HBox>
+
+    <Label styleClass="title_label" text="Memory Game"/>
+
+    <!-- Scrollable card grid -->
+    <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="500">
+        <content>
+            <GridPane fx:id="cardGrid" hgap="10" vgap="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </GridPane>
+
+        </content>
+    </ScrollPane>
+</VBox>
