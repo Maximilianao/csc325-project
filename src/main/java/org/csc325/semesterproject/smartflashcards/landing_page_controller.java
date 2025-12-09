@@ -1,11 +1,9 @@
 package org.csc325.semesterproject.smartflashcards;
-import javafx.scene.Node;
 
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -70,7 +68,7 @@ public class landing_page_controller {
         }
 
         // Create Set Button Action
-        createButton.setOnAction(e -> {
+        createButton.setOnAction(_ -> {
 
             String name = setField.getText().trim();
             if (name.isEmpty()) return;
@@ -85,7 +83,7 @@ public class landing_page_controller {
             FlashcardApplication.currentSet = name;
         });
 
-        closeButton.setOnAction(e -> popover.hide());
+        closeButton.setOnAction(_ -> popover.hide());
     }
 
 
@@ -140,7 +138,7 @@ public class landing_page_controller {
 
 
     @FXML
-    private void handleSetChange(ActionEvent event) {
+    private void handleSetChange() {
         String selected = setDropdown.getValue();
 
         if (selected == null) return;
@@ -158,31 +156,14 @@ public class landing_page_controller {
 
     /** Scene Switching */
     @FXML
-    private void handleCreate(MouseEvent event) {
-        switchScene(event, "createFlashcard.fxml");
+    private void handleCreate() {
+        switchScene("createFlashcard.fxml");
     }
 
     @FXML
    //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
-   private void handleStudy(MouseEvent event) { //This is the new version of the study window nonresizable
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("study_screen.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Set fixed window size  for the study screen
-            Scene scene = new Scene(root, 921, 685); // Window size to study screen only
-            stage.setScene(scene);
-
-            stage.setResizable(false);   //  only applied to this study  screen
-            stage.centerOnScreen();
-
-            stage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+   private void handleStudy() { //This is the new version of the study window nonresizable
+        switchScene("study_screen.fxml");
     }
 
     @FXML
@@ -205,7 +186,20 @@ public class landing_page_controller {
     private void handleLogout(ActionEvent event) {
         FlashcardApplication.currentUser = null;
         try {
-            FXMLLoader registration = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            FXMLLoader login = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = login.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader registration = new FXMLLoader(getClass().getResource(fxml));
             Parent root = registration.load();
 
             Scene currentScene = rootVbox.getScene();
@@ -216,23 +210,9 @@ public class landing_page_controller {
     }
 
 
-    private void switchScene(MouseEvent event, String fxml) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setResizable(true);// Restore resizable for ALL screens except study
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     /** Delete a set and its flashcards */
     @FXML
-    private void removeSet(ActionEvent event) {
+    private void removeSet() {
 
         String selected = setDropdown.getValue();
 

@@ -11,8 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +43,12 @@ public class createFlashcardController {
 
     @FXML
     private Label welcomeLabel;
+    @FXML
+    private Button logoutButton;
+    @FXML
+    private Button createFlashcardButton;
+    @FXML
+    private VBox rootVbox;
 
     @FXML
     public void initialize() {
@@ -226,11 +231,11 @@ public class createFlashcardController {
     @FXML
     private void backToLanding() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) setDropdown.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
+            FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
+            Parent root = registration.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -240,11 +245,11 @@ public class createFlashcardController {
     private void handleLogout() {
         FlashcardApplication.currentUser = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) setDropdown.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
+            FXMLLoader registration = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = registration.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
