@@ -36,7 +36,6 @@
                 <Label text="Password" />
                 <PasswordField fx:id="passwordInputField" minHeight="40.0" prefHeight="40.0" styleClass="input_field" />
                 <Label fx:id="passwordErrorLabel" styleClass="error_label" />
-                <Hyperlink styleClass="nav_text" text="Forgot Password?" />
                 <padding>
                     <Insets bottom="22.0" />
                 </padding>
