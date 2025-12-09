@@ -1,4 +1,5 @@
 package org.csc325.semesterproject.smartflashcards;
+
 import javafx.scene.Node;
 
 import com.google.cloud.firestore.*;
@@ -44,7 +45,6 @@ public class landing_page_controller {
     static private PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
 
-
     @FXML
     public void initialize() {
 
@@ -63,8 +63,7 @@ public class landing_page_controller {
             content.getChildren().addAll(
                     new Label("New Set Name:"),
                     setField,
-                    buttonsHBox
-            );
+                    buttonsHBox);
 
             popoverBuilt = true;
         }
@@ -73,7 +72,8 @@ public class landing_page_controller {
         createButton.setOnAction(e -> {
 
             String name = setField.getText().trim();
-            if (name.isEmpty()) return;
+            if (name.isEmpty())
+                return;
 
             createNewSetFirestore(name);
 
@@ -81,13 +81,12 @@ public class landing_page_controller {
             setField.clear();
 
             refreshSetDropdown();
-            setDropdown.setValue(name);   // auto-select new set
+            setDropdown.setValue(name); // auto-select new set
             FlashcardApplication.currentSet = name;
         });
 
         closeButton.setOnAction(e -> popover.hide());
     }
-
 
     /** Refresh the dropdown list */
     private void refreshSetDropdown() {
@@ -117,7 +116,6 @@ public class landing_page_controller {
         totalSetsLabel.setText(String.valueOf(sets.size() - 2));
     }
 
-
     /** Matching the create page: create a real set + _meta doc */
     private void createNewSetFirestore(String setName) {
 
@@ -138,12 +136,12 @@ public class landing_page_controller {
         }
     }
 
-
     @FXML
     private void handleSetChange(ActionEvent event) {
         String selected = setDropdown.getValue();
 
-        if (selected == null) return;
+        if (selected == null)
+            return;
 
         if (selected.equals("-Create New Set-")) {
             popover.show(setDropdown);
@@ -155,7 +153,6 @@ public class landing_page_controller {
         }
     }
 
-
     /** Scene Switching */
     @FXML
     private void handleCreate(MouseEvent event) {
@@ -163,19 +160,20 @@ public class landing_page_controller {
     }
 
     @FXML
-   //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
-   private void handleStudy(MouseEvent event) { //This is the new version of the study window nonresizable
+    // private void handleStudy(MouseEvent event) {switchScene(event,
+    // "study_screen.fxml");} old version resizable
+    private void handleStudy(MouseEvent event) { // This is the new version of the study window nonresizable
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("study_screen.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            // Set fixed window size  for the study screen
+            // Set fixed window size for the study screen
             Scene scene = new Scene(root, 921, 685); // Window size to study screen only
             stage.setScene(scene);
 
-            stage.setResizable(false);   //  only applied to this study  screen
+            stage.setResizable(false); // only applied to this study screen
             stage.centerOnScreen();
 
             stage.show();
@@ -200,6 +198,14 @@ public class landing_page_controller {
         }
     }
 
+            // Get the current stage
+            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void handleLogout(ActionEvent event) {
@@ -215,7 +221,6 @@ public class landing_page_controller {
         }
     }
 
-
     private void switchScene(MouseEvent event, String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
@@ -228,7 +233,6 @@ public class landing_page_controller {
             e.printStackTrace();
         }
     }
-
 
     /** Delete a set and its flashcards */
     @FXML
