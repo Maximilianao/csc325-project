@@ -14,7 +14,7 @@
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label text="Current Set: " />
-                  <ComboBox fx:id="setDropdown" prefWidth="200.0" onAction="#handleSetChange" />
+                  <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="200.0" />
                </children>
             </HBox>
             <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion"
@@ -34,15 +34,15 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonA" mnemonicParsing="false" text="A"
-                           onAction="#aChecker" />
+                        <Button fx:id="buttonA" mnemonicParsing="false" onAction="#aChecker"
+                           text="A" />
                         <Label text="A" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonB" mnemonicParsing="false" text="B"
-                           onAction="#bChecker" />
+                        <Button fx:id="buttonB" mnemonicParsing="false" onAction="#bChecker"
+                           text="B" />
                         <Label text="B" />
                      </children>
                   </VBox>
@@ -52,21 +52,28 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonC" mnemonicParsing="false" text="C"
-                           onAction="#cChecker" />
+                        <Button fx:id="buttonC" mnemonicParsing="false" onAction="#cChecker"
+                           text="C" />
                         <Label text="C" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="buttonD" mnemonicParsing="false" text="D"
-                           onAction="#dChecker" />
+                        <Button fx:id="buttonD" mnemonicParsing="false" onAction="#dChecker"
+                           text="D" />
                         <Label text="D" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" text="Next Question" />
+            <VBox prefHeight="200.0" prefWidth="100.0" alignment="CENTER" spacing="5">
+               <children>
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next"
+                     text="Next Question" />
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#back"
+                     text="Back to Landing Page" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>
