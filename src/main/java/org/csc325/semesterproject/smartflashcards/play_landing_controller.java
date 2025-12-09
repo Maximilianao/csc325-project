@@ -2,6 +2,8 @@ package org.csc325.semesterproject.smartflashcards;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -51,6 +53,27 @@ public class play_landing_controller {
 
     @FXML
     public void launchGame3(MouseEvent event) {
-        System.out.println("Game 3 placeholder clicked.");
-    }
-}
+        System.out.println("Launching Matching Mini Game...");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("matching_MiniGame_screen.fxml")
+            );
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // ✅ Fixed size ONLY for the mini-game
+            Scene scene = new Scene(root, 1310, 992);
+            stage.setScene(scene);
+
+            // ✅ Lock resizing ONLY for this screen
+            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }}
+
