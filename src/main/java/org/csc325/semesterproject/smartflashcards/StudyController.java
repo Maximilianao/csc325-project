@@ -75,12 +75,24 @@ public class StudyController {
         }
     }
 
-    /* Initialization */
+    @FXML
+    private Label welcomeLabel;
+/*Initialization */
     @FXML
     public void initialize() {
-        loadSets(); // Load all flashcard sets from Firestore
-        disableUI(true); // Disable UI until a set is selected
-        setupKeys(); // Enable keyboard controls (left/right/space)
+        loadSets();          // Load all flashcard sets from Firestore
+        disableUI(true);     // Disable UI until a set is selected
+        setupKeys();         // Enable keyboard controls (left/right/space)
+        flashcardContainer.setOnMouseClicked(e -> {
+            if (cards != null && !cards.isEmpty()) {
+                handleFlipCard();
+            }
+        });
+
+
+        // Set welcome text
+        String currentUser = FlashcardApplication.currentUser;
+        welcomeLabel.setText("Welcome, " + (currentUser != null ? currentUser : "") + "!");
     }
 
     /* Load sets from fire store */
@@ -136,13 +148,21 @@ public class StudyController {
                 List<Flashcard> temp = new ArrayList<>();
 
                 for (DocumentReference doc : docs) {
+
                     String id = doc.getId();
-                    if (id.equals("_meta") || id.equals("exists_placeholder"))
-                        continue; // Skip metadata document
+
+                    //Skips metadata & placeholder docs
+                    if (id == null) continue;
+                    if (id.equals("_meta")) continue;
+                    if (id.startsWith("exists")) continue;
 
                     DocumentSnapshot snap = doc.get().get();
                     if (!snap.exists())
                         continue;
+
+                    // Skip any document explicitly labeled metadata
+                    Object t = snap.get("type");
+                    if (t != null && "metadata".equals(t.toString())) continue;
 
                     String def = snap.getString("Definition");
                     temp.add(new Flashcard(id, def == null ? "" : def));
@@ -223,10 +243,15 @@ public class StudyController {
 
     @FXML
     private void handleFlipCard() {
-        if (flipping)
-            return;
+        // Prevent flipping if:
+        // 1. No cards loaded
+        // 2. Still loading (UI disabled)
+        // 3. Already flipping
+        if (cards == null || cards.isEmpty() || flipping) return;
+
         animateFlip();
     }
+
 
     /* Flip Animation */
 

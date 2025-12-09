@@ -43,14 +43,22 @@ public class createFlashcardController {
     private Button deleteSelectedButton;
 
     @FXML
+    private Label welcomeLabel;
+
+    @FXML
     public void initialize() {
-        // Populate sets on the UI thread to be safe
+        // Set welcome text
+        String currentUser = FlashcardApplication.currentUser;
+        welcomeLabel.setText("Welcome, " + (currentUser != null ? currentUser : "") + "!");
+
+        // Existing initialization
         Platform.runLater(() -> {
             refreshSets();
             setupFlashcardTable();
             refreshFlashcards();
         });
     }
+
 
     /**
      * Refresh list of sets (collection names) for current user.

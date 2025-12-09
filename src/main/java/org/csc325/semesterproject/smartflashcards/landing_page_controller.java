@@ -198,6 +198,15 @@ public class landing_page_controller {
         }
     }
 
+            // Get the current stage
+            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void handleLogout(ActionEvent event) {
         FlashcardApplication.currentUser = null;
