@@ -6,124 +6,120 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="674.0" prefWidth="1116.0" styleClass="root" stylesheets="@stylesheets/matching_MiniGame_screen.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.matching_MiniGame_controller">
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.csc325.semesterproject.smartflashcards.matching_MiniGame_controller"
+            prefHeight="674.0" prefWidth="1116.0"
+            stylesheets="@stylesheets/matching_MiniGame_screen.css">
 
-    <children>
-        <BorderPane layoutX="10.0" layoutY="10.0" prefHeight="654.0" prefWidth="1096.0">
-
-            <!-- ======= TOP BAR ======= -->
-            <top>
-                <HBox spacing="15" BorderPane.alignment="CENTER">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                    </padding>
+    <!-- ======= TOP BAR ======= -->
+    <top>
+        <HBox spacing="15" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <children>
+                <Pane prefWidth="1076.0">
                     <children>
-                        <Pane prefWidth="1076.0">
-                            <children>
-                                <!-- Title -->
-                                <Label layoutX="20" layoutY="8" text="Mini Game · Match the Term &amp; Definition">
-                                    <font>
-                                        <Font name="System Bold" size="20" />
-                                    </font>
-                                </Label>
+                        <!-- Title -->
+                        <Label layoutX="20" layoutY="8" text="Mini Game · Match the Term &amp; Definition">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
 
-                                <!-- Set selection -->
-                                <Label layoutX="20" layoutY="40" text="Select Set:" />
-                                <ComboBox fx:id="setDropdown" layoutX="110.0" layoutY="35.0" onAction="#handleSetChange" prefWidth="220.0" />
+                        <!-- Set selection -->
+                        <Label layoutX="20" layoutY="40" text="Select Set:" />
+                        <ComboBox fx:id="setDropdown" layoutX="110.0" layoutY="35.0" onAction="#handleSetChange" prefWidth="220.0" />
 
-                                <!-- Back to Games Dashboard -->
-                                <Button fx:id="backButton" layoutX="678.0" layoutY="15.0" onAction="#handleBackToLanding" prefHeight="35.0" prefWidth="232.0" stylesheets="@stylesheets/matching_MiniGame_screen.css" text="Return to Games Dashboard ?" />
+                        <!-- Back to Games Dashboard -->
+                        <Button fx:id="backButton" layoutX="678.0" layoutY="15.0" onAction="#handleBackToLanding" prefHeight="35.0" prefWidth="232.0" text="Return to Games Dashboard ?" />
 
-                                <!-- Logout -->
-                                <Button fx:id="logoutButton" layoutX="920.0" layoutY="15.0" onAction="#handleLogout" prefHeight="32.0" prefWidth="130.0" stylesheets="@stylesheets/matching_MiniGame_screen.css" text="Log out" />
-                            </children>
-                        </Pane>
-                    </children>
-                </HBox>
-            </top>
-
-                <HBox spacing="15">
-                    <padding>
-                        <Insets top="15" right="15" bottom="15" left="15"/>
-                    </padding>
-
-
-                <Pane prefWidth="1250">
-                    <children>
-
-                        <!-- TERMS COLUMN (label + scrollable list) -->
-                        <VBox prefWidth="508.0" spacing="8">
-                            <children>
-                                <Label text="Terms">
-                                    <font>
-                                        <Font name="System Bold" size="18" />
-                                    </font>
-                                </Label>
-                                <Separator prefWidth="508.0" />
-
-                                <ScrollPane fitToWidth="true" prefHeight="430.0" prefWidth="508.0" styleClass="terms-column" stylesheets="@stylesheets/matching_MiniGame_screen.css">
-                                    <content>
-                                        <!-- buttons will be added here -->
-                                        <VBox fx:id="termsBox" spacing="12" styleClass="terms-column" />
-                                    </content>
-                                </ScrollPane>
-                            </children>
-                        </VBox>
-
-                        <!-- DEFINITIONS COLUMN (label + scrollable list) -->
-                        <VBox prefWidth="508.0" spacing="8">
-                            <children>
-                                <Label text="Definitions">
-                                    <font>
-                                        <Font name="System Bold" size="18" />
-                                    </font>
-                                </Label>
-                                <Separator prefWidth="508.0" />
-
-                                <ScrollPane fitToWidth="true" prefHeight="430.0" prefWidth="508.0" styleClass="definitions-column" stylesheets="@stylesheets/matching_MiniGame_screen.css">
-                                    <content>
-                                        <!-- buttons will be added here -->
-                                        <VBox fx:id="definitionsBox" spacing="12" styleClass="definitions-column" />
-                                    </content>
-                                </ScrollPane>
-                            </children>
-                        </VBox>
-
-                    </HBox>
-
-            <!-- ======= BOTTOM: STATUS BAR ======= -->
-            <bottom>
-                <Pane prefHeight="80.0">
-                    <children>
-                        <Separator layoutX="0" layoutY="5" prefWidth="1076.0" />
-
-                        <!-- Score / Attempts -->
-                        <Label layoutX="20" layoutY="28" text="Score:" />
-                        <Label fx:id="scoreLabel" layoutX="75" layoutY="28" text="0" />
-
-                        <Label layoutX="140" layoutY="28" text="Attempts:" />
-                        <Label fx:id="attemptsLabel" layoutX="225" layoutY="28" text="0" />
-
-                        <!-- Timer -->
-                        <Label layoutX="310" layoutY="28" text="Time:" />
-                        <Label fx:id="timerLabel" layoutX="360" layoutY="28" stylesheets="@stylesheets/matching_MiniGame_screen.css" text="00:00" />
-
-                        <!-- Feedback message -->
-                        <Label fx:id="messageLabel" layoutX="20" layoutY="50" prefWidth="650" text="Select one term and one definition to make a match." wrapText="true" />
-
-                        <!-- Action buttons -->
-                        <Button fx:id="checkMatchButton" layoutX="760.0" layoutY="22.0" onAction="#handleCheckMatch" prefHeight="32.0" prefWidth="150.0" stylesheets="@stylesheets/matching_MiniGame_screen.css" text="Check Match" />
-
-                        <Button fx:id="resetGameButton" layoutX="920.0" layoutY="22.0" onAction="#handleResetGame" prefHeight="32.0" prefWidth="150.0" stylesheets="@stylesheets/matching_MiniGame_screen.css" text="Reset Game" />
+                        <!-- Logout -->
+                        <Button fx:id="logoutButton" layoutX="920.0" layoutY="15.0" onAction="#handleLogout" prefHeight="32.0" prefWidth="130.0" text="Log out" />
                     </children>
                 </Pane>
-            </bottom>
+            </children>
+        </HBox>
+    </top>
 
-    </children>
-</AnchorPane>
+    <!-- ======= CENTER: TERMS & DEFINITIONS ======= -->
+    <center>
+        <HBox spacing="15">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <!-- TERMS COLUMN -->
+            <VBox prefWidth="508.0" spacing="8">
+                <children>
+                    <Label text="Terms">
+                        <font>
+                            <Font name="System Bold" size="18" />
+                        </font>
+                    </Label>
+                    <Separator prefWidth="508.0" />
+
+                    <ScrollPane fitToWidth="true" prefHeight="430.0" prefWidth="508.0" styleClass="terms-column">
+                        <content>
+                            <VBox fx:id="termsBox" spacing="12" styleClass="terms-column" />
+                        </content>
+                    </ScrollPane>
+                </children>
+            </VBox>
+
+            <!-- DEFINITIONS COLUMN -->
+            <VBox prefWidth="508.0" spacing="8">
+                <children>
+                    <Label text="Definitions">
+                        <font>
+                            <Font name="System Bold" size="18" />
+                        </font>
+                    </Label>
+                    <Separator prefWidth="508.0" />
+
+                    <ScrollPane fitToWidth="true" prefHeight="430.0" prefWidth="508.0" styleClass="definitions-column">
+                        <content>
+                            <VBox fx:id="definitionsBox" spacing="12" styleClass="definitions-column" />
+                        </content>
+                    </ScrollPane>
+                </children>
+            </VBox>
+        </HBox>
+    </center>
+
+    <!-- ======= BOTTOM: STATUS BAR ======= -->
+    <bottom>
+        <Pane prefHeight="80.0">
+            <children>
+                <Separator layoutX="0" layoutY="5" prefWidth="1076.0" />
+
+                <!-- Score / Attempts -->
+                <Label layoutX="20" layoutY="28" text="Score:" />
+                <Label fx:id="scoreLabel" layoutX="75" layoutY="28" text="0" />
+
+                <Label layoutX="140" layoutY="28" text="Attempts:" />
+                <Label fx:id="attemptsLabel" layoutX="225" layoutY="28" text="0" />
+
+                <!-- Timer -->
+                <Label layoutX="310" layoutY="28" text="Time:" />
+                <Label fx:id="timerLabel" layoutX="360" layoutY="28" text="00:00" />
+
+                <!-- Feedback message -->
+                <Label fx:id="messageLabel" layoutX="20" layoutY="50" prefWidth="650" text="Select one term and one definition to make a match." wrapText="true" />
+
+                <!-- Action buttons -->
+                <Button fx:id="checkMatchButton" layoutX="760.0" layoutY="22.0" onAction="#handleCheckMatch" prefHeight="32.0" prefWidth="150.0" text="Check Match" />
+
+                <Button fx:id="resetGameButton" layoutX="920.0" layoutY="22.0" onAction="#handleResetGame" prefHeight="32.0" prefWidth="150.0" text="Reset Game" />
+            </children>
+        </Pane>
+    </bottom>
+
+</BorderPane>
