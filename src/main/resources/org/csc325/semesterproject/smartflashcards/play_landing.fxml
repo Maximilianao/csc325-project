@@ -51,8 +51,8 @@
                         <!-- Game 1 -->
                         <VBox alignment="CENTER" onMouseClicked="#launchGame1" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
-                                <Label styleClass="primary_label" text="Game 1" />
-                                <Label styleClass="regular_label" text="Coming Soon" />
+                                <Label styleClass="primary_label" text="Memory Game" />
+                                <Label styleClass="regular_label" text="Test Your Memory" />
                             </children>
                         </VBox>
 

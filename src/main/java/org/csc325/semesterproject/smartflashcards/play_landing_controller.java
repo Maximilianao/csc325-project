@@ -47,8 +47,15 @@ public class play_landing_controller {
         System.out.println("Game 2 placeholder clicked.");
     }
 
-    @FXML
     public void launchGame3() {
-        System.out.println("Game 3 placeholder clicked.");
+        try {
+            FXMLLoader login = new FXMLLoader(getClass().getResource("matching_MiniGame_screen.fxml"));
+            Parent root = login.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
