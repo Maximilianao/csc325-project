@@ -131,3 +131,66 @@
     -fx-scale-y: 1.05;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
 }
+/* FLASHCARD STYLING — Modern Light Theme */
+.card {
+    -fx-min-width: 90px;
+    -fx-min-height: 90px;
+    -fx-pref-width: 110px;
+    -fx-pref-height: 110px;
+
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-alignment: center;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0, 0, 2);
+}
+
+/* Face-down */
+.card-face-down {
+    -fx-background-color: linear-gradient(to bottom, #e8e8e8, #dcdcdc);
+    -fx-border-color: #A0A0A0;
+}
+
+/* Face-up */
+.card-face-up {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1B1B1B;
+}
+
+/* When matched */
+.card-matched {
+    -fx-background-color: #4CAF50;
+    -fx-border-color: #2E7D32;
+    -fx-text-fill: white;
+}
+
+/* Hover effect */
+.card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Remove blue focus outline from all controls */
+:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.game-board-scroll {
+    -fx-background-color: #1B1B1B;
+    -fx-padding: 20;
+
+    /* Outer border */
+    -fx-border-color: #2b2a2a;    /* same dark gray you use elsewhere */
+    -fx-border-width: .5;
+    -fx-border-radius: 16;
+    -fx-background-radius: 2;
+}
+
+/* Also round the viewport inside the ScrollPane */
+.game-board-scroll .viewport {
+    -fx-background-color: #E0E3E3;  /* same white as stat boxes */
+    -fx-background-radius: 16;
+}
+

@@ -21,7 +21,6 @@ import java.util.*;
 public class matching_MiniGame_controller {
 
     @FXML private ComboBox<String> setDropdown;
-
     @FXML private VBox termsBox;
     @FXML private VBox definitionsBox;
 
@@ -35,11 +34,9 @@ public class matching_MiniGame_controller {
     @FXML private Button backButton;
     @FXML private Button logoutButton;
 
-    // Game state
     private static class Pair {
         final String term;
         final String definition;
-
         Pair(String term, String definition) {
             this.term = term;
             this.definition = definition;
@@ -47,7 +44,6 @@ public class matching_MiniGame_controller {
     }
 
     private final List<Pair> pairs = new ArrayList<>();
-
     private final Map<Button, Pair> termButtonMap = new HashMap<>();
     private final Map<Button, Pair> defButtonMap = new HashMap<>();
 
@@ -57,39 +53,31 @@ public class matching_MiniGame_controller {
     private int score = 0;
     private int attempts = 0;
 
-    // Timer state
     private Timeline timer;
-    private int timeRemainingSeconds = 300;  // 5 minutes
+    private int timeRemainingSeconds = 300;
     private boolean gameActive = false;
 
-    // Store score for later use if needed
     public static int lastGameScore = 0;
 
-
-    //  Initialization
     @FXML
     public void initialize() {
-        // UI defaults
         scoreLabel.setText("0");
         attemptsLabel.setText("0");
-
-        // Timer defaults
         updateTimerLabel();
-        timerLabel.setStyle("-fx-text-fill: #16a34a;"); // green
-
+        timerLabel.setStyle("-fx-text-fill: #16a34a;");
         messageLabel.setText("Select a set to start the mini game.");
 
-        // Hide game area until a set is selected
         setGameAreaVisible(false);
-        checkMatchButton.setVisible(false);
-        checkMatchButton.setManaged(false);
 
-        resetGameButton.setDisable(true);
+        if (checkMatchButton != null) {
+            checkMatchButton.setVisible(false);
+            checkMatchButton.setManaged(false);
+            checkMatchButton.setDisable(true);
+        }
+        if (resetGameButton != null) resetGameButton.setDisable(true);
 
         loadSets();
     }
-
-    //  Load sets for ComboBox
 
     private void loadSets() {
         new Thread(() -> {
@@ -102,30 +90,37 @@ public class matching_MiniGame_controller {
 
                 List<String> setNames = new ArrayList<>();
                 for (CollectionReference c : cols) {
-                    setNames.add(c.getId());
+                    String id = c.getId();
+                    if (id.startsWith("_meta") || id.startsWith("exists")) continue;
+                    setNames.add(id);
                 }
+                Collections.sort(setNames, String.CASE_INSENSITIVE_ORDER);
 
-                Platform.runLater(() -> setDropdown.getItems().setAll(setNames));
-
+                Platform.runLater(() -> {
+                    if (setDropdown != null) {
+                        setDropdown.getItems().clear();
+                        setDropdown.getItems().addAll(setNames);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
-                Platform.runLater(() ->
-                        messageLabel.setText("Error loading sets for mini game.")
-                );
+                Platform.runLater(() -> {
+                    if (messageLabel != null) messageLabel.setText("Error loading sets for mini game.");
+                });
             }
         }).start();
     }
 
     @FXML
     private void handleSetChange() {
-        String selected = setDropdown.getValue();
+        String selected = (setDropdown == null) ? null : setDropdown.getValue();
         if (selected == null || selected.isEmpty()) return;
 
         FlashcardApplication.currentSet = selected;
 
         stopTimer();
-        timeRemainingSeconds = 300; // 5 minutes
-        timerLabel.setStyle("-fx-text-fill: #16a34a;"); //green style for the timer as default
+        timeRemainingSeconds = 300;
+        timerLabel.setStyle("-fx-text-fill: #16a34a;");
         updateTimerLabel();
 
         messageLabel.setText("Loading cards for: " + selected + " ...");
@@ -136,8 +131,8 @@ public class matching_MiniGame_controller {
     private void loadPairsFromFirestore() {
         if (FlashcardApplication.currentUser == null || FlashcardApplication.currentSet == null) {
             messageLabel.setText("No active set. Please choose a set first.");
-            checkMatchButton.setDisable(true);
-            resetGameButton.setDisable(true);
+            if (checkMatchButton != null) checkMatchButton.setDisable(true);
+            if (resetGameButton != null) resetGameButton.setDisable(true);
             return;
         }
 
@@ -153,14 +148,13 @@ public class matching_MiniGame_controller {
 
                 for (DocumentReference doc : docs) {
                     String id = doc.getId();
-                    if ("_meta".equals(id)) continue;
+                    if (id.startsWith("_meta") || id.startsWith("exists")) continue; // <-- same filter
 
                     DocumentSnapshot snap = doc.get().get();
                     if (!snap.exists()) continue;
 
                     String def = snap.getString("Definition");
                     if (def == null) def = "";
-
                     tempPairs.add(new Pair(id, def));
                 }
 
@@ -170,8 +164,8 @@ public class matching_MiniGame_controller {
 
                     if (pairs.isEmpty()) {
                         messageLabel.setText("This set has no cards. Add flashcards before playing.");
-                        checkMatchButton.setDisable(true);
-                        resetGameButton.setDisable(true);
+                        if (checkMatchButton != null) checkMatchButton.setDisable(true);
+                        if (resetGameButton != null) resetGameButton.setDisable(true);
                         setGameAreaVisible(false);
                     } else {
                         buildButtonsForGame();
@@ -182,31 +176,26 @@ public class matching_MiniGame_controller {
                 e.printStackTrace();
                 Platform.runLater(() -> {
                     messageLabel.setText("Error loading cards for mini game.");
-                    checkMatchButton.setDisable(true);
-                    resetGameButton.setDisable(true);
+                    if (checkMatchButton != null) checkMatchButton.setDisable(true);
+                    if (resetGameButton != null) resetGameButton.setDisable(true);
                     setGameAreaVisible(false);
                 });
             }
         }).start();
     }
 
-
-    //  Game / UI setup
-
     private void buildButtonsForGame() {
         setGameAreaVisible(true);
-        checkMatchButton.setVisible(true);
-        checkMatchButton.setManaged(true);
-        checkMatchButton.setDisable(false);
-        resetGameButton.setDisable(false);
 
-        // Clear old buttons but keep header + separator (indexes 0 and 1)
-        if (termsBox.getChildren().size() > 2) {
-            termsBox.getChildren().remove(2, termsBox.getChildren().size());
+        if (checkMatchButton != null) {
+            checkMatchButton.setVisible(true);
+            checkMatchButton.setManaged(true);
+            checkMatchButton.setDisable(false);
         }
-        if (definitionsBox.getChildren().size() > 2) {
-            definitionsBox.getChildren().remove(2, definitionsBox.getChildren().size());
-        }
+        if (resetGameButton != null) resetGameButton.setDisable(false);
+
+        if (termsBox != null) termsBox.getChildren().clear();
+        if (definitionsBox != null) definitionsBox.getChildren().clear();
 
         termButtonMap.clear();
         defButtonMap.clear();
@@ -224,7 +213,6 @@ public class matching_MiniGame_controller {
             b.setMaxWidth(Double.MAX_VALUE);
             b.setWrapText(true);
             b.setOnAction(e -> handleTermSelection(b));
-
             termButtonMap.put(b, p);
             termsBox.getChildren().add(b);
         }
@@ -235,7 +223,6 @@ public class matching_MiniGame_controller {
             b.setMaxWidth(Double.MAX_VALUE);
             b.setWrapText(true);
             b.setOnAction(e -> handleDefinitionSelection(b));
-
             defButtonMap.put(b, p);
             definitionsBox.getChildren().add(b);
         }
@@ -246,55 +233,54 @@ public class matching_MiniGame_controller {
 
         stopTimer();
         timeRemainingSeconds = 300;
-        timerLabel.setStyle("-fx-text-fill: #16a34a;"); // Green color for the timer as default
+        timerLabel.setStyle("-fx-text-fill: #16a34a;");
         updateTimerLabel();
         startTimer();
 
         gameActive = true;
         messageLabel.setText("Select one term and one definition, then click 'Check Match'.");
+        updateCheckButtonState();
     }
 
     private void setGameAreaVisible(boolean visible) {
-        termsBox.setVisible(visible);
-        termsBox.setManaged(visible);
-        definitionsBox.setVisible(visible);
-        definitionsBox.setManaged(visible);
+        if (termsBox != null) { termsBox.setVisible(visible); termsBox.setManaged(visible); }
+        if (definitionsBox != null) { definitionsBox.setVisible(visible); definitionsBox.setManaged(visible); }
     }
 
-    //  Selection Logic
     private void handleTermSelection(Button b) {
-        if (!gameActive || b.isDisable()) return;
-
-        if (selectedTermButton != null) {
-            selectedTermButton.getStyleClass().remove("selected-term");
+        if (!gameActive || b == null || b.isDisable()) return;
+        if (b.equals(selectedTermButton)) {
+            b.getStyleClass().remove("selected-term");
+            selectedTermButton = null;
+        } else {
+            if (selectedTermButton != null) selectedTermButton.getStyleClass().remove("selected-term");
+            selectedTermButton = b;
+            if (!b.getStyleClass().contains("selected-term")) b.getStyleClass().add("selected-term");
         }
-
-        selectedTermButton = b;
-        if (!b.getStyleClass().contains("selected-term")) {
-            b.getStyleClass().add("selected-term");
-        }
+        updateCheckButtonState();
     }
 
     private void handleDefinitionSelection(Button b) {
-        if (!gameActive || b.isDisable()) return;
-
-        if (selectedDefButton != null) {
-            selectedDefButton.getStyleClass().remove("selected-definition");
+        if (!gameActive || b == null || b.isDisable()) return;
+        if (b.equals(selectedDefButton)) {
+            b.getStyleClass().remove("selected-definition");
+            selectedDefButton = null;
+        } else {
+            if (selectedDefButton != null) selectedDefButton.getStyleClass().remove("selected-definition");
+            selectedDefButton = b;
+            if (!b.getStyleClass().contains("selected-definition")) b.getStyleClass().add("selected-definition");
         }
-
-        selectedDefButton = b;
-        if (!b.getStyleClass().contains("selected-definition")) {
-            b.getStyleClass().add("selected-definition");
-        }
+        updateCheckButtonState();
     }
 
-
-    //  Button Handlers
+    private void updateCheckButtonState() {
+        boolean enable = gameActive && selectedTermButton != null && selectedDefButton != null;
+        if (checkMatchButton != null) checkMatchButton.setDisable(!enable);
+    }
 
     @FXML
     private void handleCheckMatch() {
         if (!gameActive) return;
-
         if (selectedTermButton == null || selectedDefButton == null) {
             messageLabel.setText("Please select one term and one definition first.");
             return;
@@ -305,44 +291,34 @@ public class matching_MiniGame_controller {
 
         attempts++;
 
-        if (termPair != null && defPair != null
-                && termPair.term.equals(defPair.term)) {
-
+        if (termPair != null && defPair != null && termPair.term.equals(defPair.term)) {
             score++;
-
             selectedTermButton.setDisable(true);
             selectedDefButton.setDisable(true);
-
             selectedTermButton.getStyleClass().remove("selected-term");
             selectedDefButton.getStyleClass().remove("selected-definition");
-
             selectedTermButton.getStyleClass().add("matched");
             selectedDefButton.getStyleClass().add("matched");
-
             messageLabel.setText("✅ Correct match!");
-
         } else {
+            if (selectedTermButton != null) selectedTermButton.getStyleClass().remove("selected-term");
+            if (selectedDefButton != null) selectedDefButton.getStyleClass().remove("selected-definition");
             messageLabel.setText("❌ Not a match. Try again.");
-            selectedTermButton.getStyleClass().remove("selected-term");
-            selectedDefButton.getStyleClass().remove("selected-definition");
         }
 
         selectedTermButton = null;
         selectedDefButton = null;
 
         updateScoreUI();
+        updateCheckButtonState();
 
         if (isGameFinished()) {
             stopTimer();
             gameActive = false;
             lastGameScore = score;
-
             String msg = "You matched all terms! Score: " + score + "/" + attempts;
             messageLabel.setText("🎉 " + msg);
-
-            checkMatchButton.setDisable(true);
-
-            // Show game over popup (finished all matches)
+            if (checkMatchButton != null) checkMatchButton.setDisable(true);
             showGameOverDialog("You matched all terms!", msg);
         }
     }
@@ -385,26 +361,14 @@ public class matching_MiniGame_controller {
         }
     }
 
-    //  Timer helpers
-
     private void startTimer() {
-        stopTimer(); // safety
-
-        timer = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> {
-                    timeRemainingSeconds--;
-                    updateTimerLabel();
-
-                    if (timeRemainingSeconds == 60) {
-                        timerLabel.setStyle("-fx-text-fill: #dc2626;"); // red color for timer at 1 minute
-                    }
-
-                    if (timeRemainingSeconds <= 0) {
-                        stopTimer();
-                        handleTimeUp();
-                    }
-                })
-        );
+        stopTimer();
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            timeRemainingSeconds--;
+            updateTimerLabel();
+            if (timeRemainingSeconds == 60 && timerLabel != null) timerLabel.setStyle("-fx-text-fill: #dc2626;");
+            if (timeRemainingSeconds <= 0) handleTimeUp();
+        }));
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
     }
@@ -419,47 +383,39 @@ public class matching_MiniGame_controller {
     private void updateTimerLabel() {
         int minutes = timeRemainingSeconds / 60;
         int seconds = timeRemainingSeconds % 60;
-        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        if (timerLabel != null) timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    //  Game Over Popup
     private void showGameOverDialog(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         alert.setHeaderText(header);
         alert.setContentText(content);
-
-        // Attach to current window
         if (backButton != null && backButton.getScene() != null) {
             Stage stage = (Stage) backButton.getScene().getWindow();
             alert.initOwner(stage);
         }
-
         alert.showAndWait();
     }
 
     private void handleTimeUp() {
+        stopTimer();
         gameActive = false;
         lastGameScore = score;
-
         String msg = "Time is up!\nFinal score: " + score + " / " + attempts;
-
         messageLabel.setText("⏰ " + msg);
-
-
         setGameAreaVisible(false);
-        checkMatchButton.setDisable(true);
-        checkMatchButton.setVisible(false);
-        checkMatchButton.setManaged(false);
-
+        if (checkMatchButton != null) {
+            checkMatchButton.setDisable(true);
+            checkMatchButton.setVisible(false);
+            checkMatchButton.setManaged(false);
+        }
         showGameOverDialog("⏳ Time's Up!", msg);
     }
 
-    //  Misc helpers
-
     private void updateScoreUI() {
-        scoreLabel.setText(String.valueOf(score));
-        attemptsLabel.setText(String.valueOf(attempts));
+        if (scoreLabel != null) scoreLabel.setText(String.valueOf(score));
+        if (attemptsLabel != null) attemptsLabel.setText(String.valueOf(attempts));
     }
 
     private boolean isGameFinished() {
