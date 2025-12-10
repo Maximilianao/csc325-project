@@ -60,8 +60,8 @@
 
                     <TableView fx:id="flashcardTable" prefHeight="220" prefWidth="700">
                         <columns>
-                            <TableColumn fx:id="wordColumn" prefWidth="220" text="Word" />
-                            <TableColumn fx:id="defColumn" prefWidth="480" text="Definition" />
+                            <TableColumn fx:id="wordColumn" prefWidth="318" text="Word" />
+                            <TableColumn fx:id="defColumn" prefWidth="318" text="Definition" />
                         </columns>
                     </TableView>
 

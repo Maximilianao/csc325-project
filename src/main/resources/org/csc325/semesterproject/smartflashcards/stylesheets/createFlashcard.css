@@ -84,12 +84,7 @@
 
 .column-header{
     -fx-background-color: #FCFEFF;
-    -fx-background-radius: 12 0 0 0;
-}
-
-.column-header{
-    -fx-background-color: #FCFEFF;
-    -fx-background-radius: 12 0 0 0;
+    -fx-background-radius: 12 12 0 0;
 }
 
 

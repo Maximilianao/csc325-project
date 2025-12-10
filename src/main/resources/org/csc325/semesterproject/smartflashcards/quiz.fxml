@@ -1,78 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12"
-   xmlns:fx="http://javafx.com/fxml/1"
-   fx:controller="org.csc325.semesterproject.smartflashcards.quizController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheets/createFlashcard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.quizController">
    <children>
-      <VBox alignment="center" layoutX="214.0" layoutY="29.0" prefHeight="400.0" prefWidth="600.0"
-         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-         AnchorPane.topAnchor="0.0">
+      <VBox alignment="center" layoutX="214.0" layoutY="29.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="500.0" prefHeight="200.0" prefWidth="400.0" spacing="10" styleClass="text_container">
                <children>
-                  <Label text="Current Set: " />
-                  <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="200.0" />
-               </children>
-            </HBox>
-            <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion"
-               text="Start Quiz" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
-                        <Label text="Question:" />
-                        <Label fx:id="questionLabel" text="" />
-                        <Label fx:id="correctOutputLabel" text="" />
+                        <Label styleClass="regular_label" text="Current Set: " />
+                        <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="200.0" styleClass="combo-box" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="createQuestionButton" mnemonicParsing="false" onAction="#createQuestion" text="Start Quiz" styleClass="primary_button" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0">
+                           <children>
+                              <Label styleClass="regular_label" text="Question:" />
+                              <Label styleClass="regular_label" fx:id="questionLabel" text="" />
+                              <Label styleClass="regular_label" fx:id="correctOutputLabel" text="" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="buttonA" mnemonicParsing="false" onAction="#aChecker" styleClass="primary_button" text="A" />
+                              <Label text="A" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="buttonB" mnemonicParsing="false" onAction="#bChecker" styleClass="primary_button" text="B" />
+                              <Label text="B" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="buttonC" mnemonicParsing="false" onAction="#cChecker" styleClass="primary_button" text="C" />
+                              <Label text="C" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="buttonD" mnemonicParsing="false" onAction="#dChecker" styleClass="primary_button" text="D" />
+                              <Label text="D" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="primary_button" text="Next Question" />
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="primary_button" text="Back to Landing Page" />
                      </children>
                   </VBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Button fx:id="buttonA" mnemonicParsing="false" onAction="#aChecker"
-                           text="A" />
-                        <Label text="A" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Button fx:id="buttonB" mnemonicParsing="false" onAction="#bChecker"
-                           text="B" />
-                        <Label text="B" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Button fx:id="buttonC" mnemonicParsing="false" onAction="#cChecker"
-                           text="C" />
-                        <Label text="C" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Button fx:id="buttonD" mnemonicParsing="false" onAction="#dChecker"
-                           text="D" />
-                        <Label text="D" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" alignment="CENTER" spacing="5">
-               <children>
-                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next"
-                     text="Next Question" />
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#back"
-                     text="Back to Landing Page" />
-               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </VBox>
          </children>
       </VBox>
