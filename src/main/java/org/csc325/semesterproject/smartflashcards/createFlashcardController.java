@@ -50,6 +50,13 @@ public class createFlashcardController {
     @FXML
     private VBox rootVbox;
 
+    //Set that would be initially shown
+    private String selectedSet;
+
+    void setSelectedSet(String selectedSet) {
+        this.selectedSet = selectedSet;
+    }
+
     @FXML
     public void initialize() {
         // Set welcome text
@@ -91,13 +98,15 @@ public class createFlashcardController {
             String prev = setDropdown.getValue();
             setDropdown.setItems(sets);
 
+            int initialSelectedIndex = setDropdown.getItems().indexOf(selectedSet);
+
             // try to keep previous selection if it still exists
             if (prev != null && sets.contains(prev)) {
                 setDropdown.setValue(prev);
                 FlashcardApplication.currentSet = prev;
                 currentSetLabel.setText("Current Set: " + prev);
-            } else if (!sets.isEmpty() && !sets.get(0).equals("Create Set")) {
-                setDropdown.getSelectionModel().selectFirst();
+            } else if (!sets.isEmpty() && !sets.getFirst().equals("Create Set") && initialSelectedIndex >= 0) {
+                setDropdown.getSelectionModel().select(initialSelectedIndex);
                 FlashcardApplication.currentSet = setDropdown.getValue();
                 currentSetLabel.setText("Current Set: " + FlashcardApplication.currentSet);
             } else {

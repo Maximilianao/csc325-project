@@ -13,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
@@ -157,25 +156,46 @@ public class landing_page_controller {
     /** Scene Switching */
     @FXML
     private void handleCreate() {
-        switchScene("createFlashcard.fxml");
+        //switchScene("createFlashcard.fxml");
+        try {
+            FXMLLoader create = new FXMLLoader(getClass().getResource("createFlashcard.fxml"));
+            Parent root = create.load();
+
+            createFlashcardController controller = create.getController();
+
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
    //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
-   private void handleStudy() { //This is the new version of the study window nonresizable
-        switchScene("study_screen.fxml");
+   private void handleStudy() {
+        try {
+            FXMLLoader study = new FXMLLoader(getClass().getResource("study_screen.fxml"));
+            Parent root = study.load();
+
+            StudyController controller = study.getController();
+
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handlePlay(MouseEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-
-            // Get the current stage
-            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            switchScene("play_landing.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }

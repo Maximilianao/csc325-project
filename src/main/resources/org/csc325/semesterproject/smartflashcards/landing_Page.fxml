@@ -9,80 +9,70 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="rootVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/landing_page.css"
-      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.csc325.semesterproject.smartflashcards.landing_page_controller">
+<VBox fx:id="rootVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/landing_page.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.landing_page_controller">
     <VBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="600.0">
         <padding>
-            <Insets bottom="10.0" right="10.0" top="10.0"/>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
         </padding>
-        <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="Log out"/>
+        <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="Log out" />
     </VBox>
     <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="800.0" spacing="10.0">
-            <Label fx:id="welcomeLabel" styleClass="welcome_label" text="Welcome!"/>
+            <Label fx:id="welcomeLabel" styleClass="welcome_label" text="Welcome!" />
             <VBox alignment="CENTER" prefWidth="800.0">
-                <Label styleClass="title_label" text="Flash Card Study App"/>
-                <Label styleClass="subtitle_label" text="Create, Manage, and Study your flashcards"/>
+                <Label styleClass="title_label" text="Flash Card Study App" />
+                <Label styleClass="subtitle_label" text="Create, Manage, and Study your flashcards" />
             </VBox>
         </VBox>
         <VBox alignment="CENTER" maxHeight="650.0" VBox.vgrow="ALWAYS">
             <padding>
-                <Insets bottom="60.0" left="30.0" right="30.0" top="60.0"/>
+                <Insets bottom="60.0" left="30.0" right="30.0" top="60.0" />
             </padding>
             <GridPane hgap="30.0" maxHeight="400.0" maxWidth="1000.0" vgap="30.0" VBox.vgrow="ALWAYS">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <!-- Total Sets -->
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                    <children>
-                        <Label fx:id="totalSetsLabel" styleClass="stat_number" text="0"/>
-                        <Label styleClass="regular_label" text="Total Sets"/>
-                    </children>
+                    <Label fx:id="totalSetsLabel" styleClass="stat_number" text="0"/>
+                    <Label styleClass="regular_label" text="Total Sets"/>
                 </VBox>
 
                 <!-- Current Set Dropdown -->
                 <VBox alignment="CENTER" spacing="10.0" styleClass="stat_box" GridPane.columnIndex="1">
-                    <Label styleClass="regular_label" text="Current Set"/>
-                    <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="160"/>
-                    <Button fx:id="removeButton" minHeight="30.0" mnemonicParsing="false"
-                            onAction="#removeSet" styleClass="primary_button"
-                            text="Remove Current Set"/>
+                    <Label styleClass="regular_label" text="Current Set" />
+                    <ComboBox fx:id="setDropdown" onAction="#handleSetChange" prefWidth="160" />
+                    <Button fx:id="removeButton" minHeight="30.0" mnemonicParsing="false" onAction="#removeSet" styleClass="primary_button" text="Remove Current Set" />
                 </VBox>
 
                 <!-- Play box -->
-                <VBox alignment="CENTER" onMouseClicked="#handlePlay" spacing="8" styleClass="clickable_box"
-                      GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <Label styleClass="primary_label" text="Play"/>
-                    <Label styleClass="regular_label" text="Play games to help memorize your cards"/>
+                <VBox alignment="CENTER" onMouseClicked="#handlePlay" spacing="8" styleClass="clickable_box" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <Label styleClass="primary_label" text="Play" />
+                    <Label styleClass="regular_label" text="Play games to help memorize your cards" />
                 </VBox>
 
                 <!-- Study box -->
-                <VBox alignment="CENTER" onMouseClicked="#handleStudy" spacing="8"
-                      styleClass="clickable_box" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Label styleClass="primary_label" text="Study"/>
-                    <Label styleClass="regular_label" text="Review your cards and test yourself"/>
+                <VBox alignment="CENTER" onMouseClicked="#handleStudy" spacing="8" styleClass="clickable_box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label styleClass="primary_label" text="Study" />
+                    <Label styleClass="regular_label" text="Review your cards and test yourself" />
                 </VBox>
 
                 <!-- Manage box -->
-                <VBox alignment="CENTER" onMouseClicked="#handleCreate" spacing="8"
-                      styleClass="clickable_box" GridPane.rowIndex="1">
-                    <Label styleClass="primary_label" text="Manage"/>
-                    <Label styleClass="regular_label" text="Create and Edit Flashcards and Sets"/>
+                <VBox alignment="CENTER" onMouseClicked="#handleCreate" spacing="8" styleClass="clickable_box" GridPane.rowIndex="1">
+                    <Label styleClass="primary_label" text="Manage" />
+                    <Label styleClass="regular_label" text="Create and Edit Flashcards and Sets" />
                 </VBox>
 
                 <!-- Accuracy box -->
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box" GridPane.columnIndex="2">
-                    <Label styleClass="stat_number" text="-----"/>
-                    <Label styleClass="regular_label" text="Accuracy"/>
+                    <Label styleClass="stat_number" text="-----" />
+                    <Label styleClass="regular_label" text="Accuracy" />
                 </VBox>
 
             </GridPane>

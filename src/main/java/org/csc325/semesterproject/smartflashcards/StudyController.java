@@ -40,6 +40,9 @@ public class StudyController {
     // Index of the current card being shown
     private int index = 0;
 
+    //Set that would be initially shown
+    private String selectedSet;
+
     // Counters for known / unknown progress
     private int known = 0;
     private int unknown = 0;
@@ -61,6 +64,11 @@ public class StudyController {
 
     @FXML
     private Label welcomeLabel;
+
+    void setSelectedSet(String selectedSet) {
+        this.selectedSet = selectedSet;
+    }
+
 /*Initialization */
     @FXML
     public void initialize() {
@@ -95,7 +103,18 @@ public class StudyController {
                 for (CollectionReference c : cols) setNames.add(c.getId());
 
                 // Update UI safely
-                Platform.runLater(() -> setDropdown.getItems().setAll(setNames));
+                Platform.runLater(() -> {
+                    setDropdown.getItems().setAll(setNames);
+                    int initialSelectedIndex = setDropdown.getItems().indexOf(selectedSet);
+
+                    //If the selected set exists in the combobox, then it selected otherwise it defaults to the first item
+                    if (initialSelectedIndex >= 0) {
+                        setDropdown.getSelectionModel().select(initialSelectedIndex);
+                    }
+                    else {
+                        setDropdown.getSelectionModel().selectFirst();
+                    }
+                });
 
             } catch (Exception e) { e.printStackTrace(); }
         }).start();
