@@ -4,14 +4,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="rootVbox" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/landing_page.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.play_landing_controller">
+<VBox fx:id="rootVbox" prefHeight="600.0" prefWidth="800.0" styleClass="root"
+    stylesheets="@stylesheets/landing_page.css" xmlns="http://javafx.com/javafx/17.0.12"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="org.csc325.semesterproject.smartflashcards.play_landing_controller">
 
     <children>
 
         <!-- Back Button -->
         <VBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="600.0">
             <children>
-                <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="Back to main page" />
+                <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button"
+                    text="Back to main page" />
             </children>
             <padding>
                 <Insets bottom="10" left="10" top="10" />
@@ -46,7 +50,8 @@
                     <children>
 
                         <!-- Game 1 -->
-                        <VBox alignment="CENTER" onMouseClicked="#launchGame1" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame1" prefHeight="140"
+                            prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
                                 <Label styleClass="primary_label" text="Memory Game" />
                                 <Label styleClass="regular_label" text="Test your brain" />
@@ -54,15 +59,17 @@
                         </VBox>
 
                         <!-- Game 2 (CENTERED) -->
-                        <VBox alignment="CENTER" onMouseClicked="#launchGame2" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame2" prefHeight="140"
+                            prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
                                 <Label styleClass="primary_label" text="Quiz" />
-                                <Label styleClass="regular_label" text="Coming Soon" />
+                                <Label styleClass="regular_label" text="Quiz Yourself" />
                             </children>
                         </VBox>
 
                         <!-- Game 3 -->
-                        <VBox alignment="CENTER" onMouseClicked="#launchGame3" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame3" prefHeight="140"
+                            prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
                                 <Label styleClass="primary_label" text="Game 3" />
                                 <Label styleClass="regular_label" text="Coming Soon" />
