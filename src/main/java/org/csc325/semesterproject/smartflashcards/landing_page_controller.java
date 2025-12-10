@@ -1,18 +1,14 @@
 package org.csc325.semesterproject.smartflashcards;
 
-import javafx.scene.Node;
-
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
@@ -35,12 +31,12 @@ public class landing_page_controller {
     private Button logoutButton;
 
     // Popup components
-    static private VBox content = new VBox();
-    static private HBox buttonsHBox = new HBox();
-    static private Button createButton = new Button("Create");
-    static private Button closeButton = new Button("Close");
-    static private TextField setField = new TextField();
-    static private PopOver popover = new PopOver(content);
+    static private final VBox content = new VBox();
+    static private final HBox buttonsHBox = new HBox();
+    static private final Button createButton = new Button("Create");
+    static private final Button closeButton = new Button("Close");
+    static private final TextField setField = new TextField();
+    static private final PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
 
     @FXML
@@ -154,7 +150,6 @@ public class landing_page_controller {
     /** Scene Switching */
     @FXML
     private void handleCreate() {
-        //switchScene("createFlashcard.fxml");
         try {
             FXMLLoader create = new FXMLLoader(getClass().getResource("createFlashcard.fxml"));
             Parent root = create.load();
@@ -174,7 +169,7 @@ public class landing_page_controller {
     @FXML
     // private void handleStudy(MouseEvent event) {switchScene(event,
     // "study_screen.fxml");} old version resizable
-    private void handleStudy(MouseEvent event) { // This is the new version of the study window nonresizable
+    private void handleStudy() { // This is the new version of the study window nonresizable
         try {
             FXMLLoader study = new FXMLLoader(getClass().getResource("study_screen.fxml"));
             Parent root = study.load();
@@ -192,7 +187,7 @@ public class landing_page_controller {
     }
 
     @FXML
-    private void handlePlay(MouseEvent event) {
+    private void handlePlay() {
         try {
             switchScene("play_landing.fxml");
         } catch (Exception e) {
@@ -201,7 +196,7 @@ public class landing_page_controller {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handleLogout() {
         FlashcardApplication.currentUser = null;
         try {
             FXMLLoader login = new FXMLLoader(getClass().getResource("login_screen.fxml"));

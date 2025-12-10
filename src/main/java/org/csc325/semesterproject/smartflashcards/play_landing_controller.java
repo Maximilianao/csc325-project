@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class play_landing_controller {
@@ -31,16 +30,13 @@ public class play_landing_controller {
 
 
     @FXML
-    public void launchGame1(MouseEvent event) {
+    public void launchGame1() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("memory_game.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
+            FXMLLoader login = new FXMLLoader(getClass().getResource("memory_game.fxml"));
+            Parent root = login.load();
 
-            // Get current window
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }

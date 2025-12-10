@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox fx:id="rootVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/landing_page.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.landing_page_controller">
     <VBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="600.0">
@@ -40,8 +41,11 @@
                 </rowConstraints>
                 <!-- Total Sets -->
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box">
-                    <Label fx:id="totalSetsLabel" styleClass="stat_number" text="0"/>
-                    <Label styleClass="regular_label" text="Total Sets"/>
+                    <Label fx:id="totalSetsLabel" styleClass="stat_number" text="0">
+                  <font>
+                     <Font size="16.0" />
+                  </font></Label>
+                    <Label styleClass="regular_label" text="Total Sets" />
                 </VBox>
 
                 <!-- Current Set Dropdown -->
