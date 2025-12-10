@@ -18,21 +18,35 @@ import java.util.*;
 
 public class StudyController {
 
-    @FXML private ComboBox<String> setDropdown;
-    @FXML private Label progressLabel;
-    @FXML private Label cardCounterLabel;
-    @FXML private Label sideLabel;
-    @FXML private Label flashcardText;
-    @FXML private StackPane flashcardContainer;
+    @FXML
+    private ComboBox<String> setDropdown;
+    @FXML
+    private Label progressLabel;
+    @FXML
+    private Label cardCounterLabel;
+    @FXML
+    private Label sideLabel;
+    @FXML
+    private Label flashcardText;
+    @FXML
+    private StackPane flashcardContainer;
 
-    @FXML private Button prevCardButton;
-    @FXML private Button nextCardButton;
-    @FXML private Button flipButton;
-    @FXML private Button knownButton;
-    @FXML private Button unknownButton;
-    @FXML private Button restartButton;
-    @FXML private Button logoutButton;
-    @FXML private Button landingPageButton;
+    @FXML
+    private Button prevCardButton;
+    @FXML
+    private Button nextCardButton;
+    @FXML
+    private Button flipButton;
+    @FXML
+    private Button knownButton;
+    @FXML
+    private Button unknownButton;
+    @FXML
+    private Button restartButton;
+    @FXML
+    private Button logoutButton;
+    @FXML
+    private Button landingPageButton;
 
     // Holds all flashcards for the selected set
     private List<Flashcard> cards = new ArrayList<>();
@@ -59,7 +73,11 @@ public class StudyController {
     private static class Flashcard {
         String word;
         String definition;
-        Flashcard(String w, String d){ word = w; definition = d; }
+
+        Flashcard(String w, String d) {
+            word = w;
+            definition = d;
+        }
     }
 
     @FXML
@@ -87,20 +105,20 @@ public class StudyController {
         welcomeLabel.setText("Welcome, " + (currentUser != null ? currentUser : "") + "!");
     }
 
-/* Load sets from fire store */
+    /* Load sets from fire store */
 
     private void loadSets() {
         // Run Firestore call on background thread (never on JavaFX thread!)
         new Thread(() -> {
             try {
-                Iterable<CollectionReference> cols =
-                        FlashcardApplication.fstore
-                                .collection("Users")
-                                .document(FlashcardApplication.currentUser)
-                                .listCollections();
+                Iterable<CollectionReference> cols = FlashcardApplication.fstore
+                        .collection("Users")
+                        .document(FlashcardApplication.currentUser)
+                        .listCollections();
 
                 List<String> setNames = new ArrayList<>();
-                for (CollectionReference c : cols) setNames.add(c.getId());
+                for (CollectionReference c : cols)
+                    setNames.add(c.getId());
 
                 // Update UI safely
                 Platform.runLater(() -> {
@@ -116,22 +134,25 @@ public class StudyController {
                     }
                 });
 
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
-/* User selects a set for the type o topic   */
+    /* User selects a set for the type o topic */
 
     @FXML
     private void handleSetChange() {
         String selected = setDropdown.getValue();
-        if (selected == null) return;
+        if (selected == null)
+            return;
 
         FlashcardApplication.currentSet = selected;
         loadCards(selected);
     }
 
-/* Loads cards from fireStore */
+    /* Loads cards from fireStore */
 
     private void loadCards(String setName) {
 
@@ -139,12 +160,11 @@ public class StudyController {
 
         new Thread(() -> {
             try {
-                Iterable<DocumentReference> docs =
-                        FlashcardApplication.fstore
-                                .collection("Users")
-                                .document(FlashcardApplication.currentUser)
-                                .collection(setName)
-                                .listDocuments();
+                Iterable<DocumentReference> docs = FlashcardApplication.fstore
+                        .collection("Users")
+                        .document(FlashcardApplication.currentUser)
+                        .collection(setName)
+                        .listDocuments();
 
                 List<Flashcard> temp = new ArrayList<>();
 
@@ -158,7 +178,8 @@ public class StudyController {
                     if (id.startsWith("exists")) continue;
 
                     DocumentSnapshot snap = doc.get().get();
-                    if (!snap.exists()) continue;
+                    if (!snap.exists())
+                        continue;
 
                     // Skip any document explicitly labeled metadata
                     Object t = snap.get("type");
@@ -181,12 +202,14 @@ public class StudyController {
                     disableUI(false);
                 });
 
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }).start();
     }
 
-/* Reset Session */
+    /* Reset Session */
 
     private void restartSession() {
         index = 0;
@@ -196,7 +219,7 @@ public class StudyController {
         update();
     }
 
-/* Update text, counters and Colors */
+    /* Update text, counters and Colors */
 
     private void update() {
         Flashcard c = cards.get(index);
@@ -219,17 +242,21 @@ public class StudyController {
         }
     }
 
-/* Buttons Actions */
+    /* Buttons Actions */
 
-    @FXML private void handlePrevCard() {
-        if (flipping) return;
+    @FXML
+    private void handlePrevCard() {
+        if (flipping)
+            return;
         index = (index - 1 + cards.size()) % cards.size();
         frontSide = true;
         update();
     }
 
-    @FXML private void handleNextCard() {
-        if (flipping) return;
+    @FXML
+    private void handleNextCard() {
+        if (flipping)
+            return;
         index = (index + 1) % cards.size();
         frontSide = true;
         update();
@@ -272,31 +299,37 @@ public class StudyController {
         shrink.play();
     }
 
-/* Known and Unknow Logic */
+    /* Known and Unknow Logic */
 
-    @FXML private void handleMarkKnown() {
+    @FXML
+    private void handleMarkKnown() {
         known++;
         handleNextCard();
     }
 
-    @FXML private void handleMarkUnknown() {
+    @FXML
+    private void handleMarkUnknown() {
         unknown++;
         handleNextCard();
     }
 
-/* Restart, logout and return to landing page */
+    /* Restart, logout and return to landing page */
 
-    @FXML private void handleRestart() {
+    @FXML
+    private void handleRestart() {
         restartSession();
     }
 
-    @FXML private void handleLogout() {
+    @FXML
+    private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
             Parent root = loader.load();
             Scene scene = logoutButton.getScene();
             scene.setRoot(root);
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -312,21 +345,25 @@ public class StudyController {
         }
     }
 
-/* Keyboard Support */
+    /* Keyboard Support */
     private void setupKeys() {
         Platform.runLater(() -> {
             Scene sc = flashcardContainer.getScene();
-            if (sc == null) return;
+            if (sc == null)
+                return;
 
             sc.setOnKeyPressed(key -> {
-                if (key.getCode() == KeyCode.SPACE) handleFlipCard();
-                if (key.getCode() == KeyCode.RIGHT) handleNextCard();
-                if (key.getCode() == KeyCode.LEFT) handlePrevCard();
+                if (key.getCode() == KeyCode.SPACE)
+                    handleFlipCard();
+                if (key.getCode() == KeyCode.RIGHT)
+                    handleNextCard();
+                if (key.getCode() == KeyCode.LEFT)
+                    handlePrevCard();
             });
         });
     }
 
-/* Enable / Disable Buttons */
+    /* Enable / Disable Buttons */
     private void disableUI(boolean b) {
         prevCardButton.setDisable(b);
         nextCardButton.setDisable(b);
@@ -335,5 +372,4 @@ public class StudyController {
         unknownButton.setDisable(b);
         restartButton.setDisable(b);
     }
-    }
-
+}

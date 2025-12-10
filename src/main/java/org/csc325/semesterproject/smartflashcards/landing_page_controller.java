@@ -1,5 +1,7 @@
 package org.csc325.semesterproject.smartflashcards;
 
+import javafx.scene.Node;
+
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,7 +43,6 @@ public class landing_page_controller {
     static private PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
 
-
     @FXML
     public void initialize() {
 
@@ -60,8 +61,7 @@ public class landing_page_controller {
             content.getChildren().addAll(
                     new Label("New Set Name:"),
                     setField,
-                    buttonsHBox
-            );
+                    buttonsHBox);
 
             popoverBuilt = true;
         }
@@ -70,7 +70,8 @@ public class landing_page_controller {
         createButton.setOnAction(_ -> {
 
             String name = setField.getText().trim();
-            if (name.isEmpty()) return;
+            if (name.isEmpty())
+                return;
 
             createNewSetFirestore(name);
 
@@ -78,13 +79,12 @@ public class landing_page_controller {
             setField.clear();
 
             refreshSetDropdown();
-            setDropdown.setValue(name);   // auto-select new set
+            setDropdown.setValue(name); // auto-select new set
             FlashcardApplication.currentSet = name;
         });
 
         closeButton.setOnAction(_ -> popover.hide());
     }
-
 
     /** Refresh the dropdown list */
     private void refreshSetDropdown() {
@@ -114,7 +114,6 @@ public class landing_page_controller {
         totalSetsLabel.setText(String.valueOf(sets.size() - 2));
     }
 
-
     /** Matching the create page: create a real set + _meta doc */
     private void createNewSetFirestore(String setName) {
 
@@ -135,12 +134,12 @@ public class landing_page_controller {
         }
     }
 
-
     @FXML
     private void handleSetChange() {
         String selected = setDropdown.getValue();
 
-        if (selected == null) return;
+        if (selected == null)
+            return;
 
         if (selected.equals("-Create New Set-")) {
             popover.show(setDropdown);
@@ -151,7 +150,6 @@ public class landing_page_controller {
             FlashcardApplication.currentSet = selected;
         }
     }
-
 
     /** Scene Switching */
     @FXML
@@ -174,8 +172,9 @@ public class landing_page_controller {
     }
 
     @FXML
-   //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
-   private void handleStudy() {
+    // private void handleStudy(MouseEvent event) {switchScene(event,
+    // "study_screen.fxml");} old version resizable
+    private void handleStudy(MouseEvent event) { // This is the new version of the study window nonresizable
         try {
             FXMLLoader study = new FXMLLoader(getClass().getResource("study_screen.fxml"));
             Parent root = study.load();
@@ -200,7 +199,6 @@ public class landing_page_controller {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     private void handleLogout(ActionEvent event) {
@@ -228,7 +226,6 @@ public class landing_page_controller {
             e.printStackTrace();
         }
     }
-
 
     /** Delete a set and its flashcards */
     @FXML

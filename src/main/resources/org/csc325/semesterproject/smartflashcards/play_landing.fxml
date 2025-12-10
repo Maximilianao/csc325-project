@@ -64,8 +64,8 @@
                               onMouseClicked="#launchGame1"
                               prefWidth="180" prefHeight="140">
                             <children>
-                                <Label styleClass="primary_label" text="Game 1"/>
-                                <Label styleClass="regular_label" text="Coming Soon"/>
+                                <Label styleClass="primary_label" text="Memory Game"/>
+                                <Label styleClass="regular_label" text="Test your brain"/>
                             </children>
                         </VBox>
 

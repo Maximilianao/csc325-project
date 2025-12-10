@@ -10,6 +10,7 @@ module org.csc325.semesterproject.smartflashcards {
     requires javafx.graphics;
     requires javafx.base;
     requires org.controlsfx.controls;
+    requires java.desktop;
 
     opens org.csc325.semesterproject.smartflashcards to javafx.fxml;
     exports org.csc325.semesterproject.smartflashcards;

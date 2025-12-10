@@ -153,7 +153,7 @@ public class createFlashcardController {
                         .collection("Users")
                         .document(FlashcardApplication.currentUser)
                         .collection(name)
-                        .document("_meta");
+                        .document("exists_placeholder");
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("type", "metadata");

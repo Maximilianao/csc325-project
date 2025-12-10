@@ -31,8 +31,19 @@ public class play_landing_controller {
 
 
     @FXML
-    public void launchGame1() {
-        System.out.println("Game 1 placeholder clicked.");
+    public void launchGame1(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("memory_game.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            // Get current window
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
