@@ -379,6 +379,7 @@ public class matching_MiniGame_controller {
             Parent root = loader.load();
             Scene scene = logoutButton.getScene();
             scene.setRoot(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
