@@ -1,21 +1,17 @@
 package org.csc325.semesterproject.smartflashcards;
-import javafx.scene.Node;
+
 
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
@@ -36,12 +32,12 @@ public class landing_page_controller {
     private Button logoutButton;
 
     // Popup components
-    static private VBox content = new VBox();
-    static private HBox buttonsHBox = new HBox();
-    static private Button createButton = new Button("Create");
-    static private Button closeButton = new Button("Close");
-    static private TextField setField = new TextField();
-    static private PopOver popover = new PopOver(content);
+    static private final VBox content = new VBox();
+    static private final HBox buttonsHBox = new HBox();
+    static private final Button createButton = new Button("Create");
+    static private final Button closeButton = new Button("Close");
+    static private final TextField setField = new TextField();
+    static private final PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
 
 
@@ -70,7 +66,7 @@ public class landing_page_controller {
         }
 
         // Create Set Button Action
-        createButton.setOnAction(e -> {
+        createButton.setOnAction(_ -> {
 
             String name = setField.getText().trim();
             if (name.isEmpty()) return;
@@ -85,7 +81,7 @@ public class landing_page_controller {
             FlashcardApplication.currentSet = name;
         });
 
-        closeButton.setOnAction(e -> popover.hide());
+        closeButton.setOnAction(_ -> popover.hide());
     }
 
 
@@ -140,7 +136,7 @@ public class landing_page_controller {
 
 
     @FXML
-    private void handleSetChange(ActionEvent event) {
+    private void handleSetChange() {
         String selected = setDropdown.getValue();
 
         if (selected == null) return;
@@ -158,53 +154,70 @@ public class landing_page_controller {
 
     /** Scene Switching */
     @FXML
-    private void handleCreate(MouseEvent event) {
-        switchScene(event, "createFlashcard.fxml");
-    }
-
-    @FXML
-   //private void handleStudy(MouseEvent event) {switchScene(event, "study_screen.fxml");} old version resizable
-   private void handleStudy(MouseEvent event) { // study window nonresizable
+    private void handleCreate() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("study_screen.fxml"));
-            Parent root = loader.load();
+            FXMLLoader create = new FXMLLoader(getClass().getResource("createFlashcard.fxml"));
+            Parent root = create.load();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            createFlashcardController controller = create.getController();
 
-            // Set fixed window size  for the study screen
-            Scene scene = new Scene(root, 921, 685); // Window size to study screen only
-            stage.setScene(scene);
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
 
-            stage.setResizable(false);   //  only applied to this study  screen
-            stage.centerOnScreen();
-
-            stage.show();
-
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handlePlay(MouseEvent event) {
+    // private void handleStudy(MouseEvent event) {switchScene(event,
+    // "study_screen.fxml");} old version resizable
+    private void handleStudy() { // This is the new version of the study window nonresizable
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
+            FXMLLoader study = new FXMLLoader(getClass().getResource("study_screen.fxml"));
+            Parent root = study.load();
 
-            // Get the current stage
-            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            StudyController controller = study.getController();
+
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handlePlay() {
+        try {
+            switchScene("play_landing.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleLogout() {
         FlashcardApplication.currentUser = null;
         try {
-            FXMLLoader registration = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            FXMLLoader login = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = login.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader registration = new FXMLLoader(getClass().getResource(fxml));
             Parent root = registration.load();
 
             Scene currentScene = rootVbox.getScene();
@@ -215,23 +228,9 @@ public class landing_page_controller {
     }
 
 
-    private void switchScene(MouseEvent event, String fxml) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setResizable(true);// Restore resizable for ALL screens except study
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     /** Delete a set and its flashcards */
     @FXML
-    private void removeSet(ActionEvent event) {
+    private void removeSet() {
 
         String selected = setDropdown.getValue();
 

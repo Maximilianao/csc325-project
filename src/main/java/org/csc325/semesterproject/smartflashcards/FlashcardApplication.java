@@ -27,9 +27,9 @@ public class FlashcardApplication extends Application {
         fauth = FirebaseAuth.getInstance();
 
         FXMLLoader fxmlLoader = new FXMLLoader(FlashcardApplication.class.getResource("login_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setMinHeight(600);
-        stage.setMinWidth(800);
+        Scene scene = new Scene(fxmlLoader.load(),921, 685);
+        stage.setMinHeight(720.5);
+        stage.setMinWidth(934.0);
         stage.setTitle("Smart Flashcards");
         stage.setScene(scene);
         stage.show();

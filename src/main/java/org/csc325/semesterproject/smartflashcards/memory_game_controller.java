@@ -13,8 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -36,11 +36,16 @@ public class memory_game_controller {
 
     private String currentSet;
     private boolean busy = false; // <-- new flag
+    @FXML
+    private VBox rootVbox;
+    Timer timer = new Timer();
 
     @FXML
     public void initialize() {
         populateSets();
-        restartButton.setOnAction(e -> restartGame());
+        restartButton.setOnAction(_ -> restartGame());
+
+        Platform.runLater(()-> rootVbox.getScene().getWindow().setOnCloseRequest(_ -> timer.cancel()));
     }
 
     private void populateSets() {
@@ -67,7 +72,7 @@ public class memory_game_controller {
             loadCards();
         }
 
-        setDropdown.setOnAction(e -> {
+        setDropdown.setOnAction(_ -> {
             currentSet = setDropdown.getValue();
             loadCards();
         });
@@ -130,7 +135,7 @@ public class memory_game_controller {
         Text text = new Text("");
         card.getChildren().add(text);
 
-        card.setOnMouseClicked(e -> {
+        card.setOnMouseClicked(_ -> {
             if (busy || !text.getText().isEmpty()) return; // ignore clicks if busy or already flipped
             flipCard(card, value);
         });
@@ -143,7 +148,7 @@ public class memory_game_controller {
         ScaleTransition st = new ScaleTransition(Duration.millis(150), card);
         st.setFromX(1);
         st.setToX(0);
-        st.setOnFinished(e -> {
+        st.setOnFinished(_ -> {
             text.setText(value);
             ScaleTransition st2 = new ScaleTransition(Duration.millis(150), card);
             st2.setFromX(0);
@@ -165,7 +170,6 @@ public class memory_game_controller {
         String val1 = cardValues.get(firstCard);
         String val2 = cardValues.get(secondCard);
 
-        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -215,7 +219,7 @@ public class memory_game_controller {
         ScaleTransition st = new ScaleTransition(Duration.millis(150), card);
         st.setFromX(1);
         st.setToX(0);
-        st.setOnFinished(e -> {
+        st.setOnFinished(_ -> {
             text.setText("");
             ScaleTransition st2 = new ScaleTransition(Duration.millis(150), card);
             st2.setFromX(0);
@@ -247,11 +251,12 @@ public class memory_game_controller {
     @FXML
     private void handleBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
+            FXMLLoader login = new FXMLLoader(getClass().getResource("play_landing.fxml"));
+            Parent root = login.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+            timer.cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
