@@ -5,49 +5,39 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootVbox"
-      prefHeight="600.0"
-      prefWidth="800.0"
-      styleClass="root"
-      stylesheets="@stylesheets/landing_page.css"
-      xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.csc325.semesterproject.smartflashcards.play_landing_controller">
+<VBox fx:id="rootVbox" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@stylesheets/landing_page.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.play_landing_controller">
 
     <children>
 
         <!-- Back Button -->
         <VBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="600.0">
             <children>
-                <Button fx:id="backButton"
-                        onAction="#handleBack"
-                        text="Back to main page"
-                        styleClass="logout-button"/>
+                <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="Back to main page" />
             </children>
             <padding>
-                <Insets bottom="10" left="10" top="10"/>
+                <Insets bottom="10" left="10" top="10" />
             </padding>
         </VBox>
 
         <!-- Title + Accuracy -->
         <VBox alignment="TOP_CENTER" spacing="8">
             <children>
-                <Label styleClass="title_label" text="Play"/>
+                <Label styleClass="title_label" text="Play" />
 
                 <!-- Accuracy placeholder -->
                 <VBox alignment="CENTER" spacing="4">
                     <children>
-                        <Label styleClass="regular_label" text="Accuracy"/>
-                        <Label styleClass="stat_number" text="---"/>
+                        <Label styleClass="regular_label" text="Accuracy" />
+                        <Label styleClass="stat_number" text="---" />
                     </children>
                 </VBox>
 
-                <Label styleClass="subtitle_label"
-                       text="Choose a game to help memorize your cards"/>
+                <Label styleClass="subtitle_label" text="Choose a game to help memorize your cards" />
             </children>
             <padding>
-                <Insets top="20"/>
+                <Insets top="20" />
             </padding>
         </VBox>
 
@@ -59,35 +49,29 @@
                     <children>
 
                         <!-- Game 1 -->
-                        <VBox alignment="CENTER" spacing="8"
-                              styleClass="clickable_box"
-                              onMouseClicked="#launchGame1"
-                              prefWidth="180" prefHeight="140">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame1" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
-                                <Label styleClass="primary_label" text="Memory Game"/>
-                                <Label styleClass="regular_label" text="Test your brain"/>
+                                <Label styleClass="primary_label" text="Game 1" />
+                                <Label styleClass="regular_label" text="Coming Soon" />
                             </children>
                         </VBox>
 
                         <!-- Game 2 (CENTERED) -->
-                        <VBox alignment="CENTER" spacing="8"
-                              styleClass="clickable_box"
-                              onMouseClicked="#launchGame2"
-                              prefWidth="180" prefHeight="140">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame2" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
-                                <Label styleClass="primary_label" text="Game 2"/>
-                                <Label styleClass="regular_label" text="Coming Soon"/>
+                                <Label styleClass="primary_label" text="Game 2" />
+                                <Label styleClass="regular_label" text="Coming Soon" />
                             </children>
                         </VBox>
 
                         <!-- Game 3 -->
-                        <VBox alignment="CENTER" spacing="8"
-                              styleClass="clickable_box"
-                              onMouseClicked="#launchGame3"
-                              prefWidth="180" prefHeight="140">
+                        <VBox alignment="CENTER" onMouseClicked="#launchGame3" prefHeight="140" prefWidth="180" spacing="8" styleClass="clickable_box">
                             <children>
-                                <Label styleClass="primary_label" text="Game 3"/>
-                                <Label styleClass="regular_label" text="Coming Soon"/>
+                                <Label styleClass="primary_label" text="Flashcard Match" />
+                                <Label prefHeight="91.0" prefWidth="154.0" styleClass="regular_label" text="Test your memory under pressure!">
+                           <font>
+                              <Font name="System Italic" size="12.0" />
+                           </font></Label>
                             </children>
                         </VBox>
 
@@ -97,7 +81,7 @@
             </children>
 
             <padding>
-                <Insets top="40" bottom="40"/>
+                <Insets bottom="40" top="40" />
             </padding>
         </VBox>
 
