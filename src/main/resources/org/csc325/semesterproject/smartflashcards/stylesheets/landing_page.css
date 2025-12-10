@@ -120,3 +120,14 @@
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
+
+.primary_button {
+    -fx-background-color: #1B1B1B;
+    -fx-text-fill: white;
+}
+
+.primary_button:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
+}

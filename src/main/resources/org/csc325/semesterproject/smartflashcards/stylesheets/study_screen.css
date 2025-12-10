@@ -17,6 +17,23 @@
     -fx-background-color: #5a6268;
 }
 
+.combo-box {
+    -fx-background-color: #FCFEFF;
+    -fx-border-color: #1B1B1B;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1C1B1B;
+    -fx-padding: 6 10;
+    -fx-pref-width: 160px;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
 /* Label Styling */
 .study-label {
     -fx-text-fill: #1f2937;   /* Deep grey */
