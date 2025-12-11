@@ -1,6 +1,7 @@
 package org.csc325.semesterproject.smartflashcards;
 
 
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class landing_page_controller {
     @FXML
@@ -31,6 +33,9 @@ public class landing_page_controller {
     @FXML
     private Button logoutButton;
 
+    @FXML
+    private Label accuracyLabel;
+
     // Popup components
     static private final VBox content = new VBox();
     static private final HBox buttonsHBox = new HBox();
@@ -39,6 +44,7 @@ public class landing_page_controller {
     static private final TextField setField = new TextField();
     static private final PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
+
 
 
     @FXML
@@ -149,6 +155,7 @@ public class landing_page_controller {
         if (!selected.equals("-No Set Selected-")) {
             FlashcardApplication.currentSet = selected;
         }
+        loadAccuracy();
     }
 
 
@@ -255,5 +262,25 @@ public class landing_page_controller {
 
         FlashcardApplication.currentSet = null;
         refreshSetDropdown();
+    }
+
+    private void loadAccuracy() {
+        int totalAccuracy = 4;
+        int currentAccuracy = 0;
+        double percentage = 0.0;
+
+
+        Iterable<DocumentReference> completedFlashcards = FlashcardApplication.fstore
+                .collection("UserProgress")
+                .document(FlashcardApplication.currentUser)
+                .collection(FlashcardApplication.currentSet)
+                .listDocuments();
+
+        for (DocumentReference flashcard : completedFlashcards) {
+            currentAccuracy++;
+        }
+        percentage = (double)(currentAccuracy) / (double)(totalAccuracy);
+        percentage = percentage * 100;
+        accuracyLabel.setText(percentage + "%");
     }
 }

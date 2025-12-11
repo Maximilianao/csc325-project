@@ -172,6 +172,7 @@ public class quizController {
 
         } else {
             question = "no more definitions";
+
         }
         questionLabel.setText(question);
 
@@ -292,6 +293,7 @@ public class quizController {
             buttonB.disableProperty().set(true);
             buttonC.disableProperty().set(true);
             buttonD.disableProperty().set(true);
+            quizCorrectAnswer();
         }
     }
 
@@ -299,7 +301,6 @@ public class quizController {
     private void aChecker() {
         if (location.equals("buttonA")) {
             correctOutputLabel.setText("Correct!");
-            quizCorrectAnswer();
         } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
@@ -315,7 +316,6 @@ public class quizController {
     private void bChecker() {
         if (location.equals("buttonB")) {
             correctOutputLabel.setText("Correct!");
-            quizCorrectAnswer();
         } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
@@ -330,7 +330,6 @@ public class quizController {
     private void cChecker() {
         if (location.equals("buttonC")) {
             correctOutputLabel.setText("Correct!");
-            quizCorrectAnswer();
         } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
@@ -345,7 +344,6 @@ public class quizController {
     private void dChecker() {
         if (location.equals("buttonD")) {
             correctOutputLabel.setText("Correct!");
-            quizCorrectAnswer();
         } else {
             correctOutputLabel.setText("The correct answer is: " + correctAns);
         }
@@ -376,7 +374,7 @@ public class quizController {
                     .collection("UserProgress")
                     .document(FlashcardApplication.currentUser)
                     .collection(FlashcardApplication.currentSet)
-                    .document(correctAns + "Quiz");
+                    .document( FlashcardApplication.currentSet + "Quiz");
 
             Map<String, Object> data = new HashMap<>();
             data.put("Completed", "Yes");

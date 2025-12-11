@@ -75,7 +75,7 @@
 
                 <!-- Accuracy box -->
                 <VBox alignment="CENTER" spacing="8" styleClass="stat_box" GridPane.columnIndex="2">
-                    <Label styleClass="stat_number" text="-----" />
+                    <Label fx:id="accuracyLabel" styleClass="stat_number" text="-----" />
                     <Label styleClass="regular_label" text="Accuracy" />
                 </VBox>
 

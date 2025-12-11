@@ -419,6 +419,26 @@ public class matching_MiniGame_controller {
     }
 
     private boolean isGameFinished() {
+        matchingCorrectAnswer();
         return termButtonMap.keySet().stream().allMatch(Button::isDisable);
+
+    }
+
+    private void matchingCorrectAnswer() {
+
+        try {
+            DocumentReference docRef = FlashcardApplication.fstore
+                    .collection("UserProgress")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(FlashcardApplication.currentSet)
+                    .document(FlashcardApplication.currentSet + "Matching");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("Completed", "Yes");
+            docRef.set(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

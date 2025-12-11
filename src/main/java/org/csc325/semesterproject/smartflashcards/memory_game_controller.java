@@ -209,6 +209,7 @@ public class memory_game_controller {
                 });
             }
         }, 500);
+
     }
 
     private boolean isMatch(String a, String b) {
@@ -282,6 +283,7 @@ public class memory_game_controller {
                 alert.setHeaderText(null);
                 alert.setContentText("Congratulations! You matched all the cards!");
                 alert.showAndWait();
+                memoryCorrectAnswer();
             });
         }
     }
@@ -301,6 +303,24 @@ public class memory_game_controller {
             scene.setRoot(root);
 
             timer.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void memoryCorrectAnswer() {
+
+        try {
+            DocumentReference docRef = FlashcardApplication.fstore
+                    .collection("UserProgress")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(currentSet)
+                    .document(currentSet + "Memorize");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("Completed", "Yes");
+            docRef.set(data);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

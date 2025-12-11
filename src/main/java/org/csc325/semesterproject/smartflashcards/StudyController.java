@@ -240,6 +240,9 @@ public class StudyController {
         } else {
             flashcardContainer.getStyleClass().add("flashcard-back");
         }
+        if(known == cards.size()) {
+            studyCompleted();
+        }
     }
 
     /* Buttons Actions */
@@ -371,5 +374,23 @@ public class StudyController {
         knownButton.setDisable(b);
         unknownButton.setDisable(b);
         restartButton.setDisable(b);
+    }
+
+    private void studyCompleted() {
+
+        try {
+            DocumentReference docRef = FlashcardApplication.fstore
+                    .collection("UserProgress")
+                    .document(FlashcardApplication.currentUser)
+                    .collection(FlashcardApplication.currentSet)
+                    .document(FlashcardApplication.currentSet + "Study");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("Completed", "Yes");
+            docRef.set(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
