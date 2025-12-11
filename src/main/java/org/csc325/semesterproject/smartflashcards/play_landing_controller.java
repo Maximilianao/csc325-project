@@ -53,7 +53,7 @@ public class play_landing_controller {
             Scene scene = new Scene(loader.load(), 800, 600);
 
             // Get current window
-            Stage stage = (Stage) backButton.getScene().getWindow();
+            Stage stage = (Stage) rootVbox.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
 
