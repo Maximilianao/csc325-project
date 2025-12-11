@@ -13,8 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -30,21 +30,31 @@ public class memory_game_controller {
     @FXML
     private GridPane cardGrid;
 
+    @FXML
+    private VBox rootVbox;
+
     private Map<StackPane, String> cardValues = new HashMap<>();
     private StackPane firstCard = null;
     private StackPane secondCard = null;
 
     private String currentSet;
-    private boolean busy = false; // <-- new flag
+    private boolean busy = false;
+
+    private Timer timer = new Timer();
 
     @FXML
     public void initialize() {
         populateSets();
-        restartButton.setOnAction(e -> restartGame());
+        restartButton.setOnAction(_ -> restartGame());
+
+        Platform.runLater(() ->
+                rootVbox.getScene().getWindow().setOnCloseRequest(_ -> timer.cancel())
+        );
     }
 
     private void populateSets() {
         ObservableList<String> sets = javafx.collections.FXCollections.observableArrayList();
+
         try {
             Iterable<CollectionReference> collections = FlashcardApplication.fstore
                     .collection("Users")
@@ -67,7 +77,7 @@ public class memory_game_controller {
             loadCards();
         }
 
-        setDropdown.setOnAction(e -> {
+        setDropdown.setOnAction(_ -> {
             currentSet = setDropdown.getValue();
             loadCards();
         });
@@ -83,6 +93,7 @@ public class memory_game_controller {
         if (currentSet == null) return;
 
         List<String> items = new ArrayList<>();
+
         try {
             Iterable<DocumentReference> docs = FlashcardApplication.fstore
                     .collection("Users")
@@ -98,6 +109,7 @@ public class memory_game_controller {
                 if (snap.exists() && !"metadata".equals(snap.getString("type"))) {
                     String word = id;
                     String def = snap.getString("Definition") == null ? "" : snap.getString("Definition");
+
                     items.add(word);
                     items.add(def);
                 }
@@ -125,13 +137,13 @@ public class memory_game_controller {
     private StackPane createCard(String value) {
         StackPane card = new StackPane();
         card.setPrefSize(120, 80);
-        card.getStyleClass().add("clickable_box");
+        card.getStyleClass().add("card-face-down");
 
-        Text text = new Text("");
+        Text text = new Text("?");
         card.getChildren().add(text);
 
-        card.setOnMouseClicked(e -> {
-            if (busy || !text.getText().isEmpty()) return; // ignore clicks if busy or already flipped
+        card.setOnMouseClicked(_ -> {
+            if (busy || !text.getText().equals("?")) return;
             flipCard(card, value);
         });
 
@@ -139,48 +151,64 @@ public class memory_game_controller {
     }
 
     private void flipCard(StackPane card, String value) {
+        //Prevent selecting the same card twice
+        if (firstCard == card) return;
+
         Text text = (Text) card.getChildren().get(0);
+
         ScaleTransition st = new ScaleTransition(Duration.millis(150), card);
         st.setFromX(1);
         st.setToX(0);
-        st.setOnFinished(e -> {
+
+        st.setOnFinished(_ -> {
             text.setText(value);
+            card.getStyleClass().remove("card-face-down");
+            card.getStyleClass().add("card-face-up");
+
             ScaleTransition st2 = new ScaleTransition(Duration.millis(150), card);
             st2.setFromX(0);
             st2.setToX(1);
             st2.play();
         });
+
         st.play();
 
+        // First card selection
         if (firstCard == null) {
             firstCard = card;
-        } else {
-            secondCard = card;
-            busy = true; // disable clicks until match is checked
-            checkMatch();
+            return;
         }
+
+        // Second card selection
+        secondCard = card;
+        busy = true;
+        checkMatch();
     }
+
 
     private void checkMatch() {
         String val1 = cardValues.get(firstCard);
         String val2 = cardValues.get(secondCard);
 
-        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    if (!isMatch(val1, val2)) {
+                    if (isMatch(val1, val2)) {
+                        markAsMatched(firstCard);
+                        markAsMatched(secondCard);
+                    } else {
                         flipBack(firstCard);
                         flipBack(secondCard);
                     }
+
                     firstCard = null;
                     secondCard = null;
-                    busy = false; // re-enable clicks
+                    busy = false;
                     checkWin();
                 });
             }
-        }, 500); // short delay so player can see second card
+        }, 500);
     }
 
     private boolean isMatch(String a, String b) {
@@ -199,35 +227,54 @@ public class memory_game_controller {
                 if (snap.exists() && !"metadata".equals(snap.getString("type"))) {
                     String word = id;
                     String def = snap.getString("Definition") == null ? "" : snap.getString("Definition");
-                    if ((a.equals(word) && b.equals(def)) || (a.equals(def) && b.equals(word))) {
+
+                    if ((a.equals(word) && b.equals(def)) ||
+                            (a.equals(def) && b.equals(word))) {
                         return true;
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
+
         return false;
+    }
+
+    private void markAsMatched(StackPane card) {
+        card.getStyleClass().remove("card-face-up");
+        if (!card.getStyleClass().contains("card-matched")) {
+            card.getStyleClass().add("card-matched");
+        }
     }
 
     private void flipBack(StackPane card) {
         Text text = (Text) card.getChildren().get(0);
+
         ScaleTransition st = new ScaleTransition(Duration.millis(150), card);
         st.setFromX(1);
         st.setToX(0);
-        st.setOnFinished(e -> {
-            text.setText("");
+
+        st.setOnFinished(_ -> {
+            text.setText("?");
+            card.getStyleClass().removeAll("card-face-up", "card-matched");
+
+            if (!card.getStyleClass().contains("card-matched")) {
+                card.getStyleClass().add("card-face-down");
+            }
+
             ScaleTransition st2 = new ScaleTransition(Duration.millis(150), card);
             st2.setFromX(0);
             st2.setToX(1);
             st2.play();
         });
+
         st.play();
     }
 
     private void checkWin() {
         boolean allFlipped = cardGrid.getChildren().stream()
-                .allMatch(card -> !((Text)((StackPane)card).getChildren().get(0)).getText().isEmpty());
+                .allMatch(card -> !((Text)((StackPane)card).getChildren().get(0))
+                        .getText().equals("?"));
+
         if (allFlipped) {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -249,9 +296,11 @@ public class memory_game_controller {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
+
+            Scene scene = rootVbox.getScene();
+            scene.setRoot(root);
+
+            timer.cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }

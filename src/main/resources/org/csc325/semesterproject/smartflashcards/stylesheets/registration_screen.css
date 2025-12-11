@@ -42,6 +42,7 @@
 }
 
 .primary_button:hover {
-    -fx-background-color: #4D4A49;
-    -fx-text-fill: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
 }

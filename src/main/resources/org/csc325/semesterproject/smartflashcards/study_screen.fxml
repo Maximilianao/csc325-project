@@ -12,84 +12,87 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="921.0" styleClass="root" stylesheets="@stylesheets/study_screen.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.StudyController">
-   <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="942.0">
-         <top>
+<VBox fx:id="rootVbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="685.0" prefWidth="921.0" styleClass="root"
+      stylesheets="@stylesheets/study_screen.css" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.csc325.semesterproject.smartflashcards.StudyController">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0"
+                prefWidth="942.0">
+        <top>
             <HBox prefWidth="942.0" spacing="15" BorderPane.alignment="CENTER">
-               <padding>
-                  <Insets bottom="15" left="15" right="15" top="15" />
-               </padding>
-               <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="907.0">
-                     <children>
-                        <Pane prefHeight="100.0" prefWidth="929.0" styleClass="pane" stylesheets="@stylesheets/study_screen.css">
-                           <children>
-                               <!-- Welcome label -->
-                               <Label fx:id="welcomeLabel" styleClass="welcome_label" text="Welcome!" layoutX="400" layoutY="40" />
-                               <Button fx:id="logoutButton" alignment="TOP_RIGHT" layoutX="800" layoutY="5" onAction="#handleLogout" stylesheets="@stylesheets/study_screen.css" text="Log out" />
-                               <Label layoutX="30" layoutY="20" text="Select Set" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold Italic" size="16.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="setDropdown" layoutX="130" layoutY="16" onAction="#handleSetChange" prefWidth="180" />
-                              <Separator layoutX="0" layoutY="70" prefWidth="900" />
-                           </children>
-                        </Pane>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-         </top>
-         <center>
-            <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="662.0" prefWidth="949.0" spacing="25" BorderPane.alignment="CENTER">
-               <padding>
-                  <Insets bottom="40" left="40" right="40" top="40" />
-               </padding>
-               <children>
-                  <Pane prefHeight="40" prefWidth="500">
-                     <children>
-                        <Label fx:id="cardCounterLabel" layoutX="50" layoutY="5" styleClass="study-label" stylesheets="@stylesheets/study_screen.css" text="Card 1/10" />
-                        <Label fx:id="sideLabel" layoutX="419.0" layoutY="5.0" styleClass="study-label" stylesheets="@stylesheets/study_screen.css" text="Front" />
-                     </children>
-                  </Pane>
-                  <StackPane fx:id="flashcardContainer" prefHeight="215.0" prefWidth="776.0" styleClass="flashcard-front" stylesheets="@stylesheets/study_screen.css">
-                     <children>
-                        <Label fx:id="flashcardText" alignment="CENTER" text="Front of Card" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font size="20" />
-                           </font>
+                <padding>
+                    <Insets bottom="15" left="15" right="15" top="15"/>
+                </padding>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="907.0">
+                    <Pane prefHeight="100.0" prefWidth="929.0" styleClass="pane"
+                          stylesheets="@stylesheets/study_screen.css">
+                        <!-- Welcome label -->
+                        <Label fx:id="welcomeLabel" layoutX="400" layoutY="40" styleClass="welcome_label"
+                               text="Welcome!"/>
+                        <Button fx:id="logoutButton" alignment="TOP_RIGHT" layoutX="800" layoutY="5"
+                                onAction="#handleLogout" stylesheets="@stylesheets/study_screen.css"
+                                text="Log out"/>
+                        <Label layoutX="30" layoutY="20" text="Select Set" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold Italic" size="16.0"/>
+                            </font>
                         </Label>
-                     </children>
-                  </StackPane>
-                  <HBox alignment="CENTER" spacing="20">
-                     <children>
-                        <Button fx:id="knownButton" onAction="#handleMarkKnown" stylesheets="@stylesheets/study_screen.css" text="Mark Known" />
-                        <Button fx:id="unknownButton" onAction="#handleMarkUnknown" stylesheets="@stylesheets/study_screen.css" text="Mark Unknown" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" spacing="15">
-                     <children>
-                        <Button fx:id="prevCardButton" onAction="#handlePrevCard" styleClass="nav-button" stylesheets="@stylesheets/study_screen.css" text="&lt; Prev" />
-                        <Button fx:id="flipButton" onAction="#handleFlipCard" styleClass="nav-button" stylesheets="@stylesheets/study_screen.css" text="Flip" />
-                        <Button fx:id="nextCardButton" onAction="#handleNextCard" styleClass="nav-button" stylesheets="@stylesheets/study_screen.css" text="Next &gt;" />
-                        <Button fx:id="restartButton" onAction="#handleRestart" stylesheets="@stylesheets/study_screen.css" text="Restart" />
-                     </children>
-                  </HBox>
-               </children>
+                        <ComboBox fx:id="setDropdown" layoutX="130" layoutY="16" onAction="#handleSetChange"
+                                  prefWidth="180"/>
+                        <Separator layoutX="0" layoutY="70" prefWidth="900"/>
+                    </Pane>
+                </HBox>
+            </HBox>
+        </top>
+        <center>
+            <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="662.0" prefWidth="949.0" spacing="25"
+                  BorderPane.alignment="CENTER">
+                <padding>
+                    <Insets bottom="40" left="40" right="40" top="40"/>
+                </padding>
+                <Pane prefHeight="40" prefWidth="500">
+                    <Label fx:id="cardCounterLabel" layoutX="50" layoutY="5" styleClass="study-label"
+                           stylesheets="@stylesheets/study_screen.css" text="Card 1/10"/>
+                    <Label fx:id="sideLabel" layoutX="419.0" layoutY="5.0" styleClass="study-label"
+                           stylesheets="@stylesheets/study_screen.css" text="Front"/>
+                </Pane>
+                <StackPane fx:id="flashcardContainer" prefHeight="215.0" prefWidth="776.0"
+                           styleClass="flashcard-front" stylesheets="@stylesheets/study_screen.css">
+                    <Label fx:id="flashcardText" alignment="CENTER" text="Front of Card" textAlignment="CENTER"
+                           wrapText="true">
+                        <font>
+                            <Font size="20"/>
+                        </font>
+                    </Label>
+                </StackPane>
+                <HBox alignment="CENTER" spacing="20">
+                    <Button fx:id="knownButton" onAction="#handleMarkKnown"
+                            stylesheets="@stylesheets/study_screen.css" text="Mark Known"/>
+                    <Button fx:id="unknownButton" onAction="#handleMarkUnknown"
+                            stylesheets="@stylesheets/study_screen.css" text="Mark Unknown"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="15">
+                    <Button fx:id="prevCardButton" onAction="#handlePrevCard" styleClass="nav-button"
+                            stylesheets="@stylesheets/study_screen.css" text="&lt; Prev"/>
+                    <Button fx:id="flipButton" onAction="#handleFlipCard" styleClass="nav-button"
+                            stylesheets="@stylesheets/study_screen.css" text="Flip"/>
+                    <Button fx:id="nextCardButton" onAction="#handleNextCard" styleClass="nav-button"
+                            stylesheets="@stylesheets/study_screen.css" text="Next &gt;"/>
+                    <Button fx:id="restartButton" onAction="#handleRestart"
+                            stylesheets="@stylesheets/study_screen.css" text="Restart"/>
+                </HBox>
             </VBox>
-         </center>
-         <bottom>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="83.0" prefWidth="934.0" styleClass="pane" stylesheets="@stylesheets/study_screen.css">
-               <children>
-                  <Separator layoutX="0" layoutY="3.0" prefHeight="5.0" prefWidth="928.0" />
-                  <Label layoutX="20" layoutY="35" text="Progress" textFill="WHITE" />
-                  <Label fx:id="progressLabel" layoutX="110" layoutY="35" text="0/0" textFill="WHITE" />
-                  <Button fx:id="landingPageButton" layoutX="736.0" layoutY="26.0" onAction="#backToLanding" styleClass="landing-btn" stylesheets="@stylesheets/study_screen.css" text="Back to Main Page" />
-               </children>
+        </center>
+        <bottom>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                  prefHeight="83.0" prefWidth="934.0" styleClass="pane" stylesheets="@stylesheets/study_screen.css">
+                <Separator layoutX="0" layoutY="3.0" prefHeight="5.0" prefWidth="928.0"/>
+                <Label layoutX="20" layoutY="35" text="Progress" textFill="WHITE"/>
+                <Label fx:id="progressLabel" layoutX="110" layoutY="35" text="0/0" textFill="WHITE"/>
+                <Button fx:id="landingPageButton" layoutX="736.0" layoutY="26.0" onAction="#backToLanding"
+                        styleClass="landing-btn" stylesheets="@stylesheets/study_screen.css"
+                        text="Back to Main Page"/>
             </Pane>
-         </bottom>
-      </BorderPane>
-   </children>
+        </bottom>
+    </BorderPane>
 </VBox>

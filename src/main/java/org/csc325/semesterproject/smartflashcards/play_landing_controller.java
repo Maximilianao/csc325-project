@@ -2,25 +2,29 @@ package org.csc325.semesterproject.smartflashcards;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class play_landing_controller {
 
+    @FXML
     public Button backButton;
+    @FXML
+    private VBox rootVbox;
 
     @FXML
     private void handleBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("landing_page.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
+            FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
+            Parent root = registration.load();
 
-            // Get current stage from ANY node in the current view
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,16 +33,13 @@ public class play_landing_controller {
 
 
     @FXML
-    public void launchGame1(MouseEvent event) {
+    public void launchGame1() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("memory_game.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
+            FXMLLoader login = new FXMLLoader(getClass().getResource("memory_game.fxml"));
+            Parent root = login.load();
 
-            // Get current window
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,6 +64,27 @@ public class play_landing_controller {
 
     @FXML
     public void launchGame3(MouseEvent event) {
-        System.out.println("Game 3 placeholder clicked.");
+        System.out.println("Launching Matching Terms with Definitions Game...");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("matching_MiniGame_screen.fxml")
+            );
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Fixed size ONLY for the mini-game
+            Scene scene = new Scene(root, 1116, 674);
+            stage.setScene(scene);
+
+            //  Lock resizing ONLY for this screen
+            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

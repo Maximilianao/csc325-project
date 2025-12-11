@@ -1,0 +1,112 @@
+/* Global Mini-Game Styles  */
+
+.root {
+    -fx-background-color: #E0E3E3;
+    -fx-font-family: "Segoe UI", "System";
+}
+
+/* Generic buttons */
+.button {
+    -fx-background-radius: 8;
+    -fx-padding: 8 16 8 16;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+/* Top bar buttons */
+#backButton {
+    -fx-background-color: #4b5563;         /* dark gray */
+    -fx-text-fill: white;
+}
+
+#logoutButton {
+    -fx-background-color: #e63946;         /* red */
+    -fx-text-fill: white;
+}
+
+/* Bottom action buttons */
+#checkMatchButton {
+    -fx-background-color: #10b981;         /* green */
+    -fx-text-fill: white;
+}
+
+#resetGameButton {
+    -fx-background-color: #2563eb;         /* blue */
+    -fx-text-fill: white;
+}
+
+/* Set dropdown */
+#setDropdown {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5f5;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+/*  Columns & Scroll Areas */
+
+.terms-column,
+.definitions-column {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Term / Definition Buttons */
+
+.term-button {
+    -fx-background-color: linear-gradient(to bottom, #dbeafe, #bfdbfe);
+    -fx-text-fill: #1e3a8a;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: transparent;
+    -fx-wrap-text: true;
+}
+
+.definition-button {
+    -fx-background-color: linear-gradient(to bottom, #fef9c3, #fde68a);
+    -fx-text-fill: #78350f;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: transparent;
+    -fx-wrap-text: true;
+}
+
+/* Selected states */
+.selected-term {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 2;
+}
+
+.selected-definition {
+    -fx-border-color: #f97316;
+    -fx-border-width: 2;
+}
+
+/* Matched (correct) state */
+.matched {
+    -fx-background-color: linear-gradient(to bottom, #bbf7d0, #6ee7b7);
+    -fx-text-fill: #064e3b;
+}
+
+/* Disabled buttons (already matched) */
+.button:disabled {
+    -fx-opacity: 0.7;
+}
+
+/* Bottom Status Text */
+
+#messageLabel {
+    -fx-text-fill: #111827;
+    -fx-font-size: 13px;
+}

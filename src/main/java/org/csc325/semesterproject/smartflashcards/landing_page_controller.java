@@ -1,22 +1,17 @@
 package org.csc325.semesterproject.smartflashcards;
 
-import javafx.scene.Node;
 
 import com.google.cloud.firestore.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
@@ -37,13 +32,14 @@ public class landing_page_controller {
     private Button logoutButton;
 
     // Popup components
-    static private VBox content = new VBox();
-    static private HBox buttonsHBox = new HBox();
-    static private Button createButton = new Button("Create");
-    static private Button closeButton = new Button("Close");
-    static private TextField setField = new TextField();
-    static private PopOver popover = new PopOver(content);
+    static private final VBox content = new VBox();
+    static private final HBox buttonsHBox = new HBox();
+    static private final Button createButton = new Button("Create");
+    static private final Button closeButton = new Button("Close");
+    static private final TextField setField = new TextField();
+    static private final PopOver popover = new PopOver(content);
     static private boolean popoverBuilt = false;
+
 
     @FXML
     public void initialize() {
@@ -63,17 +59,17 @@ public class landing_page_controller {
             content.getChildren().addAll(
                     new Label("New Set Name:"),
                     setField,
-                    buttonsHBox);
+                    buttonsHBox
+            );
 
             popoverBuilt = true;
         }
 
         // Create Set Button Action
-        createButton.setOnAction(e -> {
+        createButton.setOnAction(_ -> {
 
             String name = setField.getText().trim();
-            if (name.isEmpty())
-                return;
+            if (name.isEmpty()) return;
 
             createNewSetFirestore(name);
 
@@ -81,12 +77,13 @@ public class landing_page_controller {
             setField.clear();
 
             refreshSetDropdown();
-            setDropdown.setValue(name); // auto-select new set
+            setDropdown.setValue(name);   // auto-select new set
             FlashcardApplication.currentSet = name;
         });
 
-        closeButton.setOnAction(e -> popover.hide());
+        closeButton.setOnAction(_ -> popover.hide());
     }
+
 
     /** Refresh the dropdown list */
     private void refreshSetDropdown() {
@@ -116,6 +113,7 @@ public class landing_page_controller {
         totalSetsLabel.setText(String.valueOf(sets.size() - 2));
     }
 
+
     /** Matching the create page: create a real set + _meta doc */
     private void createNewSetFirestore(String setName) {
 
@@ -136,12 +134,12 @@ public class landing_page_controller {
         }
     }
 
+
     @FXML
-    private void handleSetChange(ActionEvent event) {
+    private void handleSetChange() {
         String selected = setDropdown.getValue();
 
-        if (selected == null)
-            return;
+        if (selected == null) return;
 
         if (selected.equals("-Create New Set-")) {
             popover.show(setDropdown);
@@ -153,56 +151,73 @@ public class landing_page_controller {
         }
     }
 
+
     /** Scene Switching */
     @FXML
-    private void handleCreate(MouseEvent event) {
-        switchScene(event, "createFlashcard.fxml");
+    private void handleCreate() {
+        try {
+            FXMLLoader create = new FXMLLoader(getClass().getResource("createFlashcard.fxml"));
+            Parent root = create.load();
+
+            createFlashcardController controller = create.getController();
+
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     // private void handleStudy(MouseEvent event) {switchScene(event,
     // "study_screen.fxml");} old version resizable
-    private void handleStudy(MouseEvent event) { // This is the new version of the study window nonresizable
+    private void handleStudy() { // This is the new version of the study window nonresizable
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("study_screen.fxml"));
-            Parent root = loader.load();
+            FXMLLoader study = new FXMLLoader(getClass().getResource("study_screen.fxml"));
+            Parent root = study.load();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            StudyController controller = study.getController();
 
-            // Set fixed window size for the study screen
-            Scene scene = new Scene(root, 921, 685); // Window size to study screen only
-            stage.setScene(scene);
+            //Sets the current selected set so that it is shown when study mode is shown
+            controller.setSelectedSet(setDropdown.getValue());
 
-            stage.setResizable(false); // only applied to this study screen
-            stage.centerOnScreen();
-
-            stage.show();
-
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handlePlay(MouseEvent event) {
+    private void handlePlay() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("play_landing.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-
-            // Get the current stage
-            Stage stage = (Stage) ((VBox) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            switchScene("play_landing.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handleLogout() {
         FlashcardApplication.currentUser = null;
         try {
-            FXMLLoader registration = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            FXMLLoader login = new FXMLLoader(getClass().getResource("login_screen.fxml"));
+            Parent root = login.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader registration = new FXMLLoader(getClass().getResource(fxml));
             Parent root = registration.load();
 
             Scene currentScene = rootVbox.getScene();
@@ -212,22 +227,10 @@ public class landing_page_controller {
         }
     }
 
-    private void switchScene(MouseEvent event, String fxml) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setResizable(true);// Restore resizable for ALL screens except study
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /** Delete a set and its flashcards */
     @FXML
-    private void removeSet(ActionEvent event) {
+    private void removeSet() {
 
         String selected = setDropdown.getValue();
 

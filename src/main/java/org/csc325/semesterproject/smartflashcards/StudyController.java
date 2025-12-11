@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -54,6 +54,9 @@ public class StudyController {
     // Index of the current card being shown
     private int index = 0;
 
+    //Set that would be initially shown
+    private String selectedSet;
+
     // Counters for known / unknown progress
     private int known = 0;
     private int unknown = 0;
@@ -63,6 +66,8 @@ public class StudyController {
 
     // Prevents flipping animation from being triggered multiple times
     private boolean flipping = false;
+    @FXML
+    private VBox rootVbox;
 
     // Simple Flashcard structure: word = front, definition = back
     private static class Flashcard {
@@ -77,13 +82,18 @@ public class StudyController {
 
     @FXML
     private Label welcomeLabel;
+
+    void setSelectedSet(String selectedSet) {
+        this.selectedSet = selectedSet;
+    }
+
 /*Initialization */
     @FXML
     public void initialize() {
         loadSets();          // Load all flashcard sets from Firestore
         disableUI(true);     // Disable UI until a set is selected
         setupKeys();         // Enable keyboard controls (left/right/space)
-        flashcardContainer.setOnMouseClicked(e -> {
+        flashcardContainer.setOnMouseClicked(_ -> {
             if (cards != null && !cards.isEmpty()) {
                 handleFlipCard();
             }
@@ -111,7 +121,18 @@ public class StudyController {
                     setNames.add(c.getId());
 
                 // Update UI safely
-                Platform.runLater(() -> setDropdown.getItems().setAll(setNames));
+                Platform.runLater(() -> {
+                    setDropdown.getItems().setAll(setNames);
+                    int initialSelectedIndex = setDropdown.getItems().indexOf(selectedSet);
+
+                    //If the selected set exists in the combobox, then it selected otherwise it defaults to the first item
+                    if (initialSelectedIndex >= 0) {
+                        setDropdown.getSelectionModel().select(initialSelectedIndex);
+                    }
+                    else {
+                        setDropdown.getSelectionModel().selectFirst();
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -267,13 +288,13 @@ public class StudyController {
         grow.setToX(1);
 
         // Shrink → switch card → grow
-        shrink.setOnFinished(e -> {
+        shrink.setOnFinished(_ -> {
             frontSide = !frontSide;
             update();
             grow.play();
         });
 
-        grow.setOnFinished(e -> flipping = false);
+        grow.setOnFinished(_ -> flipping = false);
 
         shrink.play();
     }
@@ -314,12 +335,11 @@ public class StudyController {
     @FXML
     private void backToLanding() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) setDropdown.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setResizable(true);
-            stage.show();
+            FXMLLoader registration = new FXMLLoader(getClass().getResource("landing_Page.fxml"));
+            Parent root = registration.load();
+
+            Scene currentScene = rootVbox.getScene();
+            currentScene.setRoot(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
